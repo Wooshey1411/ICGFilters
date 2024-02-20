@@ -13,4 +13,7 @@ public class MainWindow extends JFrame {
         pack();
         setVisible(true);
     }
+    private void setMenu(){
+
+    }
 }
