@@ -4,17 +4,35 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainWindow extends JFrame {
-
-    public MainWindow(Dimension minSize, Dimension prefSize, String name){
+    public MainWindow(String name,
+                      int minWidth,
+                      int minHeight,
+                      int prefWidth,
+                      int prefHeight,
+                      JMenuBar menuBar,
+                      JPanel toolsArea,
+                      JPanel drawingArea
+                      ){
         super(name);
-        setMinimumSize(minSize);
-        setPreferredSize(prefSize);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new Dimension(minWidth, minHeight));
+        setPreferredSize(new Dimension(prefWidth, prefHeight));
+
+        final JScrollPane scrollPane = new JScrollPane(drawingArea);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        add(scrollPane, BorderLayout.CENTER);
+        setJMenuBar(menuBar);
+        add(toolsArea, BorderLayout.NORTH);
         pack();
-        setVisible(true);
-
     }
-    private void setMenu(){
 
+    public void showWindow() {
+        setVisible(true);
+    }
+
+    public void hideWindow() {
+        setVisible(false);
     }
 }
