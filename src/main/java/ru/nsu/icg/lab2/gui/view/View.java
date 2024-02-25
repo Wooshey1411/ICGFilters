@@ -6,6 +6,7 @@ import ru.nsu.icg.lab2.model.context.ContextListener;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.util.EnumMap;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class View implements ContextListener {
 
     private final Map<ContextAction, Consumer<Context>> contextStateChangeHandlers = new EnumMap<>(ContextAction.class);
 
-    public View(ViewConfig viewConfig, ActionListener actionListener){
+    public View(ViewConfig viewConfig, ActionListener actionListener, WindowListener windowListener){
         this.drawingArea = new DrawingArea();
         this.menuArea = new MenuArea(actionListener);
         this.toolsArea = new ToolsArea(actionListener);
@@ -29,6 +30,7 @@ public class View implements ContextListener {
                 viewConfig.windowMinHeight(),
                 viewConfig.windowPrefWidth(),
                 viewConfig.windowPrefHeight(),
+                windowListener,
                 menuArea.getMenuBar(),
                 toolsArea,
                 drawingArea

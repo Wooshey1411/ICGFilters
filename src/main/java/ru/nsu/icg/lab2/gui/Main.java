@@ -21,6 +21,7 @@ public class Main {
             final Controller controller = new Controller(context);
             final View view = new View(
                     viewConfig,
+                    controller,
                     controller
             );
             context.addListener(view);

@@ -2,6 +2,7 @@ package ru.nsu.icg.lab2.gui.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowListener;
 
 public class MainWindow extends JFrame {
     public MainWindow(String name,
@@ -9,12 +10,13 @@ public class MainWindow extends JFrame {
                       int minHeight,
                       int prefWidth,
                       int prefHeight,
+                      WindowListener windowListener,
                       JMenuBar menuBar,
                       JPanel toolsArea,
                       JPanel drawingArea
                       ){
         super(name);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(windowListener);
         setMinimumSize(new Dimension(minWidth, minHeight));
         setPreferredSize(new Dimension(prefWidth, prefHeight));
 
