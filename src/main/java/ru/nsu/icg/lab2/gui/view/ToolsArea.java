@@ -14,8 +14,8 @@ public class ToolsArea extends JPanel {
     // TODO: вынести это в конфигурационный файл
     private static final Color AREA_BACKGROUND_COLOR = new Color(0.85f, 0.85f, 0.85f);
     private static final Color BUTTONS_BACKGROUND_COLOR = new Color(0.72f, 0.72f, 0.71f);
-    private static final int TOOL_SIZE = 26;
-    private static final int ICON_SIZE = 20;
+    private static final int TOOL_SIZE = 33;
+    private static final int ICON_SIZE = 32;
 
     public ToolsArea(ActionListener actionListener) {
         final ImageReader reader = new ImageReaderImpl();
