@@ -27,6 +27,7 @@ public class MainWindow extends JFrame {
         add(scrollPane, BorderLayout.CENTER);
         setJMenuBar(menuBar);
         add(toolsArea, BorderLayout.NORTH);
+        setLocationRelativeTo(null);
         pack();
     }
 
