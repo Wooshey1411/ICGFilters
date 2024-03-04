@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class ImageReaderImpl implements ImageReader {
-    private static final String[] SUPPORTED_FORMATS = {"gif", "png", "jpeg", "jpg", "jpeg", "bmp", "wbmp"};
+    private static final String[] SUPPORTED_FORMATS = {"GIF", "PNG", "JPEG", "JPG", "BMP"};
 
     @Override
     public BufferedImage read(File file) throws IOException {

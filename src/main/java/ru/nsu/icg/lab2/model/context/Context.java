@@ -11,7 +11,11 @@ public class Context {
 
     @Getter
     @Setter
-    private BufferedImage image;
+    private BufferedImage originalImage;
+
+    @Getter
+    @Setter
+    private BufferedImage processedImage;
 
     @Getter
     @Setter
@@ -38,5 +42,10 @@ public class Context {
         for (final ContextListener listener : listeners) {
             listener.onContextActionChange(this, action);
         }
+    }
+
+    public void pushError(String errorMessage) {
+        this.errorMessage = errorMessage;
+        setAction(ContextAction.DISPLAY_ERROR);
     }
 }

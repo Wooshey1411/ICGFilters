@@ -6,17 +6,15 @@ import ru.nsu.icg.lab2.model.context.ContextAction;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Controller extends WindowAdapter implements ActionListener {
+public class ButtonsController implements ActionListener {
     private final Context context;
 
     private final Map<String, Runnable> actionCommandsHandlers = new HashMap<>();
 
-    public Controller(Context context) {
+    public ButtonsController(Context context) {
         this.context = context;
 
         actionCommandsHandlers.put(ActionCommands.OPEN, this::executeOpenActionCommand);
@@ -69,10 +67,5 @@ public class Controller extends WindowAdapter implements ActionListener {
 
     private void executeShowAboutActionCommand() {
         context.setAction(ContextAction.DISPLAY_ABOUT);
-    }
-
-    @Override
-    public void windowClosing(WindowEvent e) {
-        executeExitActionCommand();
     }
 }

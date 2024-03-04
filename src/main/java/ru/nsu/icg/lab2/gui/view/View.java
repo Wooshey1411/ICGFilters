@@ -1,5 +1,8 @@
 package ru.nsu.icg.lab2.gui.view;
 
+import ru.nsu.icg.lab2.gui.view.files.ImageChooser;
+import ru.nsu.icg.lab2.gui.view.files.ImageOpeningChooser;
+import ru.nsu.icg.lab2.gui.view.files.ImageSavingChooser;
 import ru.nsu.icg.lab2.model.context.Context;
 import ru.nsu.icg.lab2.model.context.ContextAction;
 import ru.nsu.icg.lab2.model.context.ContextListener;
@@ -17,13 +20,22 @@ public class View implements ContextListener {
     private final ToolsArea toolsArea;
     private final DrawingArea drawingArea;
     private final MainWindow mainWindow;
+    private final ImageChooser imagesOpeningFileChoose;
+    private final JFileChooser imagesSavingFileChooser;
 
     private final Map<ContextAction, Consumer<Context>> contextStateChangeHandlers = new EnumMap<>(ContextAction.class);
 
-    public View(ViewConfig viewConfig, ActionListener actionListener, WindowListener windowListener){
+    public View(
+            ViewConfig viewConfig,
+            ActionListener buttonsListener,
+            WindowListener windowListener,
+            ActionListener filesActionsListener,
+            String[] supportedReadFormats,
+            String[] supportedWriteFormats
+    ){
         this.drawingArea = new DrawingArea();
-        this.menuArea = new MenuArea(actionListener);
-        this.toolsArea = new ToolsArea(actionListener);
+        this.menuArea = new MenuArea(buttonsListener);
+        this.toolsArea = new ToolsArea(buttonsListener);
         this.mainWindow = new MainWindow(
                 viewConfig.windowName(),
                 viewConfig.windowMinWidth(),
@@ -44,14 +56,13 @@ public class View implements ContextListener {
         contextStateChangeHandlers.put(ContextAction.DISPLAY_ERROR, View.this::onDisplayingError);
         contextStateChangeHandlers.put(ContextAction.DISPLAY_HELP, View.this::onDisplayingHelp);
         contextStateChangeHandlers.put(ContextAction.DISPLAY_ABOUT, View.this::onDisplayingAbout);
+
+        this.imagesOpeningFileChoose = new ImageOpeningChooser(supportedReadFormats, filesActionsListener);
+        this.imagesSavingFileChooser =  new ImageSavingChooser(supportedWriteFormats, filesActionsListener);
     }
 
     public void show() {
         mainWindow.showWindow();
-    }
-
-    public void hide() {
-        mainWindow.hideWindow();
     }
 
     @Override
@@ -64,7 +75,7 @@ public class View implements ContextListener {
     }
 
     private void onRepainting(Context context) {
-        final BufferedImage image = context.getImage();
+        final BufferedImage image = context.getProcessedImage();
         drawingArea.resizeSoftly(image.getWidth(), image.getHeight());
         drawingArea.setImage(image);
         drawingArea.repaint();
@@ -73,21 +84,19 @@ public class View implements ContextListener {
     }
 
     private void onOpeningFile(Context context) {
-        JOptionPane.showMessageDialog(
-                null,
-                "I'm opening file ...",
-                "File opening",
-                JOptionPane.INFORMATION_MESSAGE
-        );
+        final int code = imagesOpeningFileChoose.showOpenDialog(this.mainWindow);
+
+        if (code == JFileChooser.ERROR_OPTION) {
+            showError("Cannot open file");
+        }
     }
 
     private void onSavingFile(Context context) {
-        JOptionPane.showMessageDialog(
-                null,
-                "I'm saving file ...",
-                "File saving",
-                JOptionPane.INFORMATION_MESSAGE
-        );
+        final int code = imagesSavingFileChooser.showSaveDialog(this.mainWindow);
+
+        if (code == JFileChooser.ERROR_OPTION) {
+            showError("Cannot save file");
+        }
     }
 
     private void onExiting(Context context) {
@@ -96,17 +105,12 @@ public class View implements ContextListener {
     }
 
     private void onDisplayingError(Context context) {
-        JOptionPane.showMessageDialog(
-                null,
-                context.getErrorMessage(),
-                "Error",
-                JOptionPane.ERROR_MESSAGE
-        );
+        showError(context.getErrorMessage());
     }
 
     private void onDisplayingHelp(Context context) {
         JOptionPane.showMessageDialog(
-                null,
+                mainWindow,
                 "It's help",
                 "Help",
                 JOptionPane.INFORMATION_MESSAGE
@@ -115,10 +119,19 @@ public class View implements ContextListener {
 
     private void onDisplayingAbout(Context context) {
         JOptionPane.showMessageDialog(
-                null,
+                mainWindow,
                 "It's about",
                 "About",
                 JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+
+    private void showError(String errorMessage) {
+        JOptionPane.showMessageDialog(
+                mainWindow,
+                errorMessage,
+                "Error",
+                JOptionPane.ERROR_MESSAGE
         );
     }
 }
