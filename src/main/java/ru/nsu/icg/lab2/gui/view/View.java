@@ -1,5 +1,9 @@
 package ru.nsu.icg.lab2.gui.view;
 
+import ru.nsu.icg.lab2.gui.view.components.DrawingArea;
+import ru.nsu.icg.lab2.gui.view.components.MainWindow;
+import ru.nsu.icg.lab2.gui.view.components.MenuArea;
+import ru.nsu.icg.lab2.gui.view.components.ToolsArea;
 import ru.nsu.icg.lab2.gui.view.config.ViewConfig;
 import ru.nsu.icg.lab2.gui.view.files.ImageChooser;
 import ru.nsu.icg.lab2.gui.view.files.ImageOpeningChooser;

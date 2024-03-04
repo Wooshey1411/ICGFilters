@@ -1,4 +1,4 @@
-package ru.nsu.icg.lab2.gui.view;
+package ru.nsu.icg.lab2.gui.view.components;
 
 import ru.nsu.icg.lab2.gui.ActionCommands;
 import ru.nsu.icg.lab2.gui.view.icons.IconsSupplier;

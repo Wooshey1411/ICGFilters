@@ -1,9 +1,12 @@
-package ru.nsu.icg.lab2.gui.view;
+package ru.nsu.icg.lab2.gui.view.components;
+
+import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+@Setter
 public class DrawingArea extends JPanel {
     private BufferedImage image;
 
@@ -11,11 +14,7 @@ public class DrawingArea extends JPanel {
         setBackground(Color.WHITE);
     }
 
-    void setImage(BufferedImage image) {
-        this.image = image;
-    }
-
-    void resizeSoftly(int width, int height) {
+    public void resizeSoftly(int width, int height) {
         setPreferredSize(new Dimension(width, height));
     }
 

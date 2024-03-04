@@ -1,4 +1,4 @@
-package ru.nsu.icg.lab2.gui.view;
+package ru.nsu.icg.lab2.gui.view.components;
 
 import javax.swing.*;
 import java.awt.*;
