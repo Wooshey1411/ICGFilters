@@ -7,10 +7,10 @@ import java.util.Objects;
 public class IconsSupplierImpl implements IconsSupplier {
     private final HashMap<IconTypes, ImageIcon> iconsList = new HashMap<>();
 
-    public IconsSupplierImpl(){
-        iconsList.put(IconTypes.HAND,loadIcon("hand-icon.png"));
-        iconsList.put(IconTypes.DISPLAY,loadIcon("display-icon.png"));
-        iconsList.put(IconTypes.ROTATION,loadIcon("rotation-icon.png"));
+    public IconsSupplierImpl() {
+        iconsList.put(IconTypes.HAND, loadIcon("hand-icon.png"));
+        iconsList.put(IconTypes.DISPLAY, loadIcon("display-icon.png"));
+        iconsList.put(IconTypes.ROTATION, loadIcon("rotation-icon.png"));
     }
 
     @Override
@@ -28,7 +28,7 @@ public class IconsSupplierImpl implements IconsSupplier {
         return iconsList.get(IconTypes.ROTATION);
     }
 
-    private ImageIcon loadIcon(String path){
+    private ImageIcon loadIcon(String path) {
         return new ImageIcon(Objects.requireNonNull(IconsSupplierImpl.class.getResource("/icons/" + path)));
     }
 }

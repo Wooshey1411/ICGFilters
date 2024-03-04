@@ -2,6 +2,7 @@ package ru.nsu.icg.lab2.model.context;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;

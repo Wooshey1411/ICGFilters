@@ -14,7 +14,7 @@ public class MainWindow extends JFrame {
                       JMenuBar menuBar,
                       JPanel toolsArea,
                       JPanel drawingArea
-                      ){
+    ) {
         super(name);
         addWindowListener(windowListener);
         setMinimumSize(new Dimension(minWidth, minHeight));

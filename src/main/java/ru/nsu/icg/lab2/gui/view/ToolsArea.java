@@ -33,13 +33,14 @@ public class ToolsArea extends JPanel {
             add(toolButton);
         }
     }
+
     private static void initButton(AbstractButton button, String actionCommand, String tip, ActionListener actionListener) {
         button.setFocusPainted(false);
         button.setActionCommand(actionCommand);
         button.setToolTipText(tip);
         button.addActionListener(actionListener);
         button.setPreferredSize(new Dimension(TOOL_SIZE, TOOL_SIZE));
-        button.setMinimumSize(new Dimension(TOOL_SIZE,TOOL_SIZE));
+        button.setMinimumSize(new Dimension(TOOL_SIZE, TOOL_SIZE));
         button.setBackground(BUTTONS_BACKGROUND_COLOR);
         button.setBorderPainted(false);
     }

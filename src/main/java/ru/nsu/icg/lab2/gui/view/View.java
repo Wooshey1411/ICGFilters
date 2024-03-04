@@ -35,7 +35,7 @@ public class View implements ContextListener {
             ActionListener filesActionsListener,
             String[] supportedReadFormats,
             String[] supportedWriteFormats
-    ){
+    ) {
         this.drawingArea = new DrawingArea();
         this.menuArea = new MenuArea(buttonsListener);
         this.toolsArea = new ToolsArea(iconsSupplier, buttonsListener);
@@ -61,7 +61,7 @@ public class View implements ContextListener {
         contextStateChangeHandlers.put(ContextAction.DISPLAY_ABOUT, View.this::onDisplayingAbout);
 
         this.imagesOpeningFileChoose = new ImageOpeningChooser(supportedReadFormats, filesActionsListener);
-        this.imagesSavingFileChooser =  new ImageSavingChooser(supportedWriteFormats, filesActionsListener);
+        this.imagesSavingFileChooser = new ImageSavingChooser(supportedWriteFormats, filesActionsListener);
     }
 
     public void show() {
