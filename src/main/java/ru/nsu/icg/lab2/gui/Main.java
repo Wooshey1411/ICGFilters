@@ -48,9 +48,8 @@ public class Main {
 
             context.addListener(view);
             view.show();
-        } catch (Exception ex) {
-            // TODO: сделать нормальную обработку исключений
-            System.err.println(ex.getLocalizedMessage());
+        } catch (Exception exception) {
+            System.err.println(exception.getLocalizedMessage());
         }
     }
 }
