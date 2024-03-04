@@ -1,4 +1,4 @@
-package ru.nsu.icg.lab2.gui.view;
+package ru.nsu.icg.lab2.gui.view.config;
 
 public record ViewConfig(String windowName,
                          int windowPrefWidth,

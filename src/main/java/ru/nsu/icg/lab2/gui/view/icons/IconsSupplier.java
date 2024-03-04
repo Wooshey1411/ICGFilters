@@ -1,9 +1,11 @@
-package ru.nsu.icg.lab2.gui.view;
+package ru.nsu.icg.lab2.gui.view.icons;
 
 import javax.swing.*;
 
-public interface ToolsIconsSupplier {
+public interface IconsSupplier {
     ImageIcon getHandIcon();
+
     ImageIcon getDisplayIcon();
+
     ImageIcon getRotationIcon();
 }

@@ -1,6 +1,7 @@
 package ru.nsu.icg.lab2.gui.view;
 
 import ru.nsu.icg.lab2.gui.ActionCommands;
+import ru.nsu.icg.lab2.gui.view.icons.IconsSupplier;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,20 +15,13 @@ public class ToolsArea extends JPanel {
     private static final Color BUTTONS_BACKGROUND_COLOR = new Color(0.72f, 0.72f, 0.71f);
     private static final int TOOL_SIZE = 25;
 
-    public ToolsArea(ActionListener actionListener) {
-        ToolsIconsSupplierImpl toolsIconsSupplier;
-        try {
-             toolsIconsSupplier = new ToolsIconsSupplierImpl();
-        } catch (Exception exception) {
-            System.out.println(exception.getLocalizedMessage());
-            throw new RuntimeException();
-        }
+    public ToolsArea(IconsSupplier iconsSupplier, ActionListener actionListener) {
         // TODO: вынести подсказки в конфигурационный файл?
         final List<ToolButton> toolButtonsProperties = Arrays.asList(
-                new ToolButton(toolsIconsSupplier.getHandIcon(), ActionCommands.SELECT_HAND, "hand"),
-                new ToolButton(toolsIconsSupplier.getDisplayIcon(), ActionCommands.SWITCH_DISPLAY_MODE, "switch display mode"),
-                new ToolButton(toolsIconsSupplier.getRotationIcon(), ActionCommands.ROTATE, "rotate"),
-                new ToolButton(toolsIconsSupplier.getDisplayIcon(), ActionCommands.APPLY_FILTER, "filter")
+                new ToolButton(iconsSupplier.getHandIcon(), ActionCommands.SELECT_HAND, "hand"),
+                new ToolButton(iconsSupplier.getDisplayIcon(), ActionCommands.SWITCH_DISPLAY_MODE, "switch display mode"),
+                new ToolButton(iconsSupplier.getRotationIcon(), ActionCommands.ROTATE, "rotate"),
+                new ToolButton(iconsSupplier.getDisplayIcon(), ActionCommands.APPLY_FILTER, "filter")
         );
 
         setLayout(new FlowLayout(FlowLayout.LEFT));

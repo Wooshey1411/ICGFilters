@@ -1,8 +1,10 @@
 package ru.nsu.icg.lab2.gui.view;
 
+import ru.nsu.icg.lab2.gui.view.config.ViewConfig;
 import ru.nsu.icg.lab2.gui.view.files.ImageChooser;
 import ru.nsu.icg.lab2.gui.view.files.ImageOpeningChooser;
 import ru.nsu.icg.lab2.gui.view.files.ImageSavingChooser;
+import ru.nsu.icg.lab2.gui.view.icons.IconsSupplier;
 import ru.nsu.icg.lab2.model.context.Context;
 import ru.nsu.icg.lab2.model.context.ContextAction;
 import ru.nsu.icg.lab2.model.context.ContextListener;
@@ -27,6 +29,7 @@ public class View implements ContextListener {
 
     public View(
             ViewConfig viewConfig,
+            IconsSupplier iconsSupplier,
             ActionListener buttonsListener,
             WindowListener windowListener,
             ActionListener filesActionsListener,
@@ -35,7 +38,7 @@ public class View implements ContextListener {
     ){
         this.drawingArea = new DrawingArea();
         this.menuArea = new MenuArea(buttonsListener);
-        this.toolsArea = new ToolsArea(buttonsListener);
+        this.toolsArea = new ToolsArea(iconsSupplier, buttonsListener);
         this.mainWindow = new MainWindow(
                 viewConfig.windowName(),
                 viewConfig.windowMinWidth(),
