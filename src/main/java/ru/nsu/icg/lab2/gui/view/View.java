@@ -12,6 +12,7 @@ import ru.nsu.icg.lab2.gui.view.icons.IconsSupplier;
 import ru.nsu.icg.lab2.model.context.Context;
 import ru.nsu.icg.lab2.model.context.ContextAction;
 import ru.nsu.icg.lab2.model.context.ContextListener;
+import ru.nsu.icg.lab2.model.context.ViewModeContext;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -28,7 +29,6 @@ public class View implements ContextListener {
     private final MainWindow mainWindow;
     private final ImageChooser imagesOpeningFileChoose;
     private final JFileChooser imagesSavingFileChooser;
-
     private final Map<ContextAction, Consumer<Context>> contextStateChangeHandlers = new EnumMap<>(ContextAction.class);
 
     public View(
@@ -38,7 +38,8 @@ public class View implements ContextListener {
             WindowListener windowListener,
             ActionListener filesActionsListener,
             String[] supportedReadFormats,
-            String[] supportedWriteFormats
+            String[] supportedWriteFormats,
+            ViewModeContext viewModeContext
     ) {
         this.drawingArea = new DrawingArea();
         this.menuArea = new MenuArea(buttonsListener);
@@ -52,7 +53,8 @@ public class View implements ContextListener {
                 windowListener,
                 menuArea.getMenuBar(),
                 toolsArea,
-                drawingArea
+                drawingArea,
+                viewModeContext
         );
 
         contextStateChangeHandlers.put(ContextAction.IDLE, View.this::onIdle);

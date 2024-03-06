@@ -84,7 +84,7 @@ public class MenuArea extends JPanel {
     private static void initButton(AbstractButton button, String actionCommand, ActionListener actionListener) {
         button.setBorderPainted(false);
         button.setFont(FONT);
-        button.setForeground(BUTTONS_FONT_COLOR);
+        button.setForeground(MENU_BACKGROUND_COLOR);
         button.addActionListener(actionListener);
         button.setActionCommand(actionCommand);
     }

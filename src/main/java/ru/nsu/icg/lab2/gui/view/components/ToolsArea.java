@@ -13,7 +13,7 @@ public class ToolsArea extends JPanel {
     // TODO: вынести это в конфигурационный файл
     private static final Color AREA_BACKGROUND_COLOR = new Color(0.85f, 0.85f, 0.85f);
     private static final Color BUTTONS_BACKGROUND_COLOR = new Color(0.72f, 0.72f, 0.71f);
-    private static final int TOOL_SIZE = 25;
+    private static final int TOOL_SIZE = 32;
 
     public ToolsArea(IconsSupplier iconsSupplier, ActionListener actionListener) {
         // TODO: вынести подсказки в конфигурационный файл?
@@ -30,6 +30,7 @@ public class ToolsArea extends JPanel {
         for (final var it : toolButtonsProperties) {
             final String actionCommand = it.actionCommand();
             final JButton toolButton = createToolButton(it.icon(), actionCommand, it.tip(), actionListener);
+            toolButton.setPreferredSize(new Dimension(TOOL_SIZE,TOOL_SIZE));
             add(toolButton);
         }
     }

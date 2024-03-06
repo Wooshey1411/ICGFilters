@@ -1,5 +1,7 @@
 package ru.nsu.icg.lab2.gui;
 
+import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme;
 import ru.nsu.icg.lab2.gui.controller.ButtonsController;
 import ru.nsu.icg.lab2.gui.controller.FilesActionsController;
 import ru.nsu.icg.lab2.gui.controller.WindowController;
@@ -15,9 +17,13 @@ import ru.nsu.icg.lab2.model.image.ImageReaderImpl;
 import ru.nsu.icg.lab2.model.image.ImageWriter;
 import ru.nsu.icg.lab2.model.image.ImageWriterImpl;
 
+import javax.swing.*;
+
 public class Main {
     public static void main(String[] args) {
         try {
+            FlatArcDarkOrangeIJTheme.setup();
+            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             final Context context = new Context();
 
             final ViewConfigParser viewConfigParser = new JSONViewConfigParser("view_config.json");
@@ -43,7 +49,8 @@ public class Main {
                     windowController,
                     filesActionsController,
                     imageReader.getSupportedFormats(),
-                    imageWriter.getSupportedFormats()
+                    imageWriter.getSupportedFormats(),
+                    context
             );
 
             context.addListener(view);
