@@ -11,6 +11,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.WindowListener;
 
 public class MainWindow extends JFrame {
+
+    private static final int SCROLL_PANE_BORDER_THICKNESS = 10;
     public MainWindow(String name,
                       int minWidth,
                       int minHeight,
@@ -37,17 +39,18 @@ public class MainWindow extends JFrame {
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
                 if(viewModeContext.getViewMode() == ViewMode.ON_WINDOW_SIZE) {
-                    int height = getHeight() - getInsets().bottom-getInsets().top-toolsArea.getInsets().bottom-toolsArea.getInsets().top-menuBar.getInsets().bottom-menuBar.getInsets().top-menuBar.getHeight()-toolsArea.getHeight();
-                    int width = getWidth() - getInsets().right - getInsets().left;
-                    scrollPane.setSize(new Dimension(width, height));
-                    Insets border = drawingArea.getBorder().getBorderInsets(drawingArea);
-                    holder.setSize(width,height);
-                    drawingArea.setSize(new Dimension(width-20,height-20));
-                    windowResizeListener.onDrawingAreaResize(width-border.left-border.right-20, height-border.top-border.bottom-20);
+                    scrollPane.setSize(new Dimension(holder.getWidth(),holder.getHeight()));
+                    Insets scrollPaneBorder = scrollPane.getInsets();
+                    drawingArea.setSize(scrollPane.getWidth()-scrollPaneBorder.right-scrollPaneBorder.left,
+                            scrollPane.getHeight()-scrollPaneBorder.bottom-scrollPaneBorder.top);
+                    Insets drawingAreaBorder = drawingArea.getInsets();
+                    windowResizeListener.onDrawingAreaResize(drawingArea.getWidth()-drawingAreaBorder.left-drawingAreaBorder.right
+                            , drawingArea.getHeight()-drawingAreaBorder.top-drawingAreaBorder.bottom);
                 }
             }
         });
-        scrollPane.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(SCROLL_PANE_BORDER_THICKNESS,SCROLL_PANE_BORDER_THICKNESS
+                ,SCROLL_PANE_BORDER_THICKNESS,SCROLL_PANE_BORDER_THICKNESS));
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         add(holder, BorderLayout.CENTER);
