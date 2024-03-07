@@ -10,10 +10,7 @@ import ru.nsu.icg.lab2.gui.view.files.ImageChooser;
 import ru.nsu.icg.lab2.gui.view.files.ImageOpeningChooser;
 import ru.nsu.icg.lab2.gui.view.files.ImageSavingChooser;
 import ru.nsu.icg.lab2.gui.view.icons.IconsSupplier;
-import ru.nsu.icg.lab2.model.context.Context;
-import ru.nsu.icg.lab2.model.context.ContextAction;
-import ru.nsu.icg.lab2.model.context.ContextListener;
-import ru.nsu.icg.lab2.model.context.ViewModeContext;
+import ru.nsu.icg.lab2.model.context.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -91,13 +88,17 @@ public class View implements ContextListener {
     }
 
     private void onRepainting(Context context) {
-        /*final BufferedImage image = context.getProcessedImage();
-        drawingArea.resizeSoftly(image.getWidth(), image.getHeight());
-        drawingArea.setImage(image);
-        drawingArea.repaint();
-        drawingArea.revalidate();
-        System.out.println("repaint");*/
-        onDrawingAreaResize(context);
+        if(context.getViewMode() == ViewMode.SIZE_TO_SIZE) {
+            final BufferedImage image = context.getProcessedImage();
+            drawingArea.resizeSoftly(image.getWidth(), image.getHeight());
+            drawingArea.setImage(image);
+            drawingArea.repaint();
+            drawingArea.revalidate();
+        } else {
+            onDrawingAreaResize(context);
+        }
+
+        // TODO: Во время установки изображения смотрим на режим отображения и выбираем соотв. Сделать лучше как-то?
     }
 
     private void onOpeningFile(Context context) {
@@ -153,7 +154,6 @@ public class View implements ContextListener {
     }
 
     private void onDrawingAreaResize(Context context){
-        System.out.println(context.getDrawingAreaWidth() + " " + context.getDrawingAreaHeight());
         if(context.getProcessedImage() == null){
             return;
         }

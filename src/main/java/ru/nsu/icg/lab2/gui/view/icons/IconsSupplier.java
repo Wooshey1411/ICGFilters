@@ -8,4 +8,5 @@ public interface IconsSupplier {
     ImageIcon getDisplayIcon();
 
     ImageIcon getRotationIcon();
+    ImageIcon getOneToOneIcon();
 }

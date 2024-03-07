@@ -10,6 +10,7 @@ public final class ActionCommands {
     public static final String ROTATE = "ROTATE";
     public static final String APPLY_FILTER = "APPLY_FILTER";
 
+    public static final String CHANGE_VIEW_MODE = "CHANGE_VIEW_MODE";
     public static final String SHOW_HELP = "SHOW-HELP";
     public static final String SHOW_ABOUT = "SHOW-ABOUT";
 

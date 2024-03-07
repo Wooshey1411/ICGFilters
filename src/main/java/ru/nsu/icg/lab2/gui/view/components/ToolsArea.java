@@ -21,7 +21,7 @@ public class ToolsArea extends JPanel {
                 new ToolButton(iconsSupplier.getHandIcon(), ActionCommands.SELECT_HAND, "hand"),
                 new ToolButton(iconsSupplier.getDisplayIcon(), ActionCommands.SWITCH_DISPLAY_MODE, "switch display mode"),
                 new ToolButton(iconsSupplier.getRotationIcon(), ActionCommands.ROTATE, "rotate"),
-                new ToolButton(iconsSupplier.getDisplayIcon(), ActionCommands.APPLY_FILTER, "filter")
+                new ToolButton(iconsSupplier.getOneToOneIcon(), ActionCommands.CHANGE_VIEW_MODE, "change view mode")
         );
 
         setLayout(new FlowLayout(FlowLayout.LEFT));

@@ -11,6 +11,7 @@ public class IconsSupplierImpl implements IconsSupplier {
         iconsList.put(IconTypes.HAND, loadIcon("hand-icon.png"));
         iconsList.put(IconTypes.DISPLAY, loadIcon("display-icon.png"));
         iconsList.put(IconTypes.ROTATION, loadIcon("rotation-icon.png"));
+        iconsList.put(IconTypes.ONE_TO_ONE,loadIcon("one-to-one-icon.png"));
     }
 
     @Override
@@ -26,6 +27,11 @@ public class IconsSupplierImpl implements IconsSupplier {
     @Override
     public ImageIcon getRotationIcon() {
         return iconsList.get(IconTypes.ROTATION);
+    }
+
+    @Override
+    public ImageIcon getOneToOneIcon() {
+        return iconsList.get(IconTypes.ONE_TO_ONE);
     }
 
     private ImageIcon loadIcon(String path) {

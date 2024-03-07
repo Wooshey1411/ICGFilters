@@ -24,7 +24,7 @@ public class ButtonsController implements ActionListener {
         actionCommandsHandlers.put(ActionCommands.SELECT_HAND, this::executeSelectHandActionCommand);
         actionCommandsHandlers.put(ActionCommands.SWITCH_DISPLAY_MODE, this::executeSwitchDisplayModeActionCommand);
         actionCommandsHandlers.put(ActionCommands.ROTATE, this::executeRotateActionCommand);
-        actionCommandsHandlers.put(ActionCommands.APPLY_FILTER, this::executeApplyFilterActionCommand);
+        actionCommandsHandlers.put(ActionCommands.CHANGE_VIEW_MODE, this::executeChangeViewModeActionCommand);
         actionCommandsHandlers.put(ActionCommands.SHOW_HELP, this::executeShowHelpActionCommand);
         actionCommandsHandlers.put(ActionCommands.SHOW_ABOUT, this::executeShowAboutActionCommand);
     }
@@ -60,8 +60,8 @@ public class ButtonsController implements ActionListener {
         System.out.println("Somebody pressed \"Rotate\"");
     }
 
-    private void executeApplyFilterActionCommand() {
-        System.out.println("Somebody pressed \"Filter\"");
+    private void executeChangeViewModeActionCommand() {
+        System.out.println("Somebody pressed \"ChangeViewMode\"");
     }
 
     private void executeShowHelpActionCommand() {
