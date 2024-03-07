@@ -20,6 +20,14 @@ public class Context implements ViewModeContext {
 
     @Getter
     @Setter
+    private int drawingAreaWidth;
+
+    @Getter
+    @Setter
+    private int drawingAreaHeight;
+
+    @Getter
+    @Setter
     private BufferedImage processedImage;
 
     @Getter

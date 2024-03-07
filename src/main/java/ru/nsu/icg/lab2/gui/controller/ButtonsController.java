@@ -3,6 +3,7 @@ package ru.nsu.icg.lab2.gui.controller;
 import ru.nsu.icg.lab2.gui.ActionCommands;
 import ru.nsu.icg.lab2.model.context.Context;
 import ru.nsu.icg.lab2.model.context.ContextAction;
+import ru.nsu.icg.lab2.model.context.ViewMode;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,10 +48,12 @@ public class ButtonsController implements ActionListener {
 
     private void executeSelectHandActionCommand() {
         System.out.println("Somebody pressed \"Select hand\"");
+        context.setViewMode(ViewMode.SIZE_TO_SIZE);
     }
 
     private void executeSwitchDisplayModeActionCommand() {
         System.out.println("Somebody pressed \"Switch display mode\"");
+        context.setViewMode(ViewMode.ON_WINDOW_SIZE);
     }
 
     private void executeRotateActionCommand() {

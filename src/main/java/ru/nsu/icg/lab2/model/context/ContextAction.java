@@ -8,5 +8,6 @@ public enum ContextAction {
     EXIT,
     DISPLAY_ERROR,
     DISPLAY_HELP,
-    DISPLAY_ABOUT
+    DISPLAY_ABOUT,
+    DRAWING_AREA_RESIZE
 }

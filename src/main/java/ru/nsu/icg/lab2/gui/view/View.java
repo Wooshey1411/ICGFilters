@@ -1,5 +1,6 @@
 package ru.nsu.icg.lab2.gui.view;
 
+import ru.nsu.icg.lab2.gui.controller.WindowResizeListener;
 import ru.nsu.icg.lab2.gui.view.components.DrawingArea;
 import ru.nsu.icg.lab2.gui.view.components.MainWindow;
 import ru.nsu.icg.lab2.gui.view.components.MenuArea;
@@ -15,8 +16,9 @@ import ru.nsu.icg.lab2.model.context.ContextListener;
 import ru.nsu.icg.lab2.model.context.ViewModeContext;
 
 import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowListener;
+import javax.swing.border.Border;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.EnumMap;
 import java.util.Map;
@@ -29,6 +31,7 @@ public class View implements ContextListener {
     private final MainWindow mainWindow;
     private final ImageChooser imagesOpeningFileChoose;
     private final JFileChooser imagesSavingFileChooser;
+    private final ViewModeContext viewModeContext;
     private final Map<ContextAction, Consumer<Context>> contextStateChangeHandlers = new EnumMap<>(ContextAction.class);
 
     public View(
@@ -39,11 +42,13 @@ public class View implements ContextListener {
             ActionListener filesActionsListener,
             String[] supportedReadFormats,
             String[] supportedWriteFormats,
-            ViewModeContext viewModeContext
+            ViewModeContext viewModeContext,
+            WindowResizeListener windowResizeListener
     ) {
         this.drawingArea = new DrawingArea();
         this.menuArea = new MenuArea(buttonsListener);
         this.toolsArea = new ToolsArea(iconsSupplier, buttonsListener);
+        this.viewModeContext = viewModeContext;
         this.mainWindow = new MainWindow(
                 viewConfig.windowName(),
                 viewConfig.windowMinWidth(),
@@ -54,7 +59,8 @@ public class View implements ContextListener {
                 menuArea.getMenuBar(),
                 toolsArea,
                 drawingArea,
-                viewModeContext
+                viewModeContext,
+                windowResizeListener
         );
 
         contextStateChangeHandlers.put(ContextAction.IDLE, View.this::onIdle);
@@ -65,6 +71,7 @@ public class View implements ContextListener {
         contextStateChangeHandlers.put(ContextAction.DISPLAY_ERROR, View.this::onDisplayingError);
         contextStateChangeHandlers.put(ContextAction.DISPLAY_HELP, View.this::onDisplayingHelp);
         contextStateChangeHandlers.put(ContextAction.DISPLAY_ABOUT, View.this::onDisplayingAbout);
+        contextStateChangeHandlers.put(ContextAction.DRAWING_AREA_RESIZE,View.this::onDrawingAreaResize);
 
         this.imagesOpeningFileChoose = new ImageOpeningChooser(supportedReadFormats, filesActionsListener);
         this.imagesSavingFileChooser = new ImageSavingChooser(supportedWriteFormats, filesActionsListener);
@@ -84,12 +91,13 @@ public class View implements ContextListener {
     }
 
     private void onRepainting(Context context) {
-        final BufferedImage image = context.getProcessedImage();
+        /*final BufferedImage image = context.getProcessedImage();
         drawingArea.resizeSoftly(image.getWidth(), image.getHeight());
         drawingArea.setImage(image);
         drawingArea.repaint();
         drawingArea.revalidate();
-        mainWindow.pack();
+        System.out.println("repaint");*/
+        onDrawingAreaResize(context);
     }
 
     private void onOpeningFile(Context context) {
@@ -142,5 +150,21 @@ public class View implements ContextListener {
                 "Error",
                 JOptionPane.ERROR_MESSAGE
         );
+    }
+
+    private void onDrawingAreaResize(Context context){
+        System.out.println(context.getDrawingAreaWidth() + " " + context.getDrawingAreaHeight());
+        if(context.getProcessedImage() == null){
+            return;
+        }
+        BufferedImage resizedImage = new BufferedImage(context.getDrawingAreaWidth(),context.getDrawingAreaHeight(),BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics2D = resizedImage.createGraphics();
+        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        graphics2D.drawImage(context.getProcessedImage(),0,0,context.getDrawingAreaWidth(),context.getDrawingAreaHeight(),null);
+        graphics2D.dispose();
+        drawingArea.resizeSoftly(resizedImage.getWidth(), resizedImage.getHeight());
+        drawingArea.setImage(resizedImage);
+        drawingArea.repaint();
+        drawingArea.revalidate();
     }
 }

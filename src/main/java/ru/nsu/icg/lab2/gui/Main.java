@@ -5,6 +5,7 @@ import com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme;
 import ru.nsu.icg.lab2.gui.controller.ButtonsController;
 import ru.nsu.icg.lab2.gui.controller.FilesActionsController;
 import ru.nsu.icg.lab2.gui.controller.WindowController;
+import ru.nsu.icg.lab2.gui.controller.WindowResizeController;
 import ru.nsu.icg.lab2.gui.view.View;
 import ru.nsu.icg.lab2.gui.view.config.JSONViewConfigParser;
 import ru.nsu.icg.lab2.gui.view.config.ViewConfig;
@@ -34,6 +35,7 @@ public class Main {
 
             final ButtonsController buttonsController = new ButtonsController(context);
             final WindowController windowController = new WindowController(context);
+            final WindowResizeController windowResizeController = new WindowResizeController(context);
             final FilesActionsController filesActionsController = new FilesActionsController(
                     context,
                     imageReader,
@@ -50,7 +52,8 @@ public class Main {
                     filesActionsController,
                     imageReader.getSupportedFormats(),
                     imageWriter.getSupportedFormats(),
-                    context
+                    context,
+                    windowResizeController
             );
 
             context.addListener(view);
