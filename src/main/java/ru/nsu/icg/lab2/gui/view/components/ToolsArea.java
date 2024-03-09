@@ -1,7 +1,11 @@
 package ru.nsu.icg.lab2.gui.view.components;
 
-import ru.nsu.icg.lab2.gui.ActionCommands;
-import ru.nsu.icg.lab2.gui.view.icons.IconsSupplier;
+import ru.nsu.icg.lab2.gui.controller.tools.HandController;
+import ru.nsu.icg.lab2.gui.controller.tools.OneToOneController;
+import ru.nsu.icg.lab2.gui.controller.tools.transformations.GreyTransformationController;
+import ru.nsu.icg.lab2.gui.controller.tools.transformations.RotationController;
+import ru.nsu.icg.lab2.gui.view.IconsSupplier;
+import ru.nsu.icg.lab2.gui.view.context.ContextImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,29 +19,43 @@ public class ToolsArea extends JPanel {
     private static final Color BUTTONS_BACKGROUND_COLOR = new Color(0.72f, 0.72f, 0.71f);
     private static final int TOOL_SIZE = 32;
 
-    public ToolsArea(IconsSupplier iconsSupplier, ActionListener actionListener) {
+    public ToolsArea(IconsSupplier iconsSupplier, ContextImpl context) {
         // TODO: вынести подсказки в конфигурационный файл?
         final List<ToolButton> toolButtonsProperties = Arrays.asList(
-                new ToolButton(iconsSupplier.getHandIcon(), ActionCommands.SELECT_HAND, "hand"),
-                new ToolButton(iconsSupplier.getDisplayIcon(), ActionCommands.SWITCH_DISPLAY_MODE, "switch display mode"),
-                new ToolButton(iconsSupplier.getRotationIcon(), ActionCommands.ROTATE, "rotate"),
-                new ToolButton(iconsSupplier.getOneToOneIcon(), ActionCommands.CHANGE_VIEW_MODE, "change view mode")
+                new ToolButton(
+                        new HandController(),
+                        iconsSupplier.getHandIcon(),
+                        "hand"
+                ),
+                new ToolButton(
+                        new OneToOneController(),
+                        iconsSupplier.getOneToOneIcon(),
+                        "change view mode"
+                ),
+                new ToolButton(
+                        new RotationController(context),
+                        iconsSupplier.getRotationIcon(),
+                        "rotate"
+                ),
+                new ToolButton(
+                        new GreyTransformationController(context),
+                        iconsSupplier.getGreyTransformationIcon(),
+                        "convert to black-and-white"
+                )
         );
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setBackground(AREA_BACKGROUND_COLOR);
 
         for (final var it : toolButtonsProperties) {
-            final String actionCommand = it.actionCommand();
-            final JButton toolButton = createToolButton(it.icon(), actionCommand, it.tip(), actionListener);
+            final JButton toolButton = createToolButton(it.icon(), it.tip(), it.actionListener());
             toolButton.setPreferredSize(new Dimension(TOOL_SIZE,TOOL_SIZE));
             add(toolButton);
         }
     }
 
-    private static void initButton(AbstractButton button, String actionCommand, String tip, ActionListener actionListener) {
+    private static void initButton(AbstractButton button, String tip, ActionListener actionListener) {
         button.setFocusPainted(false);
-        button.setActionCommand(actionCommand);
         button.setToolTipText(tip);
         button.addActionListener(actionListener);
         button.setPreferredSize(new Dimension(TOOL_SIZE, TOOL_SIZE));
@@ -46,9 +64,9 @@ public class ToolsArea extends JPanel {
         button.setBorderPainted(false);
     }
 
-    private JButton createToolButton(ImageIcon icon, String actionCommand, String tip, ActionListener actionListener) {
+    private JButton createToolButton(ImageIcon icon, String tip, ActionListener actionListener) {
         final JButton result = new JButton(icon);
-        initButton(result, actionCommand, tip, actionListener);
+        initButton(result, tip, actionListener);
         return result;
     }
 }

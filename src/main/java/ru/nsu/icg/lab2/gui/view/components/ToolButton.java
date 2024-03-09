@@ -1,6 +1,7 @@
 package ru.nsu.icg.lab2.gui.view.components;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
 
-public record ToolButton(ImageIcon icon, String actionCommand, String tip) {
+public record ToolButton(ActionListener actionListener, ImageIcon icon, String tip) {
 }

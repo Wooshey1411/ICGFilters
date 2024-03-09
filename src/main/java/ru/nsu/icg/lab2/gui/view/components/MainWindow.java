@@ -1,8 +1,8 @@
 package ru.nsu.icg.lab2.gui.view.components;
 
-import ru.nsu.icg.lab2.gui.controller.WindowResizeListener;
-import ru.nsu.icg.lab2.model.context.ViewMode;
-import ru.nsu.icg.lab2.model.context.ViewModeContext;
+import ru.nsu.icg.lab2.gui.view.WindowResizeListener;
+import ru.nsu.icg.lab2.gui.view.context.ContextImpl;
+import ru.nsu.icg.lab2.gui.view.context.ViewMode;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,8 +11,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.WindowListener;
 
 public class MainWindow extends JFrame {
-
     private static final int SCROLL_PANE_BORDER_THICKNESS = 10;
+
     public MainWindow(String name,
                       int minWidth,
                       int minHeight,
@@ -22,7 +22,7 @@ public class MainWindow extends JFrame {
                       JMenuBar menuBar,
                       JPanel toolsArea,
                       JPanel drawingArea,
-                      ViewModeContext viewModeContext,
+                      ContextImpl context,
                       WindowResizeListener windowResizeListener
     ) {
         super(name);
@@ -38,7 +38,7 @@ public class MainWindow extends JFrame {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
-                if(viewModeContext.getViewMode() == ViewMode.ON_WINDOW_SIZE) {
+                if(context.getViewMode() == ViewMode.ON_WINDOW_SIZE) {
                     scrollPane.setSize(new Dimension(holder.getWidth(),holder.getHeight()));
                     Insets scrollPaneBorder = scrollPane.getInsets();
                     drawingArea.setSize(scrollPane.getWidth()-scrollPaneBorder.right-scrollPaneBorder.left,
@@ -58,13 +58,5 @@ public class MainWindow extends JFrame {
         add(toolsArea, BorderLayout.NORTH);
         setLocationRelativeTo(null);
         pack();
-    }
-
-    public void showWindow() {
-        setVisible(true);
-    }
-
-    public void hideWindow() {
-        setVisible(false);
     }
 }

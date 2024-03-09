@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 public class ImageSavingChooser extends ImageChooser {
     public ImageSavingChooser(String[] supportedFormats, ActionListener actionListener) {
         super(actionListener);
-
         for (final var it : supportedFormats) {
             final FileFilter fileFilter = new FileSavingFilter(it);
             addChoosableFileFilter(fileFilter);

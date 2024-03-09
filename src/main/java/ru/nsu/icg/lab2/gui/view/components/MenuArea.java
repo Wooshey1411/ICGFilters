@@ -1,12 +1,10 @@
 package ru.nsu.icg.lab2.gui.view.components;
 
 import lombok.Getter;
-import ru.nsu.icg.lab2.gui.ActionCommands;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 
 @Getter
 public class MenuArea extends JPanel {
@@ -15,56 +13,70 @@ public class MenuArea extends JPanel {
     private static final Color MENU_BACKGROUND_COLOR = new Color(0.85f, 0.85f, 0.85f);
     private static final Color BUTTONS_FONT_COLOR = new Color(0.14f, 0.13f, 0.13f);
 
-    // TODO: вынести в конфигурационный файл названия меню и кнопок в них (надо ли?)
-    private static final MenuProperties[] MENUS = {
-            new MenuProperties(
-                    "File",
-                    Arrays.asList(
-                            new MenuItemProperties("Open", ActionCommands.OPEN),
-                            new MenuItemProperties("Save", ActionCommands.SAVE),
-                            new MenuItemProperties("Exit", ActionCommands.EXIT)
-                    )
-            ),
-            new MenuProperties(
-                    "Edit",
-                    Arrays.asList(
-                            new MenuItemProperties("Hand", ActionCommands.SELECT_HAND),
-                            new MenuItemProperties("Display mode", ActionCommands.SWITCH_DISPLAY_MODE),
-                            new MenuItemProperties("Rotate", ActionCommands.ROTATE),
-                            new MenuItemProperties("Filter", ActionCommands.APPLY_FILTER)
-                    )
-            ),
-            new MenuProperties(
-                    "Info",
-                    Arrays.asList(
-                            new MenuItemProperties("Help", ActionCommands.SHOW_HELP),
-                            new MenuItemProperties("About", ActionCommands.SHOW_ABOUT)
-                    )
-            ),
-    };
-
     private final JMenuBar menuBar;
 
-    public MenuArea(ActionListener actionListener) {
+    public MenuArea(
+            ActionListener openListener,
+            ActionListener saveListener,
+            ActionListener exitListener,
+            ActionListener handListener,
+            ActionListener oneToOneListener,
+            ActionListener rotationListener,
+            ActionListener greyTransformationListener,
+            ActionListener helpListener,
+            ActionListener aboutListener
+    ) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setBackground(MENU_BACKGROUND_COLOR);
 
         menuBar = new JMenuBar();
         menuBar.setBackground(MENU_BACKGROUND_COLOR);
 
-        for (final MenuProperties menuProperties : MENUS) {
-            final JMenu menu = createMenu(menuProperties.label());
+        menuBar.add(createFileMenu(
+                openListener,
+                saveListener,
+                exitListener
+        ));
+        menuBar.add(createEditMenu(
+                handListener,
+                oneToOneListener,
+                rotationListener,
+                greyTransformationListener
+        ));
+        menuBar.add(createInfoMenu(
+                helpListener,
+                aboutListener
+        ));
+    }
 
-            for (final MenuItemProperties itemProperties : menuProperties.items()) {
-                final JMenuItem item = createMenuItem(
-                        itemProperties.label(),
-                        itemProperties.actionCommand(), actionListener
-                );
-                menu.add(item);
-            }
+    private static JMenu createFileMenu(ActionListener openListener,
+                                        ActionListener saveListener,
+                                        ActionListener exitListener) {
+        final JMenu result = createMenu("File");
+        result.add(createMenuItem("Open", openListener));
+        result.add(createMenuItem("Save", saveListener));
+        result.add(createMenuItem("Exit", exitListener));
+        return result;
+    }
 
-            menuBar.add(menu);
-        }
+    private static JMenu createEditMenu(ActionListener handListener,
+                                        ActionListener oneToOneListener,
+                                        ActionListener rotationListener,
+                                        ActionListener greyTransformationListener) {
+        final JMenu result = createMenu("Edit");
+        result.add(createMenuItem("Hand", handListener));
+        result.add(createMenuItem("One-To-One", oneToOneListener));
+        result.add(createMenuItem("Rotate", rotationListener));
+        result.add(createMenuItem("Black-And-White", greyTransformationListener));
+        return result;
+    }
+
+    private static JMenu createInfoMenu(ActionListener helpListener,
+                                        ActionListener aboutListener) {
+        final JMenu result = createMenu("Info");
+        result.add(createMenuItem("Help", helpListener));
+        result.add(createMenuItem("About", aboutListener));
+        return result;
     }
 
     private static JMenu createMenu(String label) {
@@ -75,17 +87,16 @@ public class MenuArea extends JPanel {
         return result;
     }
 
-    private static JMenuItem createMenuItem(String label, String actionCommand, ActionListener actionListener) {
+    private static JMenuItem createMenuItem(String label, ActionListener actionListener) {
         final JMenuItem result = new JMenuItem(label);
-        initButton(result, actionCommand, actionListener);
+        initButton(result, actionListener);
         return result;
     }
 
-    private static void initButton(AbstractButton button, String actionCommand, ActionListener actionListener) {
+    private static void initButton(AbstractButton button, ActionListener actionListener) {
         button.setBorderPainted(false);
         button.setFont(FONT);
         button.setForeground(MENU_BACKGROUND_COLOR);
         button.addActionListener(actionListener);
-        button.setActionCommand(actionCommand);
     }
 }
