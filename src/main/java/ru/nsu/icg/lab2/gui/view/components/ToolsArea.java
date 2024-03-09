@@ -5,7 +5,7 @@ import ru.nsu.icg.lab2.gui.controller.tools.OneToOneController;
 import ru.nsu.icg.lab2.gui.controller.tools.transformations.GreyTransformationController;
 import ru.nsu.icg.lab2.gui.controller.tools.transformations.RotationController;
 import ru.nsu.icg.lab2.gui.view.IconsSupplier;
-import ru.nsu.icg.lab2.gui.view.context.ContextImpl;
+import ru.nsu.icg.lab2.gui.view.context.Context;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +19,7 @@ public class ToolsArea extends JPanel {
     private static final Color BUTTONS_BACKGROUND_COLOR = new Color(0.72f, 0.72f, 0.71f);
     private static final int TOOL_SIZE = 32;
 
-    public ToolsArea(IconsSupplier iconsSupplier, ContextImpl context) {
+    public ToolsArea(IconsSupplier iconsSupplier, Context context) {
         // TODO: вынести подсказки в конфигурационный файл?
         final List<ToolButton> toolButtonsProperties = Arrays.asList(
                 new ToolButton(

@@ -2,12 +2,12 @@ package ru.nsu.icg.lab2.gui.view.context;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.nsu.icg.lab2.gui.view.BufferedImageImpl;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContextImpl {
+public class Context {
     private final List<ContextImageListener> imageListeners = new ArrayList<>();
 
     @Getter
@@ -16,10 +16,22 @@ public class ContextImpl {
 
     @Getter
     @Setter
-    private BufferedImage originalImage;
+    private BufferedImageImpl originalImage;
 
     @Getter
-    private BufferedImage image;
+    @Setter
+    private int drawingAreaWidth;
+
+    @Getter
+    @Setter
+    private int drawingAreaHeight;
+
+    @Getter
+    private BufferedImageImpl image;
+
+    public Context(ViewMode viewMode) {
+        this.viewMode = viewMode;
+    }
 
     public void addImageListener(ContextImageListener listener) {
         imageListeners.add(listener);
@@ -29,11 +41,13 @@ public class ContextImpl {
         imageListeners.remove(listener);
     }
 
-    public void setImage(BufferedImage image) {
+    public void setImage(BufferedImageImpl image) {
         this.image = image;
 
+        System.out.println(image.bufferedImage());
+
         for (final var it : imageListeners) {
-            it.onImageChange(image);
+            it.onImageChange(image.bufferedImage());
         }
     }
 }

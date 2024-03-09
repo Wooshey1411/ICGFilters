@@ -1,7 +1,7 @@
 package ru.nsu.icg.lab2.gui.view.components;
 
 import ru.nsu.icg.lab2.gui.view.WindowResizeListener;
-import ru.nsu.icg.lab2.gui.view.context.ContextImpl;
+import ru.nsu.icg.lab2.gui.view.context.Context;
 import ru.nsu.icg.lab2.gui.view.context.ViewMode;
 
 import javax.swing.*;
@@ -22,7 +22,7 @@ public class MainWindow extends JFrame {
                       JMenuBar menuBar,
                       JPanel toolsArea,
                       JPanel drawingArea,
-                      ContextImpl context,
+                      Context context,
                       WindowResizeListener windowResizeListener
     ) {
         super(name);

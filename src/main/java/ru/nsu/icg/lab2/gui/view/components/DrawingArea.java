@@ -19,7 +19,7 @@ public class DrawingArea extends JPanel {
     }
 
     public void resizeSoftly(int width, int height) {
-        setPreferredSize(new Dimension(width+ getInsets().left+getInsets().right, height+getInsets().top+ getInsets().bottom));
+        setPreferredSize(new Dimension(width + getInsets().left + getInsets().right, height + getInsets().top + getInsets().bottom));
     }
 
     @Override

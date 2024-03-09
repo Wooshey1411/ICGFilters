@@ -1,16 +1,16 @@
 package ru.nsu.icg.lab2.gui.controller.tools.transformations;
 
-import ru.nsu.icg.lab2.gui.view.context.ContextImpl;
+import ru.nsu.icg.lab2.gui.view.context.Context;
 import ru.nsu.icg.lab2.model.transformations.Watercoloring;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class WatercoloringController implements ActionListener {
-    private final ContextImpl context;
+    private final Context context;
     private final Watercoloring watercoloring;
 
-    public WatercoloringController(ContextImpl context) {
+    public WatercoloringController(Context context) {
         this.context = context;
         this.watercoloring = new Watercoloring();
     }
