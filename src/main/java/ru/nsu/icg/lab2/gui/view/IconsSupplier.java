@@ -11,12 +11,14 @@ public class IconsSupplier {
     private final ImageIcon oneToOneIcon;
     private final ImageIcon rotationIcon;
     private final ImageIcon greyTransformationIcon;
+    private final ImageIcon gammaCorrectionIcon;
 
     public IconsSupplier() {
         handIcon = loadIcon("hand-icon.png");
         oneToOneIcon = loadIcon("one-to-one-icon.png");
         rotationIcon = loadIcon("rotation-icon.png");
         greyTransformationIcon = loadIcon("grey-transformation-icon.png");
+        gammaCorrectionIcon = loadIcon("gamma-icon.png");
     }
 
     private static ImageIcon loadIcon(String path) {

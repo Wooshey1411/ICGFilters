@@ -3,12 +3,13 @@ package ru.nsu.icg.lab2.gui.view.context;
 import lombok.Getter;
 import lombok.Setter;
 import ru.nsu.icg.lab2.gui.view.BufferedImageImpl;
+import ru.nsu.icg.lab2.model.transformations.Transformation;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Context {
-    private final List<ContextImageListener> imageListeners = new ArrayList<>();
+    private final List<ContextListener> listeners = new ArrayList<>();
 
     @Getter
     @Setter
@@ -29,25 +30,34 @@ public class Context {
     @Getter
     private BufferedImageImpl image;
 
+    @Getter
+    private Transformation transformation;
+
     public Context(ViewMode viewMode) {
         this.viewMode = viewMode;
     }
 
-    public void addImageListener(ContextImageListener listener) {
-        imageListeners.add(listener);
+    public void addListener(ContextListener listener) {
+        listeners.add(listener);
     }
 
-    public void removeImageListener(ContextImageListener listener) {
-        imageListeners.remove(listener);
+    public void removeListener(ContextListener listener) {
+        listeners.remove(listener);
     }
 
     public void setImage(BufferedImageImpl image) {
         this.image = image;
 
-        System.out.println(image.bufferedImage());
+        for (final var it : listeners) {
+            it.onImageChange(this);
+        }
+    }
 
-        for (final var it : imageListeners) {
-            it.onImageChange(image.bufferedImage());
+    public void setTransformation(Transformation transformation) {
+        this.transformation = transformation;
+
+        for (final var it : listeners) {
+            it.onTransformationChange(this);
         }
     }
 }

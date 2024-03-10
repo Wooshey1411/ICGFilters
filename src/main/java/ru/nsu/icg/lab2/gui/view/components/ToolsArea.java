@@ -1,17 +1,10 @@
 package ru.nsu.icg.lab2.gui.view.components;
 
-import ru.nsu.icg.lab2.gui.controller.tools.HandController;
-import ru.nsu.icg.lab2.gui.controller.tools.OneToOneController;
-import ru.nsu.icg.lab2.gui.controller.tools.transformations.GreyTransformationController;
-import ru.nsu.icg.lab2.gui.controller.tools.transformations.RotationController;
 import ru.nsu.icg.lab2.gui.view.IconsSupplier;
-import ru.nsu.icg.lab2.gui.view.context.Context;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
-import java.util.List;
 
 public class ToolsArea extends JPanel {
     // TODO: вынести это в конфигурационный файл
@@ -19,39 +12,21 @@ public class ToolsArea extends JPanel {
     private static final Color BUTTONS_BACKGROUND_COLOR = new Color(0.72f, 0.72f, 0.71f);
     private static final int TOOL_SIZE = 32;
 
-    public ToolsArea(IconsSupplier iconsSupplier, Context context) {
-        // TODO: вынести подсказки в конфигурационный файл?
-        final List<ToolButton> toolButtonsProperties = Arrays.asList(
-                new ToolButton(
-                        new HandController(),
-                        iconsSupplier.getHandIcon(),
-                        "hand"
-                ),
-                new ToolButton(
-                        new OneToOneController(),
-                        iconsSupplier.getOneToOneIcon(),
-                        "change view mode"
-                ),
-                new ToolButton(
-                        new RotationController(context),
-                        iconsSupplier.getRotationIcon(),
-                        "rotate"
-                ),
-                new ToolButton(
-                        new GreyTransformationController(context),
-                        iconsSupplier.getGreyTransformationIcon(),
-                        "convert to black-and-white"
-                )
-        );
-
+    public ToolsArea(IconsSupplier iconsSupplier,
+                     ActionListener handListener,
+                     ActionListener oneToOneListener,
+                     ActionListener rotationListener,
+                     ActionListener greyTransformationListener,
+                     ActionListener gammaCorrectionListener
+    ) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setBackground(AREA_BACKGROUND_COLOR);
 
-        for (final var it : toolButtonsProperties) {
-            final JButton toolButton = createToolButton(it.icon(), it.tip(), it.actionListener());
-            toolButton.setPreferredSize(new Dimension(TOOL_SIZE,TOOL_SIZE));
-            add(toolButton);
-        }
+        add(createToolButton(iconsSupplier.getHandIcon(), "hand", handListener));
+        add(createToolButton(iconsSupplier.getOneToOneIcon(), "1:1", oneToOneListener));
+        add(createToolButton(iconsSupplier.getRotationIcon(), "rotate", rotationListener));
+        add(createToolButton(iconsSupplier.getGreyTransformationIcon(), "black-white", greyTransformationListener));
+        add(createToolButton(iconsSupplier.getGammaCorrectionIcon(), "gamma correction", gammaCorrectionListener));
     }
 
     private static void initButton(AbstractButton button, String tip, ActionListener actionListener) {

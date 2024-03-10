@@ -17,6 +17,6 @@ public class EmbossingController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-
+        context.setTransformation(embossing);
     }
 }

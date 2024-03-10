@@ -31,6 +31,10 @@ public class OpenController implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         final int code = fileChooser.showOpenDialog(null);
 
+        if (code == JFileChooser.CANCEL_OPTION) {
+            return;
+        }
+
         if (code == JFileChooser.ERROR_OPTION) {
             view.showError("Cannot open file");
             return;

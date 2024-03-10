@@ -23,6 +23,7 @@ public class MenuArea extends JPanel {
             ActionListener oneToOneListener,
             ActionListener rotationListener,
             ActionListener greyTransformationListener,
+            ActionListener gammaCorrectionListener,
             ActionListener helpListener,
             ActionListener aboutListener
     ) {
@@ -41,7 +42,8 @@ public class MenuArea extends JPanel {
                 handListener,
                 oneToOneListener,
                 rotationListener,
-                greyTransformationListener
+                greyTransformationListener,
+                gammaCorrectionListener
         ));
         menuBar.add(createInfoMenu(
                 helpListener,
@@ -62,12 +64,14 @@ public class MenuArea extends JPanel {
     private static JMenu createEditMenu(ActionListener handListener,
                                         ActionListener oneToOneListener,
                                         ActionListener rotationListener,
-                                        ActionListener greyTransformationListener) {
+                                        ActionListener greyTransformationListener,
+                                        ActionListener gammaCorrectionListener) {
         final JMenu result = createMenu("Edit");
         result.add(createMenuItem("Hand", handListener));
         result.add(createMenuItem("One-To-One", oneToOneListener));
         result.add(createMenuItem("Rotate", rotationListener));
         result.add(createMenuItem("Black-And-White", greyTransformationListener));
+        result.add(createMenuItem("Gamma correction", gammaCorrectionListener));
         return result;
     }
 

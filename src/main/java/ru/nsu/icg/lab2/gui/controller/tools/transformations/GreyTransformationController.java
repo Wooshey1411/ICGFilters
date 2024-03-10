@@ -17,7 +17,6 @@ public class GreyTransformationController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        greyTransformation.apply(context.getOriginalImage(), context.getImage());
-        System.out.println(context.getImage().bufferedImage());
+        context.setTransformation(greyTransformation);
     }
 }

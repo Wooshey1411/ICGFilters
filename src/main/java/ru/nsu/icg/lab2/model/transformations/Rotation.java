@@ -9,6 +9,6 @@ public class Rotation implements Transformation {
 
     @Override
     public void apply(ImageInterface oldImage, ImageInterface newImage) {
-
+        // TODO:
     }
 }

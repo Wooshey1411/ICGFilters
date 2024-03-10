@@ -5,15 +5,14 @@ import ru.nsu.icg.lab2.gui.controller.WindowResizeController;
 import ru.nsu.icg.lab2.gui.controller.menu.*;
 import ru.nsu.icg.lab2.gui.controller.tools.HandController;
 import ru.nsu.icg.lab2.gui.controller.tools.OneToOneController;
+import ru.nsu.icg.lab2.gui.controller.tools.transformations.GammaCorrectionController;
 import ru.nsu.icg.lab2.gui.controller.tools.transformations.GreyTransformationController;
 import ru.nsu.icg.lab2.gui.controller.tools.transformations.RotationController;
 import ru.nsu.icg.lab2.gui.view.components.MainWindow;
 import ru.nsu.icg.lab2.gui.view.components.MenuArea;
 import ru.nsu.icg.lab2.gui.view.components.ToolsArea;
 import ru.nsu.icg.lab2.gui.view.components.DrawingArea;
-import ru.nsu.icg.lab2.gui.view.context.ContextImageListener;
-import ru.nsu.icg.lab2.gui.view.files.ImageOpeningChooser;
-import ru.nsu.icg.lab2.gui.view.files.ImageSavingChooser;
+import ru.nsu.icg.lab2.gui.view.context.ContextListener;
 import ru.nsu.icg.lab2.gui.view.imageio.ImageReader;
 import ru.nsu.icg.lab2.gui.view.imageio.ImageWriter;
 import ru.nsu.icg.lab2.model.config.ViewConfig;
@@ -23,9 +22,8 @@ import ru.nsu.icg.lab2.gui.view.context.ViewMode;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
-public class ViewImpl implements View, ContextImageListener {
+public class ViewImpl implements View, ContextListener {
     private final Context context;
     private final MenuArea menuArea;
     private final ToolsArea toolsArea;
@@ -36,7 +34,7 @@ public class ViewImpl implements View, ContextImageListener {
         FlatArcDarkOrangeIJTheme.setup();
 
         this.context = context;
-        this.context.addImageListener(this);
+        this.context.addListener(this);
         final IconsSupplier iconsSupplier = new IconsSupplier();
 
         final OpenController openController = new OpenController(context, this, imageReader);
@@ -46,6 +44,7 @@ public class ViewImpl implements View, ContextImageListener {
         final OneToOneController oneToOneController = new OneToOneController();
         final RotationController rotationController = new RotationController(context);
         final GreyTransformationController greyTransformationController = new GreyTransformationController(context);
+        final GammaCorrectionController gammaCorrectionController = new GammaCorrectionController(context, this);
         final HelpController helpController = new HelpController(this);
         final AboutController aboutController = new AboutController(this);
         final WindowResizeController windowResizeController = new WindowResizeController(context, this);
@@ -60,11 +59,19 @@ public class ViewImpl implements View, ContextImageListener {
                 oneToOneController,
                 rotationController,
                 greyTransformationController,
+                gammaCorrectionController,
                 helpController,
                 aboutController
         );
 
-        toolsArea = new ToolsArea(iconsSupplier, context);
+        toolsArea = new ToolsArea(
+                iconsSupplier,
+                handController,
+                oneToOneController,
+                rotationController,
+                greyTransformationController,
+                gammaCorrectionController
+        );
 
         mainWindow = new MainWindow(
                 viewConfig.windowName(),
@@ -137,6 +144,22 @@ public class ViewImpl implements View, ContextImageListener {
     }
 
     @Override
+    public void repaint() {
+        final BufferedImageImpl image = context.getImage();
+
+        if(context.getViewMode() == ViewMode.ONE_TO_ONE) {
+            drawingArea.resizeSoftly(image.getWidth(), image.getHeight());
+            drawingArea.setImage(image.bufferedImage());
+            drawingArea.repaint();
+            drawingArea.revalidate();
+            mainWindow.pack();
+        } else {
+            resize();
+        }
+        // TODO: Во время установки изображения смотрим на режим отображения и выбираем соотв. Сделать лучше как-то?
+    }
+
+    @Override
     public void showHelp() {
         JOptionPane.showMessageDialog(
                 mainWindow,
@@ -157,21 +180,13 @@ public class ViewImpl implements View, ContextImageListener {
     }
 
     @Override
-    public void onImageChange(BufferedImage bufferedImage) {
-        final BufferedImageImpl image = context.getImage();
-        System.out.println(image.bufferedImage());
+    public void onImageChange(Context context) {
+        repaint();
+    }
 
-        if(context.getViewMode() == ViewMode.ONE_TO_ONE) {
-            System.out.println("1");
-            drawingArea.resizeSoftly(image.getWidth(), image.getHeight());
-            drawingArea.setImage(image.bufferedImage());
-            drawingArea.repaint();
-            drawingArea.revalidate();
-            mainWindow.pack();
-        } else {
-            System.out.println("2");
-            resize();
-        }
-        // TODO: Во время установки изображения смотрим на режим отображения и выбираем соотв. Сделать лучше как-то?
+    @Override
+    public void onTransformationChange(Context context) {
+        context.getTransformation().apply(context.getOriginalImage(), context.getImage());
+        repaint();
     }
 }

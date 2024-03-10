@@ -28,6 +28,10 @@ public class SaveController implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         final int code = fileChooser.showSaveDialog(null);
 
+        if (code == JFileChooser.CANCEL_OPTION) {
+            return;
+        }
+
         if (code == JFileChooser.ERROR_OPTION) {
             view.showError("Cannot save file");
             return;

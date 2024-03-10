@@ -17,6 +17,6 @@ public class DeblurController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-
+        context.setTransformation(deblur);
     }
 }
