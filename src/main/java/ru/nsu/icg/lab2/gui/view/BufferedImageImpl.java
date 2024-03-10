@@ -22,7 +22,7 @@ public record BufferedImageImpl(BufferedImage bufferedImage) implements ImageInt
 
     @Override
     public int[] getRGB(int[] rgbArray) {
-        return bufferedImage.getRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), rgbArray, 0, 1);
+        return bufferedImage.getRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), rgbArray, 0, bufferedImage.getWidth());
     }
 
     @Override
@@ -37,7 +37,7 @@ public record BufferedImageImpl(BufferedImage bufferedImage) implements ImageInt
 
     @Override
     public void setRGB(int[] rgbArray) {
-        bufferedImage.setRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), rgbArray, 0, 1);
+        bufferedImage.setRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), rgbArray, 0, bufferedImage.getWidth());
     }
 
     @Override
