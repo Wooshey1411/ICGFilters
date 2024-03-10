@@ -52,7 +52,7 @@ public class GammaCorrectionController implements ActionListener {
         while (true) {
             dialogWindowController.reset(gammaCorrection.getGamma());
 
-            final boolean ok = view.showConfirmationDialog("Rotation", panel);
+            final boolean ok = view.showConfirmationDialog("Gamma", panel);
             if (!ok) {
                 return;
             }
