@@ -57,6 +57,10 @@ public class TextFieldSliderController implements ChangeListener, DocumentListen
         updateValueOfTextArea();
     }
 
+    public void reset(int value) {
+        reset((double) value);
+    }
+
     public int getIntValue() {
         return (int) Math.round(value);
     }
@@ -105,7 +109,6 @@ public class TextFieldSliderController implements ChangeListener, DocumentListen
 
     private void readValueFromString(String string) {
         try {
-            System.out.printf("Reading value from string: \"%s\"%n", string);
             final double tmp = fromTextField.apply(string);
             hasError = tmp < minValue || tmp > maxValue;
 
@@ -115,9 +118,7 @@ public class TextFieldSliderController implements ChangeListener, DocumentListen
                 // We cannot just updateValueOfSlider() because we get exception "Attempt to mutate in notification:
                 SwingUtilities.invokeLater(this::updateValueOfSlider);
             }
-            System.out.println("_________________________");
         } catch (Exception exception) {
-            System.out.printf("Exception: %s%n", exception.getLocalizedMessage());
             hasError = true;
         }
     }
@@ -128,7 +129,6 @@ public class TextFieldSliderController implements ChangeListener, DocumentListen
 
     private void updateValueOfTextArea() {
         textField.setText(toTextFieldValue.apply(value));
-        System.out.printf("Value \"%s\" is set%n", toTextFieldValue.apply(value));
     }
 
     private void updateValue(double value) {

@@ -1,5 +1,7 @@
 package ru.nsu.icg.lab2.gui.view.imageio;
 
+import ru.nsu.icg.lab2.gui.view.ImageReader;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;

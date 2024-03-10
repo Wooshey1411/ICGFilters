@@ -1,10 +1,11 @@
 package ru.nsu.icg.lab2.model.transformations;
 
 import ru.nsu.icg.lab2.model.ImageInterface;
+import ru.nsu.icg.lab2.model.Transformation;
 
 import java.awt.*;
 
-public class GreyTransformation implements Transformation {
+public class BlackAndWhite implements Transformation {
     @Override
     public void apply(ImageInterface oldImage, ImageInterface newImage) {
         // TODO: сделать нормальную реализацию

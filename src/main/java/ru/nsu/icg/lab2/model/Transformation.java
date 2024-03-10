@@ -1,6 +1,4 @@
-package ru.nsu.icg.lab2.model.transformations;
-
-import ru.nsu.icg.lab2.model.ImageInterface;
+package ru.nsu.icg.lab2.model;
 
 public interface Transformation {
     void apply(ImageInterface oldImage, ImageInterface newImage);

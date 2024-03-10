@@ -1,6 +1,7 @@
 package ru.nsu.icg.lab2.model.transformations;
 
 import ru.nsu.icg.lab2.model.ImageInterface;
+import ru.nsu.icg.lab2.model.Transformation;
 
 public class Inversion implements Transformation {
     @Override

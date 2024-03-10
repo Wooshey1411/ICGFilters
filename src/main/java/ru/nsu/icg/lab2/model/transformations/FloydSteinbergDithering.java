@@ -2,6 +2,7 @@ package ru.nsu.icg.lab2.model.transformations;
 
 import lombok.Data;
 import ru.nsu.icg.lab2.model.ImageInterface;
+import ru.nsu.icg.lab2.model.Transformation;
 
 @Data
 public class FloydSteinbergDithering implements Transformation {

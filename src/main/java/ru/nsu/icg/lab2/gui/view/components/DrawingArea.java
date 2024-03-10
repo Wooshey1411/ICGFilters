@@ -14,12 +14,19 @@ public class DrawingArea extends JPanel {
     private static final int BORDER_SPACING = 3;
 
     public DrawingArea() {
-        setBorder(BorderFactory.createDashedBorder(Color.GREEN,BORDER_THICKNESS,  BORDER_LENGTH,BORDER_SPACING,false));
+        setBorder(BorderFactory.createDashedBorder(
+                Color.GREEN,BORDER_THICKNESS,
+                BORDER_LENGTH,BORDER_SPACING,
+                false
+        ));
         setBackground(Color.WHITE);
     }
 
     public void resizeSoftly(int width, int height) {
-        setPreferredSize(new Dimension(width + getInsets().left + getInsets().right, height + getInsets().top + getInsets().bottom));
+        setPreferredSize(new Dimension(
+                width + getInsets().left + getInsets().right,
+                height + getInsets().top + getInsets().bottom
+        ));
     }
 
     @Override

@@ -1,22 +1,22 @@
 package ru.nsu.icg.lab2.gui.controller.tools.transformations;
 
 import ru.nsu.icg.lab2.gui.view.Context;
-import ru.nsu.icg.lab2.model.transformations.Inversion;
+import ru.nsu.icg.lab2.model.transformations.EdgeDetection;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class InversionController implements ActionListener {
+public class EdgeDetectionController implements ActionListener {
     private final Context context;
-    private final Inversion inversion;
+    private final EdgeDetection edgeDetection;
 
-    public InversionController(Context context) {
+    public EdgeDetectionController(Context context) {
         this.context = context;
-        this.inversion = new Inversion();
+        this.edgeDetection = new EdgeDetection();
     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        context.setTransformation(inversion);
+        context.setTransformation(edgeDetection);
     }
 }

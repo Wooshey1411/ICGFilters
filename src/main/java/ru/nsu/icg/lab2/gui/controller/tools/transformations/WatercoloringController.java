@@ -1,6 +1,6 @@
 package ru.nsu.icg.lab2.gui.controller.tools.transformations;
 
-import ru.nsu.icg.lab2.gui.view.context.Context;
+import ru.nsu.icg.lab2.gui.view.Context;
 import ru.nsu.icg.lab2.model.transformations.Watercoloring;
 
 import java.awt.event.ActionEvent;

@@ -1,23 +1,17 @@
-package ru.nsu.icg.lab2.gui.view;
+package ru.nsu.icg.lab2.gui.view.view;
 
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
 import ru.nsu.icg.lab2.gui.controller.WindowResizeController;
 import ru.nsu.icg.lab2.gui.controller.menu.*;
+import ru.nsu.icg.lab2.gui.controller.tools.UndoController;
 import ru.nsu.icg.lab2.gui.controller.tools.HandController;
 import ru.nsu.icg.lab2.gui.controller.tools.OneToOneController;
-import ru.nsu.icg.lab2.gui.controller.tools.transformations.GammaCorrectionController;
-import ru.nsu.icg.lab2.gui.controller.tools.transformations.GreyTransformationController;
-import ru.nsu.icg.lab2.gui.controller.tools.transformations.RotationController;
-import ru.nsu.icg.lab2.gui.view.components.MainWindow;
-import ru.nsu.icg.lab2.gui.view.components.MenuArea;
-import ru.nsu.icg.lab2.gui.view.components.ToolsArea;
-import ru.nsu.icg.lab2.gui.view.components.DrawingArea;
-import ru.nsu.icg.lab2.gui.view.context.ContextListener;
-import ru.nsu.icg.lab2.gui.view.imageio.ImageReader;
-import ru.nsu.icg.lab2.gui.view.imageio.ImageWriter;
-import ru.nsu.icg.lab2.model.config.ViewConfig;
-import ru.nsu.icg.lab2.gui.view.context.Context;
-import ru.nsu.icg.lab2.gui.view.context.ViewMode;
+import ru.nsu.icg.lab2.gui.controller.tools.WindowSizeController;
+import ru.nsu.icg.lab2.gui.controller.tools.transformations.*;
+import ru.nsu.icg.lab2.gui.view.*;
+import ru.nsu.icg.lab2.gui.view.components.*;
+import ru.nsu.icg.lab2.model.ViewConfig;
+import ru.nsu.icg.lab2.gui.view.context.ContextImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,8 +19,6 @@ import java.awt.image.BufferedImage;
 
 public class ViewImpl implements View, ContextListener {
     private final Context context;
-    private final MenuArea menuArea;
-    private final ToolsArea toolsArea;
     private final DrawingArea drawingArea;
     private final MainWindow mainWindow;
 
@@ -34,43 +26,77 @@ public class ViewImpl implements View, ContextListener {
         FlatArcDarkOrangeIJTheme.setup();
 
         this.context = context;
-        this.context.addListener(this);
         final IconsSupplier iconsSupplier = new IconsSupplier();
 
         final OpenController openController = new OpenController(context, this, imageReader);
         final SaveController saveController = new SaveController(context, this, imageWriter);
         final ExitController exitController = new ExitController(this);
+
         final HandController handController = new HandController();
+        final UndoController undoController = new UndoController(context);
         final OneToOneController oneToOneController = new OneToOneController();
-        final RotationController rotationController = new RotationController(context);
-        final GreyTransformationController greyTransformationController = new GreyTransformationController(context);
+        final WindowSizeController windowSizeController = new WindowSizeController();
+        final RotationController rotationController = new RotationController(context, this);
+        final BlackAndWhiteController blackAndWhiteController = new BlackAndWhiteController(context);
+        final InversionController inversionController = new InversionController(context);
         final GammaCorrectionController gammaCorrectionController = new GammaCorrectionController(context, this);
+        final SharpeningController sharpeningController = new SharpeningController(context);
+        final EdgeDetectionController edgeDetectionController = new EdgeDetectionController(context);
+        final EmbossingController embossingController = new EmbossingController(context);
+        final BlurController blurController = new BlurController(context, this);
+        final WatercoloringController watercoloringController = new WatercoloringController(context);
+        final FloydSteinbergDitheringController floydSteinbergDitheringController = new FloydSteinbergDitheringController(context, this);
+        final OrderedDitheringController orderedDitheringController = new OrderedDitheringController(context, this);
+        final WaveFilterController waveFilterController = new WaveFilterController(context);
+
         final HelpController helpController = new HelpController(this);
         final AboutController aboutController = new AboutController(this);
         final WindowResizeController windowResizeController = new WindowResizeController(context, this);
 
         drawingArea = new DrawingArea();
 
-        menuArea = new MenuArea(
+        final MenuArea menuArea = new MenuArea(
                 openController,
                 saveController,
                 exitController,
                 handController,
+                undoController,
                 oneToOneController,
+                windowSizeController,
                 rotationController,
-                greyTransformationController,
+                blackAndWhiteController,
+                inversionController,
                 gammaCorrectionController,
+                sharpeningController,
+                edgeDetectionController,
+                embossingController,
+                blurController,
+                watercoloringController,
+                floydSteinbergDitheringController,
+                orderedDitheringController,
+                waveFilterController,
                 helpController,
                 aboutController
         );
 
-        toolsArea = new ToolsArea(
+        final ToolsArea toolsArea = new ToolsArea(
                 iconsSupplier,
                 handController,
+                undoController,
                 oneToOneController,
+                windowSizeController,
                 rotationController,
-                greyTransformationController,
-                gammaCorrectionController
+                blackAndWhiteController,
+                inversionController,
+                gammaCorrectionController,
+                sharpeningController,
+                edgeDetectionController,
+                embossingController,
+                blurController,
+                watercoloringController,
+                floydSteinbergDitheringController,
+                orderedDitheringController,
+                waveFilterController
         );
 
         mainWindow = new MainWindow(
@@ -86,7 +112,9 @@ public class ViewImpl implements View, ContextListener {
                 context,
                 windowResizeController
         );
-
+    }
+    @Override
+    public void show() {
         mainWindow.setVisible(true);
     }
 
@@ -180,12 +208,27 @@ public class ViewImpl implements View, ContextListener {
     }
 
     @Override
-    public void onImageChange(Context context) {
+    public boolean showConfirmationDialog(String title, JPanel content) {
+        return JOptionPane.showConfirmDialog(mainWindow,
+                content,
+                title,
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        ) == JOptionPane.OK_OPTION;
+    }
+
+    @Override
+    public JFrame getFrame() {
+        return mainWindow;
+    }
+
+    @Override
+    public void onImageChange(ContextImpl context) {
         repaint();
     }
 
     @Override
-    public void onTransformationChange(Context context) {
+    public void onTransformationChange(ContextImpl context) {
         context.getTransformation().apply(context.getOriginalImage(), context.getImage());
         repaint();
     }

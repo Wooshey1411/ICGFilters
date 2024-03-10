@@ -2,6 +2,8 @@ package ru.nsu.icg.lab2.model.config;
 
 import com.google.gson.Gson;
 import ru.nsu.icg.lab2.gui.Main;
+import ru.nsu.icg.lab2.model.ViewConfig;
+import ru.nsu.icg.lab2.model.ViewConfigParser;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

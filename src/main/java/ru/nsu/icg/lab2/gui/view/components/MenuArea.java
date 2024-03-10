@@ -20,10 +20,21 @@ public class MenuArea extends JPanel {
             ActionListener saveListener,
             ActionListener exitListener,
             ActionListener handListener,
+            ActionListener undoListener,
             ActionListener oneToOneListener,
+            ActionListener windowSizeListener,
             ActionListener rotationListener,
-            ActionListener greyTransformationListener,
+            ActionListener blackAndWhiteListener,
+            ActionListener inversionListener,
             ActionListener gammaCorrectionListener,
+            ActionListener sharpeningListener,
+            ActionListener edgeDetectionListener,
+            ActionListener embossingListener,
+            ActionListener blurListener,
+            ActionListener watercoloringListener,
+            ActionListener floydSteinbergDitheringListener,
+            ActionListener orderedDitheringListener,
+            ActionListener waveFilterListener,
             ActionListener helpListener,
             ActionListener aboutListener
     ) {
@@ -40,10 +51,21 @@ public class MenuArea extends JPanel {
         ));
         menuBar.add(createEditMenu(
                 handListener,
+                undoListener,
                 oneToOneListener,
+                windowSizeListener,
                 rotationListener,
-                greyTransformationListener,
-                gammaCorrectionListener
+                blackAndWhiteListener,
+                inversionListener,
+                gammaCorrectionListener,
+                sharpeningListener,
+                edgeDetectionListener,
+                embossingListener,
+                blurListener,
+                watercoloringListener,
+                floydSteinbergDitheringListener,
+                orderedDitheringListener,
+                waveFilterListener
         ));
         menuBar.add(createInfoMenu(
                 helpListener,
@@ -62,16 +84,38 @@ public class MenuArea extends JPanel {
     }
 
     private static JMenu createEditMenu(ActionListener handListener,
+                                        ActionListener undoListener,
                                         ActionListener oneToOneListener,
+                                        ActionListener windowSizeListener,
                                         ActionListener rotationListener,
-                                        ActionListener greyTransformationListener,
-                                        ActionListener gammaCorrectionListener) {
+                                        ActionListener blackAndWhiteListener,
+                                        ActionListener inversionListener,
+                                        ActionListener gammaCorrectionListener,
+                                        ActionListener sharpeningListener,
+                                        ActionListener edgeDetectionListener,
+                                        ActionListener embossingListener,
+                                        ActionListener blurListener,
+                                        ActionListener watercoloringListener,
+                                        ActionListener floydSteinbergDitheringListener,
+                                        ActionListener orderedDitheringListener,
+                                        ActionListener waveFilterListener) {
         final JMenu result = createMenu("Edit");
         result.add(createMenuItem("Hand", handListener));
+        result.add(createMenuItem("Undo", undoListener));
         result.add(createMenuItem("One-To-One", oneToOneListener));
-        result.add(createMenuItem("Rotate", rotationListener));
-        result.add(createMenuItem("Black-And-White", greyTransformationListener));
+        result.add(createMenuItem("To window size", windowSizeListener));
+        result.add(createMenuItem("Rotation", rotationListener));
+        result.add(createMenuItem("Black-And-White", blackAndWhiteListener));
+        result.add(createMenuItem("Inversion", inversionListener));
         result.add(createMenuItem("Gamma correction", gammaCorrectionListener));
+        result.add(createMenuItem("Sharpening", sharpeningListener));
+        result.add(createMenuItem("Edge detection", edgeDetectionListener));
+        result.add(createMenuItem("Embossing", embossingListener));
+        result.add(createMenuItem("Blur", blurListener));
+        result.add(createMenuItem("Watercoloring", watercoloringListener));
+        result.add(createMenuItem("Floyd-Steinberg dithering", floydSteinbergDitheringListener));
+        result.add(createMenuItem("Ordered dithering", orderedDitheringListener));
+        result.add(createMenuItem("Wave filter", waveFilterListener));
         return result;
     }
 

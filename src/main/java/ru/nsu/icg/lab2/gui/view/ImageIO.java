@@ -1,4 +1,4 @@
-package ru.nsu.icg.lab2.gui.view.imageio;
+package ru.nsu.icg.lab2.gui.view;
 
 public interface ImageIO {
     String[] getSupportedFormats();

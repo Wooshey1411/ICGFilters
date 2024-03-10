@@ -2,20 +2,20 @@ package ru.nsu.icg.lab2.gui.controller.tools.transformations;
 
 import ru.nsu.icg.lab2.gui.view.Context;
 import ru.nsu.icg.lab2.gui.view.View;
-import ru.nsu.icg.lab2.model.transformations.OrderedDithering;
+import ru.nsu.icg.lab2.model.transformations.Blur;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class OrderedDitheringController implements ActionListener {
+public class BlurController implements ActionListener {
     private final Context context;
     private final View view;
-    private final OrderedDithering orderedDithering;
+    private final Blur blur;
 
-    public OrderedDitheringController(Context context, View view) {
+    public BlurController(Context context, View view) {
         this.context = context;
         this.view = view;
-        this.orderedDithering = new OrderedDithering();
+        this.blur = new Blur();
     }
 
     @Override

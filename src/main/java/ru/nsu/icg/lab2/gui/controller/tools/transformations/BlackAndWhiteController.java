@@ -1,22 +1,22 @@
 package ru.nsu.icg.lab2.gui.controller.tools.transformations;
 
 import ru.nsu.icg.lab2.gui.view.Context;
-import ru.nsu.icg.lab2.model.transformations.Inversion;
+import ru.nsu.icg.lab2.model.transformations.BlackAndWhite;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class InversionController implements ActionListener {
+public class BlackAndWhiteController implements ActionListener {
     private final Context context;
-    private final Inversion inversion;
+    private final BlackAndWhite blackAndWhite;
 
-    public InversionController(Context context) {
+    public BlackAndWhiteController(Context context) {
         this.context = context;
-        this.inversion = new Inversion();
+        this.blackAndWhite = new BlackAndWhite();
     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        context.setTransformation(inversion);
+        context.setTransformation(blackAndWhite);
     }
 }

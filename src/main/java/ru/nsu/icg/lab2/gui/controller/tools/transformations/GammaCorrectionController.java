@@ -2,12 +2,12 @@ package ru.nsu.icg.lab2.gui.controller.tools.transformations;
 
 import org.decimal4j.util.DoubleRounder;
 import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
+import ru.nsu.icg.lab2.gui.view.Context;
 import ru.nsu.icg.lab2.gui.view.View;
-import ru.nsu.icg.lab2.gui.view.context.Context;
 import ru.nsu.icg.lab2.model.transformations.GammaCorrection;
+import ru.nsu.icg.lab2.gui.Utils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,7 +18,6 @@ public class GammaCorrectionController implements ActionListener {
     private static final double GAMMA_MIN_VALUE = 0.1;
     private static final double GAMMA_MAX_VALUE = 10;
     private static final double K = Math.log(GAMMA_MAX_VALUE) / SLIDER_MAX_VALUE_HALF;
-
     private final Context context;
     private final View view;
     private final GammaCorrection gammaCorrection;
@@ -33,12 +32,9 @@ public class GammaCorrectionController implements ActionListener {
         this.gammaCorrection = new GammaCorrection();
         this.rounder = new DoubleRounder(1);
 
-        final JTextField textField = new JTextField(String.valueOf(gammaCorrection.getGamma()));
-        final JSlider slider = new JSlider(SLIDER_MIN_VALUE, SLIDER_MAX_VALUE, getSliderValueFromGamma(gammaCorrection.getGamma()));
-        this.panel = new JPanel();
-        panel.setLayout(new GridLayout(2, 1));
-        panel.add(textField);
-        panel.add(slider);
+        final JTextField textField = new JTextField();
+        final JSlider slider = new JSlider(SLIDER_MIN_VALUE, SLIDER_MAX_VALUE);
+        this.panel = Utils.createDialogInputPanel(textField, slider);
         this.dialogWindowController = new TextFieldSliderController(
                 textField,
                 slider,
@@ -53,23 +49,21 @@ public class GammaCorrectionController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        dialogWindowController.reset(gammaCorrection.getGamma());
+        while (true) {
+            dialogWindowController.reset(gammaCorrection.getGamma());
 
-        final int code = JOptionPane.showConfirmDialog(null,
-                panel,
-                "Gamma correction",
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE
-        );
+            final boolean ok = view.showConfirmationDialog("Rotation", panel);
+            if (!ok) {
+                return;
+            }
 
-        if (code == JOptionPane.CANCEL_OPTION || code == JOptionPane.CLOSED_OPTION) {
-            return;
-        }
-
-        if (dialogWindowController.hasError()) {
-            view.showError("Incorrect value!");
-        } else if (dialogWindowController.hasValue()) {
-            gammaCorrection.setGamma(dialogWindowController.getValue());
+            if (dialogWindowController.hasValue()) {
+                gammaCorrection.setGamma(dialogWindowController.getValue());
+            }
+            if (!dialogWindowController.hasError()) {
+                break;
+            }
+            view.showError("Incorrect gamma!");
         }
 
         context.setTransformation(gammaCorrection);

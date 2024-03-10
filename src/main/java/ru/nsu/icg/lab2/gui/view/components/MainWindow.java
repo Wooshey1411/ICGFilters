@@ -1,8 +1,8 @@
 package ru.nsu.icg.lab2.gui.view.components;
 
+import ru.nsu.icg.lab2.gui.view.Context;
 import ru.nsu.icg.lab2.gui.view.WindowResizeListener;
-import ru.nsu.icg.lab2.gui.view.context.Context;
-import ru.nsu.icg.lab2.gui.view.context.ViewMode;
+import ru.nsu.icg.lab2.gui.view.ViewMode;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,18 +39,31 @@ public class MainWindow extends JFrame {
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
                 if(context.getViewMode() == ViewMode.ON_WINDOW_SIZE) {
-                    scrollPane.setSize(new Dimension(holder.getWidth(),holder.getHeight()));
-                    Insets scrollPaneBorder = scrollPane.getInsets();
-                    drawingArea.setSize(scrollPane.getWidth()-scrollPaneBorder.right-scrollPaneBorder.left,
-                            scrollPane.getHeight()-scrollPaneBorder.bottom-scrollPaneBorder.top);
-                    Insets drawingAreaBorder = drawingArea.getInsets();
-                    windowResizeListener.onDrawingAreaResize(drawingArea.getWidth()-drawingAreaBorder.left-drawingAreaBorder.right
-                            , drawingArea.getHeight()-drawingAreaBorder.top-drawingAreaBorder.bottom);
+                    scrollPane.setSize(new Dimension(
+                            holder.getWidth(),
+                            holder.getHeight()
+                    ));
+
+                    final Insets scrollPaneBorder = scrollPane.getInsets();
+                    drawingArea.setSize(
+                            scrollPane.getWidth() - scrollPaneBorder.right - scrollPaneBorder.left,
+                            scrollPane.getHeight() - scrollPaneBorder.bottom - scrollPaneBorder.top
+                    );
+                    final Insets drawingAreaBorder = drawingArea.getInsets();
+
+                    windowResizeListener.onDrawingAreaResize(
+                            drawingArea.getWidth() - drawingAreaBorder.left - drawingAreaBorder.right,
+                            drawingArea.getHeight() - drawingAreaBorder.top - drawingAreaBorder.bottom
+                    );
                 }
             }
         });
-        scrollPane.setBorder(BorderFactory.createEmptyBorder(SCROLL_PANE_BORDER_THICKNESS,SCROLL_PANE_BORDER_THICKNESS
-                ,SCROLL_PANE_BORDER_THICKNESS,SCROLL_PANE_BORDER_THICKNESS));
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(
+                SCROLL_PANE_BORDER_THICKNESS,
+                SCROLL_PANE_BORDER_THICKNESS,
+                SCROLL_PANE_BORDER_THICKNESS,
+                SCROLL_PANE_BORDER_THICKNESS
+        ));
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         add(holder, BorderLayout.CENTER);

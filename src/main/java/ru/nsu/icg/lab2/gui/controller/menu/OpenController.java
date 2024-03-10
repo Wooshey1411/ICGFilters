@@ -1,11 +1,11 @@
 package ru.nsu.icg.lab2.gui.controller.menu;
 
+import ru.nsu.icg.lab2.gui.Utils;
 import ru.nsu.icg.lab2.gui.view.BufferedImageImpl;
+import ru.nsu.icg.lab2.gui.view.Context;
+import ru.nsu.icg.lab2.gui.view.ImageReader;
 import ru.nsu.icg.lab2.gui.view.View;
-import ru.nsu.icg.lab2.gui.view.files.ImageOpeningChooser;
-import ru.nsu.icg.lab2.gui.view.imageio.ImageReader;
-import ru.nsu.icg.lab2.gui.view.context.Context;
-import ru.nsu.icg.lab2.model.Utils;
+import ru.nsu.icg.lab2.gui.controller.files.ImageOpeningChooser;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -29,7 +29,7 @@ public class OpenController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        final int code = fileChooser.showOpenDialog(null);
+        final int code = fileChooser.showOpenDialog(view.getFrame());
 
         if (code == JFileChooser.CANCEL_OPTION) {
             return;
@@ -45,7 +45,7 @@ public class OpenController implements ActionListener {
         try {
             final BufferedImage image = imageReader.read(file);
             context.setOriginalImage(new BufferedImageImpl(image));
-            context.setImage(new BufferedImageImpl(Utils.deepCopy(image)));
+            context.setImage(Utils.deepCopy(new BufferedImageImpl(image)));
         } catch (IOException exception) {
             view.showError(exception.getLocalizedMessage());
         }

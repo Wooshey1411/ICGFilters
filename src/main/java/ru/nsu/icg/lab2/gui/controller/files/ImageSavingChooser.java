@@ -1,4 +1,4 @@
-package ru.nsu.icg.lab2.gui.view.files;
+package ru.nsu.icg.lab2.gui.controller.files;
 
 import javax.swing.filechooser.FileFilter;
 

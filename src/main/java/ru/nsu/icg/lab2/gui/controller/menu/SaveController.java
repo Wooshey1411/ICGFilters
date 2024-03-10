@@ -1,9 +1,9 @@
 package ru.nsu.icg.lab2.gui.controller.menu;
 
+import ru.nsu.icg.lab2.gui.view.Context;
+import ru.nsu.icg.lab2.gui.view.ImageWriter;
 import ru.nsu.icg.lab2.gui.view.View;
-import ru.nsu.icg.lab2.gui.view.files.ImageSavingChooser;
-import ru.nsu.icg.lab2.gui.view.imageio.ImageWriter;
-import ru.nsu.icg.lab2.gui.view.context.Context;
+import ru.nsu.icg.lab2.gui.controller.files.ImageSavingChooser;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -26,7 +26,7 @@ public class SaveController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        final int code = fileChooser.showSaveDialog(null);
+        final int code = fileChooser.showSaveDialog(view.getFrame());
 
         if (code == JFileChooser.CANCEL_OPTION) {
             return;
