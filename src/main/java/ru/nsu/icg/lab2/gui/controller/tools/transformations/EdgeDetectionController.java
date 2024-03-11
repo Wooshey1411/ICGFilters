@@ -1,6 +1,6 @@
 package ru.nsu.icg.lab2.gui.controller.tools.transformations;
 
-import ru.nsu.icg.lab2.gui.view.Context;
+import ru.nsu.icg.lab2.gui.model.Context;
 import ru.nsu.icg.lab2.model.transformations.EdgeDetection;
 
 import java.awt.event.ActionEvent;

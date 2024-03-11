@@ -1,17 +1,15 @@
-package ru.nsu.icg.lab2.gui.view.view;
+package ru.nsu.icg.lab2.gui.view;
 
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
 import ru.nsu.icg.lab2.gui.controller.WindowResizeController;
 import ru.nsu.icg.lab2.gui.controller.menu.*;
-import ru.nsu.icg.lab2.gui.controller.tools.UndoController;
 import ru.nsu.icg.lab2.gui.controller.tools.HandController;
 import ru.nsu.icg.lab2.gui.controller.tools.OneToOneController;
+import ru.nsu.icg.lab2.gui.controller.tools.UndoController;
 import ru.nsu.icg.lab2.gui.controller.tools.WindowSizeController;
 import ru.nsu.icg.lab2.gui.controller.tools.transformations.*;
-import ru.nsu.icg.lab2.gui.view.*;
-import ru.nsu.icg.lab2.gui.view.components.*;
+import ru.nsu.icg.lab2.gui.model.*;
 import ru.nsu.icg.lab2.model.ViewConfig;
-import ru.nsu.icg.lab2.gui.view.context.ContextImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,7 +34,7 @@ public class ViewImpl implements View, ContextListener {
         final UndoController undoController = new UndoController(context);
         final OneToOneController oneToOneController = new OneToOneController();
         final WindowSizeController windowSizeController = new WindowSizeController();
-        final RotationController rotationController = new RotationController(context, this);
+        final RotationController rotationController = new RotationController(context, this, null);
         final BlackAndWhiteController blackAndWhiteController = new BlackAndWhiteController(context);
         final InversionController inversionController = new InversionController(context);
         final GammaCorrectionController gammaCorrectionController = new GammaCorrectionController(context, this);
@@ -113,6 +111,7 @@ public class ViewImpl implements View, ContextListener {
                 windowResizeController
         );
     }
+
     @Override
     public void show() {
         mainWindow.setVisible(true);
@@ -130,9 +129,9 @@ public class ViewImpl implements View, ContextListener {
 
     @Override
     public void resize() {
-        final BufferedImageImpl image = context.getImage();
+        final BufferedImageImpl image = context.getCurrentImage();
 
-        if(image == null){
+        if (image == null) {
             return;
         }
 
@@ -173,9 +172,9 @@ public class ViewImpl implements View, ContextListener {
 
     @Override
     public void repaint() {
-        final BufferedImageImpl image = context.getImage();
+        final BufferedImageImpl image = context.getCurrentImage();
 
-        if(context.getViewMode() == ViewMode.ONE_TO_ONE) {
+        if (context.getViewMode() == ViewMode.ONE_TO_ONE) {
             drawingArea.resizeSoftly(image.getWidth(), image.getHeight());
             drawingArea.setImage(image.bufferedImage());
             drawingArea.repaint();
@@ -223,13 +222,13 @@ public class ViewImpl implements View, ContextListener {
     }
 
     @Override
-    public void onImageChange(ContextImpl context) {
+    public void onImageChange(Context context) {
         repaint();
     }
 
     @Override
-    public void onTransformationChange(ContextImpl context) {
-        context.getTransformation().apply(context.getOriginalImage(), context.getImage());
+    public void onTransformationChange(Context context) {
+        context.getTransformation().apply(context.getOriginalImage(), context.getCurrentImage());
         repaint();
     }
 }

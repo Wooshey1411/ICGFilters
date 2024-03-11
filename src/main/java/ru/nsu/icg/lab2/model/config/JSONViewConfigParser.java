@@ -1,7 +1,6 @@
 package ru.nsu.icg.lab2.model.config;
 
 import com.google.gson.Gson;
-import ru.nsu.icg.lab2.gui.Main;
 import ru.nsu.icg.lab2.model.ViewConfig;
 import ru.nsu.icg.lab2.model.ViewConfigParser;
 
@@ -20,7 +19,7 @@ public class JSONViewConfigParser implements ViewConfigParser {
     public ViewConfig parse() throws IOException {
         return new Gson().fromJson(
                 new String(
-                        Objects.requireNonNull(Main.class.getResourceAsStream("/" + fileName)).readAllBytes(),
+                        Objects.requireNonNull(this.getClass().getResourceAsStream("/" + fileName)).readAllBytes(),
                         StandardCharsets.UTF_8
                 ),
                 ViewConfig.class

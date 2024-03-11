@@ -1,16 +1,13 @@
-package ru.nsu.icg.lab2.gui.view.imageio;
-
-import ru.nsu.icg.lab2.gui.view.ImageWriter;
+package ru.nsu.icg.lab2.gui.model;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class ImageWriterImpl implements ImageWriter {
+public class ImageWriter {
     private static final String[] SUPPORTED_FORMATS = {"PNG"};
 
-    @Override
     public void save(BufferedImage image, File file) throws IOException {
         final String fileName = file.getName();
 
@@ -24,7 +21,6 @@ public class ImageWriterImpl implements ImageWriter {
         throw new RuntimeException(String.format("Saving an image in an unsupported format \"%s\"", fileName));
     }
 
-    @Override
     public String[] getSupportedFormats() {
         return SUPPORTED_FORMATS.clone();
     }

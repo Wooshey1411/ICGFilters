@@ -1,8 +1,8 @@
 package ru.nsu.icg.lab2.gui.controller;
 
-import ru.nsu.icg.lab2.gui.view.Context;
-import ru.nsu.icg.lab2.gui.view.View;
-import ru.nsu.icg.lab2.gui.view.WindowResizeListener;
+import ru.nsu.icg.lab2.gui.model.Context;
+import ru.nsu.icg.lab2.gui.model.View;
+import ru.nsu.icg.lab2.gui.model.WindowResizeListener;
 
 public class WindowResizeController implements WindowResizeListener {
     private final Context context;

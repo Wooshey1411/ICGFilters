@@ -1,8 +1,8 @@
-package ru.nsu.icg.lab2.gui.view.components;
+package ru.nsu.icg.lab2.gui.view;
 
-import ru.nsu.icg.lab2.gui.view.Context;
-import ru.nsu.icg.lab2.gui.view.WindowResizeListener;
-import ru.nsu.icg.lab2.gui.view.ViewMode;
+import ru.nsu.icg.lab2.gui.model.Context;
+import ru.nsu.icg.lab2.gui.model.ViewMode;
+import ru.nsu.icg.lab2.gui.model.WindowResizeListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,12 +33,12 @@ public class MainWindow extends JFrame {
         JPanel holder = new JPanel();
         holder.setLayout(null);
         holder.add(scrollPane);
-        scrollPane.setBounds(0,0,0,0);
+        scrollPane.setBounds(0, 0, 0, 0);
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
-                if(context.getViewMode() == ViewMode.ON_WINDOW_SIZE) {
+                if (context.getViewMode() == ViewMode.ON_WINDOW_SIZE) {
                     scrollPane.setSize(new Dimension(
                             holder.getWidth(),
                             holder.getHeight()

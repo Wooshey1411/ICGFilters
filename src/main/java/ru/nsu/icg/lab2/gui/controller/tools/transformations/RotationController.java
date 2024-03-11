@@ -1,9 +1,10 @@
 package ru.nsu.icg.lab2.gui.controller.tools.transformations;
 
-import ru.nsu.icg.lab2.gui.Utils;
 import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
-import ru.nsu.icg.lab2.gui.view.Context;
-import ru.nsu.icg.lab2.gui.view.View;
+import ru.nsu.icg.lab2.gui.model.Context;
+import ru.nsu.icg.lab2.gui.model.Utils;
+import ru.nsu.icg.lab2.gui.model.View;
+import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.transformations.Rotation;
 
 import javax.swing.*;
@@ -13,6 +14,11 @@ import java.awt.event.ActionListener;
 public class RotationController implements ActionListener {
     private static final int SLIDER_MIN_VALUE = -180;
     private static final int SLIDER_MAX_VALUE = 180;
+    private static final String INCORRECT_VALUE_MESSAGE = String.format(
+            "Incorrect rotation! It must be between %d and %d",
+            SLIDER_MIN_VALUE,
+            SLIDER_MAX_VALUE
+    );
 
     private final Context context;
     private final View view;
@@ -20,10 +26,10 @@ public class RotationController implements ActionListener {
     private final TextFieldSliderController dialogWindowController;
     private final JPanel panel;
 
-    public RotationController(Context context, View view) {
+    public RotationController(Context context, View view, ImageFactory imageFactory) {
         this.context = context;
         this.view = view;
-        this.rotation = new Rotation();
+        this.rotation = new Rotation(imageFactory);
 
         final JTextField textField = new JTextField();
         final JSlider slider = new JSlider(SLIDER_MIN_VALUE, SLIDER_MAX_VALUE);
@@ -56,7 +62,7 @@ public class RotationController implements ActionListener {
             if (!dialogWindowController.hasError()) {
                 break;
             }
-            view.showError("Incorrect rotation!");
+            view.showError(INCORRECT_VALUE_MESSAGE);
         }
 
         context.setTransformation(rotation);

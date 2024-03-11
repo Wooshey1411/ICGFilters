@@ -1,4 +1,4 @@
-package ru.nsu.icg.lab2.gui.view;
+package ru.nsu.icg.lab2.gui.model;
 
 import ru.nsu.icg.lab2.model.ImageInterface;
 
@@ -16,32 +16,32 @@ public record BufferedImageImpl(BufferedImage bufferedImage) implements ImageInt
     }
 
     @Override
-    public int getRGB(int x, int y) {
+    public int getARGB(int x, int y) {
         return bufferedImage.getRGB(x, y);
     }
 
     @Override
-    public int[] getRGB(int[] rgbArray) {
+    public int[] getARGB(int[] rgbArray) {
         return bufferedImage.getRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), rgbArray, 0, bufferedImage.getWidth());
     }
 
     @Override
-    public int[] getRGB(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scanSize) {
+    public int[] getARGB(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scanSize) {
         return bufferedImage.getRGB(startX, startY, w, h, rgbArray, offset, scanSize);
     }
 
     @Override
-    public void setRGB(int x, int y, int rgb) {
+    public void setARGB(int x, int y, int rgb) {
         bufferedImage.setRGB(x, y, rgb);
     }
 
     @Override
-    public void setRGB(int[] rgbArray) {
+    public void setARGB(int[] rgbArray) {
         bufferedImage.setRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), rgbArray, 0, bufferedImage.getWidth());
     }
 
     @Override
-    public void setRGB(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scanSize) {
+    public void setARGB(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scanSize) {
         bufferedImage.setRGB(startX, startY, w, h, rgbArray, offset, scanSize);
     }
 }

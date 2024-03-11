@@ -1,6 +1,6 @@
 package ru.nsu.icg.lab2.gui.controller.menu;
 
-import ru.nsu.icg.lab2.gui.view.View;
+import ru.nsu.icg.lab2.gui.model.View;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

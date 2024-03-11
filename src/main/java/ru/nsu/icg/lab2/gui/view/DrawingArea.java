@@ -1,4 +1,4 @@
-package ru.nsu.icg.lab2.gui.view.components;
+package ru.nsu.icg.lab2.gui.view;
 
 import lombok.Setter;
 
@@ -8,15 +8,15 @@ import java.awt.image.BufferedImage;
 
 @Setter
 public class DrawingArea extends JPanel {
-    private BufferedImage image;
     private static final int BORDER_THICKNESS = 3;
     private static final int BORDER_LENGTH = 3;
     private static final int BORDER_SPACING = 3;
+    private BufferedImage image;
 
     public DrawingArea() {
         setBorder(BorderFactory.createDashedBorder(
-                Color.GREEN,BORDER_THICKNESS,
-                BORDER_LENGTH,BORDER_SPACING,
+                Color.GREEN, BORDER_THICKNESS,
+                BORDER_LENGTH, BORDER_SPACING,
                 false
         ));
         setBackground(Color.WHITE);

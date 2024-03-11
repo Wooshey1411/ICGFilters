@@ -8,7 +8,7 @@ public class BlackAndWhite implements Transformation {
     public void apply(ImageInterface oldImage, ImageInterface newImage) {
         int gridSize = oldImage.getHeight() * oldImage.getWidth();
         int[] grid = new int[gridSize];
-        oldImage.getRGB(grid);
+        oldImage.getARGB(grid);
         for (int pixel = 0; pixel < gridSize; pixel++) {
             int newC =
                     (int) (((grid[pixel] & 0x00FF0000) >> 16) * 0.299) + // r
@@ -16,6 +16,6 @@ public class BlackAndWhite implements Transformation {
                             (int) (((grid[pixel] & 0x000000FF)) * 0.114); // b
             grid[pixel] = 0xFF000000 | (newC << 16) | (newC << 8) | newC;
         }
-        newImage.setRGB(grid);
+        newImage.setARGB(grid);
     }
 }

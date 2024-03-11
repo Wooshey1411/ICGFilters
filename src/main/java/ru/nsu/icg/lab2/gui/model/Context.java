@@ -1,26 +1,29 @@
-package ru.nsu.icg.lab2.gui.view.context;
+package ru.nsu.icg.lab2.gui.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.nsu.icg.lab2.gui.view.BufferedImageImpl;
-import ru.nsu.icg.lab2.gui.view.Context;
-import ru.nsu.icg.lab2.gui.view.ContextListener;
-import ru.nsu.icg.lab2.gui.view.ViewMode;
 import ru.nsu.icg.lab2.model.Transformation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContextImpl implements Context {
+public class Context {
     private final List<ContextListener> listeners = new ArrayList<>();
-
+    @Getter
+    private final BufferedImageFactory bufferedImageFactory;
     @Getter
     @Setter
     private ViewMode viewMode;
-
     @Getter
     @Setter
     private BufferedImageImpl originalImage;
+
+    @Getter
+    @Setter
+    private BufferedImageImpl processedImage;
+
+    @Getter
+    private BufferedImageImpl currentImage;
 
     @Getter
     @Setter
@@ -31,35 +34,29 @@ public class ContextImpl implements Context {
     private int drawingAreaHeight;
 
     @Getter
-    private BufferedImageImpl image;
-
-    @Getter
     private Transformation transformation;
 
-    public ContextImpl(ViewMode viewMode) {
+    public Context(ViewMode viewMode, BufferedImageFactory bufferedImageFactory) {
         this.viewMode = viewMode;
+        this.bufferedImageFactory = bufferedImageFactory;
     }
 
-    @Override
     public void addListener(ContextListener listener) {
         listeners.add(listener);
     }
 
-    @Override
     public void removeListener(ContextListener listener) {
         listeners.remove(listener);
     }
 
-    @Override
-    public void setImage(BufferedImageImpl image) {
-        this.image = image;
+    public void setCurrentImage(BufferedImageImpl image) {
+        this.currentImage = image;
 
         for (final var it : listeners) {
             it.onImageChange(this);
         }
     }
 
-    @Override
     public void setTransformation(Transformation transformation) {
         this.transformation = transformation;
 

@@ -2,10 +2,10 @@ package ru.nsu.icg.lab2.gui.controller.tools.transformations;
 
 import org.decimal4j.util.DoubleRounder;
 import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
-import ru.nsu.icg.lab2.gui.view.Context;
-import ru.nsu.icg.lab2.gui.view.View;
+import ru.nsu.icg.lab2.gui.model.Context;
+import ru.nsu.icg.lab2.gui.model.Utils;
+import ru.nsu.icg.lab2.gui.model.View;
 import ru.nsu.icg.lab2.model.transformations.GammaCorrection;
-import ru.nsu.icg.lab2.gui.Utils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -18,6 +18,11 @@ public class GammaCorrectionController implements ActionListener {
     private static final double GAMMA_MIN_VALUE = 0.1;
     private static final double GAMMA_MAX_VALUE = 10;
     private static final double K = Math.log(GAMMA_MAX_VALUE) / SLIDER_MAX_VALUE_HALF;
+    private static final String INCORRECT_VALUE_MESSAGE = String.format(
+            "Incorrect gamma! It must be between %.1f and %.1f",
+            GAMMA_MIN_VALUE,
+            GAMMA_MAX_VALUE
+    );
     private final Context context;
     private final View view;
     private final GammaCorrection gammaCorrection;
@@ -63,7 +68,7 @@ public class GammaCorrectionController implements ActionListener {
             if (!dialogWindowController.hasError()) {
                 break;
             }
-            view.showError("Incorrect gamma!");
+            view.showError(INCORRECT_VALUE_MESSAGE);
         }
 
         context.setTransformation(gammaCorrection);

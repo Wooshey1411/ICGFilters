@@ -1,9 +1,9 @@
 package ru.nsu.icg.lab2.gui.controller.menu;
 
-import ru.nsu.icg.lab2.gui.view.Context;
-import ru.nsu.icg.lab2.gui.view.ImageWriter;
-import ru.nsu.icg.lab2.gui.view.View;
 import ru.nsu.icg.lab2.gui.controller.files.ImageSavingChooser;
+import ru.nsu.icg.lab2.gui.model.Context;
+import ru.nsu.icg.lab2.gui.model.ImageWriter;
+import ru.nsu.icg.lab2.gui.model.View;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -42,7 +42,7 @@ public class SaveController implements ActionListener {
         final String filePath = String.format("%s.%s", fileWithoutExtension, fileExtension);
 
         try {
-            imageWriter.save(context.getImage().bufferedImage(), new File(filePath));
+            imageWriter.save(context.getCurrentImage().bufferedImage(), new File(filePath));
         } catch (IOException exception) {
             view.showError(exception.getLocalizedMessage());
         }

@@ -5,17 +5,18 @@ public interface ImageInterface {
 
     int getHeight();
 
-    int getRGB(int x, int y);
+    int getARGB(int x, int y);
 
-    int[] getRGB(int[] rgbArray);
-
-    // pixel(x, y) = rgbArray[offset + (y - startY) * scanSize + (x - startX)];
-    int[] getRGB(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scanSize);
-
-    void setRGB(int x, int y, int rgb);
-
-    void setRGB(int[] rgbArray);
+    // Returns new array if rgbArray is null or just returns rgbArray
+    int[] getARGB(int[] rgbArray);
 
     // pixel(x, y) = rgbArray[offset + (y - startY) * scanSize + (x - startX)];
-    void setRGB(int startX, int startY,  int w,  int h, int[] rgbArray, int offset, int scanSize);
+    int[] getARGB(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scanSize);
+
+    void setARGB(int x, int y, int rgb);
+
+    void setARGB(int[] rgbArray);
+
+    // pixel(x, y) = rgbArray[offset + (y - startY) * scanSize + (x - startX)];
+    void setARGB(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scanSize);
 }

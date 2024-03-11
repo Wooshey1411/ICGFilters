@@ -1,7 +1,7 @@
 package ru.nsu.icg.lab2.gui.controller.tools.transformations;
 
-import ru.nsu.icg.lab2.gui.view.Context;
-import ru.nsu.icg.lab2.gui.view.View;
+import ru.nsu.icg.lab2.gui.model.Context;
+import ru.nsu.icg.lab2.gui.model.View;
 import ru.nsu.icg.lab2.model.transformations.Blur;
 
 import java.awt.event.ActionEvent;

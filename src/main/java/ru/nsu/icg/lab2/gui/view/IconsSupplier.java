@@ -1,4 +1,4 @@
-package ru.nsu.icg.lab2.gui.view.components;
+package ru.nsu.icg.lab2.gui.view;
 
 import lombok.Getter;
 
