@@ -20,6 +20,6 @@ public class BlurController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-
+        context.setTransformation(blur);
     }
 }
