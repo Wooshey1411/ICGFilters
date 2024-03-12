@@ -35,17 +35,17 @@ public class ViewImpl implements View, ContextListener {
         final OneToOneController oneToOneController = new OneToOneController();
         final WindowSizeController windowSizeController = new WindowSizeController();
         final RotationController rotationController = new RotationController(context, this, null);
-        final BlackAndWhiteController blackAndWhiteController = new BlackAndWhiteController(context);
-        final InversionController inversionController = new InversionController(context);
-        final GammaCorrectionController gammaCorrectionController = new GammaCorrectionController(context, this);
-        final SharpeningController sharpeningController = new SharpeningController(context);
-        final EdgeDetectionController edgeDetectionController = new EdgeDetectionController(context);
-        final EmbossingController embossingController = new EmbossingController(context);
-        final BlurController blurController = new BlurController(context, this);
-        final WatercoloringController watercoloringController = new WatercoloringController(context);
-        final FloydSteinbergDitheringController floydSteinbergDitheringController = new FloydSteinbergDitheringController(context, this);
-        final OrderedDitheringController orderedDitheringController = new OrderedDitheringController(context, this);
-        final WaveFilterController waveFilterController = new WaveFilterController(context);
+        final BlackAndWhiteController blackAndWhiteController = new BlackAndWhiteController(context, context.getBufferedImageFactory());
+        final InversionController inversionController = new InversionController(context, context.getBufferedImageFactory());
+        final GammaCorrectionController gammaCorrectionController = new GammaCorrectionController(context, this, context.getBufferedImageFactory());
+        final SharpeningController sharpeningController = new SharpeningController(context, context.getBufferedImageFactory());
+        final EdgeDetectionController edgeDetectionController = new EdgeDetectionController(context, context.getBufferedImageFactory());
+        final EmbossingController embossingController = new EmbossingController(context, context.getBufferedImageFactory());
+        final BlurController blurController = new BlurController(context, this, context.getBufferedImageFactory());
+        final WatercoloringController watercoloringController = new WatercoloringController(context, context.getBufferedImageFactory());
+        final FloydSteinbergDitheringController floydSteinbergDitheringController = new FloydSteinbergDitheringController(context, this, context.getBufferedImageFactory());
+        final OrderedDitheringController orderedDitheringController = new OrderedDitheringController(context, this, context.getBufferedImageFactory());
+        final WaveFilterController waveFilterController = new WaveFilterController(context, context.getBufferedImageFactory());
 
         final HelpController helpController = new HelpController(this);
         final AboutController aboutController = new AboutController(this);
@@ -173,13 +173,14 @@ public class ViewImpl implements View, ContextListener {
     @Override
     public void repaint() {
         final BufferedImageImpl image = context.getCurrentImage();
-
+        System.out.println("HERE");
         if (context.getViewMode() == ViewMode.ONE_TO_ONE) {
+            mainWindow.resizeImagePane(image.getWidth(),image.getHeight());
             drawingArea.resizeSoftly(image.getWidth(), image.getHeight());
             drawingArea.setImage(image.bufferedImage());
             drawingArea.repaint();
             drawingArea.revalidate();
-            mainWindow.pack();
+            //mainWindow.pack();
         } else {
             resize();
         }
@@ -228,7 +229,9 @@ public class ViewImpl implements View, ContextListener {
 
     @Override
     public void onTransformationChange(Context context) {
-        context.getTransformation().apply(context.getOriginalImage(), context.getCurrentImage());
+        // TODO: перенести
+        context.setProcessedImage(new BufferedImageImpl(((BufferedImageImpl) context.getTransformation().apply(context.getOriginalImage())).bufferedImage()));
+        context.setCurrentImage(context.getProcessedImage());
         repaint();
     }
 }

@@ -1,6 +1,7 @@
 package ru.nsu.icg.lab2.gui.controller.tools.transformations;
 
 import ru.nsu.icg.lab2.gui.model.Context;
+import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.transformations.Inversion;
 
 import java.awt.event.ActionEvent;
@@ -10,9 +11,9 @@ public class InversionController implements ActionListener {
     private final Context context;
     private final Inversion inversion;
 
-    public InversionController(Context context) {
+    public InversionController(Context context, ImageFactory imageFactory) {
         this.context = context;
-        this.inversion = new Inversion();
+        this.inversion = new Inversion(imageFactory);
     }
 
     @Override

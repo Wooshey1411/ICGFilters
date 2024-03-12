@@ -9,7 +9,7 @@ import ru.nsu.icg.lab2.model.config.JSONViewConfigParser;
 public class Main {
     public static void main(String[] args) {
         try {
-            final Context context = new Context(ViewMode.ON_WINDOW_SIZE, new BufferedImageFactory());
+            final Context context = new Context(ViewMode.ONE_TO_ONE, new BufferedImageFactory());
 
             final ViewConfigParser viewConfigParser = new JSONViewConfigParser("view_config.json");
             final ViewConfig viewConfig = viewConfigParser.parse();

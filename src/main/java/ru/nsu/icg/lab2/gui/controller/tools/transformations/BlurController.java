@@ -2,6 +2,7 @@ package ru.nsu.icg.lab2.gui.controller.tools.transformations;
 
 import ru.nsu.icg.lab2.gui.model.Context;
 import ru.nsu.icg.lab2.gui.model.View;
+import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.transformations.Blur;
 
 import java.awt.event.ActionEvent;
@@ -12,10 +13,10 @@ public class BlurController implements ActionListener {
     private final View view;
     private final Blur blur;
 
-    public BlurController(Context context, View view) {
+    public BlurController(Context context, View view, ImageFactory imageFactory) {
         this.context = context;
         this.view = view;
-        this.blur = new Blur();
+        this.blur = new Blur(imageFactory);
     }
 
     @Override

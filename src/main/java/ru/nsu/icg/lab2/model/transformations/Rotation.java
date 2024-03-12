@@ -17,7 +17,8 @@ public class Rotation implements Transformation {
     }
 
     @Override
-    public void apply(ImageInterface oldImage, ImageInterface newImage) {
+    public ImageInterface apply(ImageInterface oldImage) {
         // TODO: implement
+        return null;
     }
 }

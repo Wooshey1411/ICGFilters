@@ -1,6 +1,7 @@
 package ru.nsu.icg.lab2.gui.controller.tools.transformations;
 
 import ru.nsu.icg.lab2.gui.model.Context;
+import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.transformations.Sharpening;
 
 import java.awt.event.ActionEvent;
@@ -10,9 +11,9 @@ public class SharpeningController implements ActionListener {
     private final Context context;
     private final Sharpening sharpening;
 
-    public SharpeningController(Context context) {
+    public SharpeningController(Context context, ImageFactory imageFactory) {
         this.context = context;
-        this.sharpening = new Sharpening();
+        this.sharpening = new Sharpening(imageFactory);
     }
 
     @Override

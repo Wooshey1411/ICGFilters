@@ -5,6 +5,7 @@ import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
 import ru.nsu.icg.lab2.gui.model.Context;
 import ru.nsu.icg.lab2.gui.model.Utils;
 import ru.nsu.icg.lab2.gui.model.View;
+import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.transformations.GammaCorrection;
 
 import javax.swing.*;
@@ -31,10 +32,10 @@ public class GammaCorrectionController implements ActionListener {
     private final TextFieldSliderController dialogWindowController;
     private final JPanel panel;
 
-    public GammaCorrectionController(Context context, View view) {
+    public GammaCorrectionController(Context context, View view, ImageFactory imageFactory) {
         this.context = context;
         this.view = view;
-        this.gammaCorrection = new GammaCorrection();
+        this.gammaCorrection = new GammaCorrection(imageFactory);
         this.rounder = new DoubleRounder(1);
 
         final JTextField textField = new JTextField();

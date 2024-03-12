@@ -1,6 +1,7 @@
 package ru.nsu.icg.lab2.model.transformations;
 
 import lombok.Data;
+import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
 
@@ -10,8 +11,13 @@ public class OrderedDithering implements Transformation {
     private int greenK;
     private int blueK;
 
-    @Override
-    public void apply(ImageInterface oldImage, ImageInterface newImage) {
+    private final ImageFactory imageFactory;
 
+    public OrderedDithering(ImageFactory imageFactory) {
+        this.imageFactory = imageFactory;
+    }
+    @Override
+    public ImageInterface apply(ImageInterface oldImage) {
+        return null;
     }
 }

@@ -2,6 +2,7 @@ package ru.nsu.icg.lab2.gui.controller.tools.transformations;
 
 import ru.nsu.icg.lab2.gui.model.Context;
 import ru.nsu.icg.lab2.gui.model.View;
+import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.transformations.FloydSteinbergDithering;
 
 import java.awt.event.ActionEvent;
@@ -12,10 +13,10 @@ public class FloydSteinbergDitheringController implements ActionListener {
     private final View view;
     private final FloydSteinbergDithering floydSteinbergDithering;
 
-    public FloydSteinbergDitheringController(Context context, View view) {
+    public FloydSteinbergDitheringController(Context context, View view, ImageFactory imageFactory) {
         this.context = context;
         this.view = view;
-        this.floydSteinbergDithering = new FloydSteinbergDithering();
+        this.floydSteinbergDithering = new FloydSteinbergDithering(imageFactory);
     }
 
     @Override

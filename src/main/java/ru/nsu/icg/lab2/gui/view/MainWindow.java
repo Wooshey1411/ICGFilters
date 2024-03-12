@@ -13,6 +13,10 @@ import java.awt.event.WindowListener;
 public class MainWindow extends JFrame {
     private static final int SCROLL_PANE_BORDER_THICKNESS = 10;
 
+    private final JPanel scrollPaneHolder;
+    private final JScrollPane scrollPane;
+
+    private final JPanel drawingArea;
     public MainWindow(String name,
                       int minWidth,
                       int minHeight,
@@ -29,10 +33,11 @@ public class MainWindow extends JFrame {
         addWindowListener(windowListener);
         setMinimumSize(new Dimension(minWidth, minHeight));
         setPreferredSize(new Dimension(prefWidth, prefHeight));
-        final JScrollPane scrollPane = new JScrollPane(drawingArea);
-        JPanel holder = new JPanel();
-        holder.setLayout(null);
-        holder.add(scrollPane);
+        this.drawingArea = drawingArea;
+        scrollPane = new JScrollPane(drawingArea);
+        scrollPaneHolder = new JPanel();
+        scrollPaneHolder.setLayout(null);
+        scrollPaneHolder.add(scrollPane);
         scrollPane.setBounds(0, 0, 0, 0);
         addComponentListener(new ComponentAdapter() {
             @Override
@@ -40,8 +45,8 @@ public class MainWindow extends JFrame {
                 super.componentResized(e);
                 if (context.getViewMode() == ViewMode.ON_WINDOW_SIZE) {
                     scrollPane.setSize(new Dimension(
-                            holder.getWidth(),
-                            holder.getHeight()
+                            scrollPaneHolder.getWidth(),
+                            scrollPaneHolder.getHeight()
                     ));
 
                     final Insets scrollPaneBorder = scrollPane.getInsets();
@@ -66,10 +71,17 @@ public class MainWindow extends JFrame {
         ));
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        add(holder, BorderLayout.CENTER);
+        add(scrollPaneHolder, BorderLayout.CENTER);
         setJMenuBar(menuBar);
         add(toolsArea, BorderLayout.NORTH);
         setLocationRelativeTo(null);
         pack();
+    }
+
+    public void resizeImagePane(int width, int height){
+        Dimension newSize = new Dimension(width + scrollPane.getInsets().right+scrollPane.getInsets().left + drawingArea.getInsets().right + drawingArea.getInsets().left,
+                height + scrollPane.getInsets().top+scrollPane.getInsets().bottom + drawingArea.getInsets().bottom + drawingArea.getInsets().top);
+        scrollPaneHolder.setSize(newSize);
+        scrollPane.setSize(newSize);
     }
 }

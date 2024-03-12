@@ -41,7 +41,7 @@ public class OpenController implements ActionListener {
             final BufferedImageImpl image = new BufferedImageImpl(imageReader.read(file));
             context.getBufferedImageFactory().setType(image.bufferedImage().getType());
             context.setOriginalImage(image);
-            context.setCurrentImage(Utils.deepCopy(image));
+            context.setCurrentImage(context.getOriginalImage());
         } catch (IOException exception) {
             view.showError(exception.getLocalizedMessage());
         }

@@ -15,6 +15,11 @@ public class UndoController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        context.setCurrentImage(Utils.deepCopy(context.getOriginalImage()));
+        // TODO: проверки на null, Hip-Hop icon
+        if(context.getCurrentImage() == context.getProcessedImage()){
+            context.setCurrentImage(context.getOriginalImage());
+        } else {
+            context.setCurrentImage(context.getProcessedImage());
+        }
     }
 }
