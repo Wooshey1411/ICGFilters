@@ -26,6 +26,12 @@ public class SaveController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+
+        if(context.getProcessedImage() == null){
+            view.showError("No processed image to save");
+            return;
+        }
+
         final int code = fileChooser.showSaveDialog(view.getFrame());
 
         if (code == JFileChooser.CANCEL_OPTION) {
@@ -42,7 +48,7 @@ public class SaveController implements ActionListener {
         final String filePath = String.format("%s.%s", fileWithoutExtension, fileExtension);
 
         try {
-            imageWriter.save(context.getCurrentImage().bufferedImage(), new File(filePath));
+            imageWriter.save(context.getProcessedImage().bufferedImage(), new File(filePath));
         } catch (IOException exception) {
             view.showError(exception.getLocalizedMessage());
         }
