@@ -77,4 +77,10 @@ public class MainWindow extends JFrame {
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
     }
+    public void setWaitCursor(){
+        this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+    }
+    public void resetCursor(){
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }
 }

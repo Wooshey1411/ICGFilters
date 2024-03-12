@@ -235,9 +235,11 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
         if(context.getCurrentImage() == null){
             return;
         }
+        mainWindow.setWaitCursor();
         context.setProcessedImage(new BufferedImageImpl(((BufferedImageImpl) context.getTransformation().apply(context.getOriginalImage())).bufferedImage()));
         context.setCurrentImage(context.getProcessedImage());
         repaint();
+        mainWindow.resetCursor();
     }
 
     @Override
