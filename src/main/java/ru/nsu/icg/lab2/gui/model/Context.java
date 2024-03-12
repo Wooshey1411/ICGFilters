@@ -9,10 +9,11 @@ import java.util.List;
 
 public class Context {
     private final List<ContextListener> listeners = new ArrayList<>();
+    @Setter
+    private ViewModeChangeListener viewModeChangeListener;
     @Getter
     private final BufferedImageFactory bufferedImageFactory;
     @Getter
-    @Setter
     private ViewMode viewMode;
     @Getter
     @Setter
@@ -63,5 +64,10 @@ public class Context {
         for (final var it : listeners) {
             it.onTransformationChange(this);
         }
+    }
+
+    public void setViewMode(ViewMode viewMode){
+        this.viewMode = viewMode;
+        viewModeChangeListener.onChangeViewMode(this);
     }
 }

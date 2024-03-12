@@ -15,7 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ViewImpl implements View, ContextListener {
+public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
     private final Context context;
     private final DrawingArea drawingArea;
     private final MainWindow mainWindow;
@@ -24,6 +24,7 @@ public class ViewImpl implements View, ContextListener {
         FlatArcDarkOrangeIJTheme.setup();
 
         this.context = context;
+        context.setViewModeChangeListener(this);
         final IconsSupplier iconsSupplier = new IconsSupplier();
 
         final OpenController openController = new OpenController(context, this, imageReader);
@@ -32,8 +33,8 @@ public class ViewImpl implements View, ContextListener {
 
         final HandController handController = new HandController();
         final UndoController undoController = new UndoController(context);
-        final OneToOneController oneToOneController = new OneToOneController();
-        final WindowSizeController windowSizeController = new WindowSizeController();
+        final OneToOneController oneToOneController = new OneToOneController(context);
+        final WindowSizeController windowSizeController = new WindowSizeController(context);
         final RotationController rotationController = new RotationController(context, this, null);
         final BlackAndWhiteController blackAndWhiteController = new BlackAndWhiteController(context, context.getBufferedImageFactory());
         final InversionController inversionController = new InversionController(context, context.getBufferedImageFactory());
@@ -173,18 +174,19 @@ public class ViewImpl implements View, ContextListener {
     @Override
     public void repaint() {
         final BufferedImageImpl image = context.getCurrentImage();
-        System.out.println("HERE");
+        if(image == null){
+            return;
+        }
         if (context.getViewMode() == ViewMode.ONE_TO_ONE) {
-            mainWindow.resizeImagePane(image.getWidth(),image.getHeight());
             drawingArea.resizeSoftly(image.getWidth(), image.getHeight());
             drawingArea.setImage(image.bufferedImage());
             drawingArea.repaint();
             drawingArea.revalidate();
-            //mainWindow.pack();
-        } else {
+            return;
+        }
+        if (context.getViewMode() == ViewMode.ON_WINDOW_SIZE){
             resize();
         }
-        // TODO: Во время установки изображения смотрим на режим отображения и выбираем соотв. Сделать лучше как-то?
     }
 
     @Override
@@ -230,8 +232,24 @@ public class ViewImpl implements View, ContextListener {
     @Override
     public void onTransformationChange(Context context) {
         // TODO: перенести
+        if(context.getCurrentImage() == null){
+            return;
+        }
         context.setProcessedImage(new BufferedImageImpl(((BufferedImageImpl) context.getTransformation().apply(context.getOriginalImage())).bufferedImage()));
         context.setCurrentImage(context.getProcessedImage());
         repaint();
+    }
+
+    @Override
+    public void onChangeViewMode(Context context) {
+        if(context.getViewMode() == ViewMode.ON_WINDOW_SIZE){
+            context.setDrawingAreaHeight(mainWindow.getWindowedDrawingAreaHeight());
+            context.setDrawingAreaWidth(mainWindow.getWindowedDrawingAreaWidth());
+            resize();
+            mainWindow.disableScrolls();
+        } else {
+            mainWindow.enableScrolls();
+            repaint();
+        }
     }
 }
