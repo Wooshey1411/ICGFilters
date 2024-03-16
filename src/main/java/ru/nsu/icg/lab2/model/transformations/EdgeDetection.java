@@ -84,27 +84,17 @@ public class EdgeDetection implements Transformation {
         int[] newGrid = new int[gridSize];
         Arrays.fill(newGrid, 0xFF000000);
 
-        int[][] matrixX = new int[3][3];
-        matrixX[0][0] = -1;
-        matrixX[0][1] = -2;
-        matrixX[0][2] = -1;
-        matrixX[1][0] = 0;
-        matrixX[1][1] = 0;
-        matrixX[1][2] = 0;
-        matrixX[2][0] = 1;
-        matrixX[2][1] = 2;
-        matrixX[2][2] = 1;
+        int[][] matrixX = {
+                {-1, -2 , -1},
+                {0, 0, 0},
+                {1, 2, 1}
+        };
 
-        int[][] matrixY = new int[3][3];
-        matrixY[0][0] = -1;
-        matrixY[0][1] = 0;
-        matrixY[0][2] = 1;
-        matrixY[1][0] = -2;
-        matrixY[1][1] = 0;
-        matrixY[1][2] = 2;
-        matrixY[2][0] = -1;
-        matrixY[2][1] = 0;
-        matrixY[2][2] = 1;
+        int[][] matrixY = {
+                {-1, 0, 1},
+                {-2, 0, 2},
+                {-1, 0, 1}
+        };
 
         //without borders
         for (int y = borderStep; y < height - borderStep; y++){
@@ -122,12 +112,15 @@ public class EdgeDetection implements Transformation {
                         int inYIndex = inY + borderStep;
                         int gridIndex = index + inY * width + inX;
                         int pixelColor = grid[gridIndex];
-                        redX +=  ((((pixelColor & 0x00FF0000) >> 16) * matrixX[inYIndex][inXIndex]));
-                        greenX +=  ((((pixelColor & 0x0000FF00) >> 8) * matrixX[inYIndex][inXIndex]));
-                        blueX +=  ((((pixelColor & 0x000000FF)) * matrixX[inYIndex][inXIndex]));
-                        redY +=  ((((pixelColor & 0x00FF0000) >> 16) * matrixY[inYIndex][inXIndex]));
-                        greenY +=  ((((pixelColor & 0x0000FF00) >> 8) * matrixY[inYIndex][inXIndex]));
-                        blueY +=  ((((pixelColor & 0x000000FF)) * matrixY[inYIndex][inXIndex]));
+                        int colorRed = (pixelColor & 0x00FF0000) >> 16;
+                        int colorGreen = (pixelColor & 0x0000FF00) >> 8;
+                        int colorBlue = pixelColor & 0x000000FF;
+                        redX += colorRed * matrixX[inYIndex][inXIndex];
+                        greenX += colorGreen * matrixX[inYIndex][inXIndex];
+                        blueX += colorBlue * matrixX[inYIndex][inXIndex];
+                        redY += colorRed * matrixY[inYIndex][inXIndex];
+                        greenY +=  colorGreen * matrixY[inYIndex][inXIndex];
+                        blueY +=  colorBlue * matrixY[inYIndex][inXIndex];
                     }
                 }
                 int deltaRed = (int) Math.sqrt(redX * redX + redY * redY);
@@ -146,8 +139,6 @@ public class EdgeDetection implements Transformation {
                 newGrid[index] |= (red << 16) | (green << 8) | blue;
             }
         }
-
-
 
         ImageInterface imageInterface = imageFactory.createImage(oldImage.getWidth(),oldImage.getHeight());
         imageInterface.setARGB(newGrid);
