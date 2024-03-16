@@ -7,6 +7,13 @@ import java.util.Arrays;
 
 public class FilterApplicator {
 
+
+    public interface RGBCounter{
+        int color(int red, int green, int blue);
+    }
+
+
+
     private final double[][] matrix;
 
     private final int windowSize;
@@ -21,7 +28,7 @@ public class FilterApplicator {
         this.imageFactory = imageFactory;
     }
 
-    public ImageInterface apply(ImageInterface oldImage){
+    public ImageInterface apply(ImageInterface oldImage, RGBCounter counter){
         int borderStep = (windowSize - 1) / 2;
         int width = oldImage.getWidth();
         int height = oldImage.getHeight();
@@ -49,7 +56,7 @@ public class FilterApplicator {
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));
                     }
                 }
-                newGrid[index] |= (red << 16) | (green << 8) | blue;
+                newGrid[index] |= counter.color(red, green, blue);
             }
         }
 
@@ -72,7 +79,7 @@ public class FilterApplicator {
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));
                     }
                 }
-                newGrid[index] |= (red << 16) | (green << 8) | blue;
+                newGrid[index] |= counter.color(red, green, blue);
             }
         }
 
@@ -94,7 +101,7 @@ public class FilterApplicator {
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));
                     }
                 }
-                newGrid[index] |= (red << 16) | (green << 8) | blue;
+                newGrid[index] |= counter.color(red, green, blue);
             }
         }
 
@@ -116,7 +123,7 @@ public class FilterApplicator {
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));
                     }
                 }
-                newGrid[index] |= (red << 16) | (green << 8) | blue;
+                newGrid[index] |= counter.color(red, green, blue);
             }
         }
 
@@ -138,7 +145,7 @@ public class FilterApplicator {
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));
                     }
                 }
-                newGrid[index] |= (red << 16) | (green << 8) | blue;
+                newGrid[index] |= counter.color(red, green, blue);
             }
         }
 
@@ -160,7 +167,7 @@ public class FilterApplicator {
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));
                     }
                 }
-                newGrid[index] |= (red << 16) | (green << 8) | blue;
+                newGrid[index] |= counter.color(red, green, blue);
             }
         }
 
@@ -182,7 +189,7 @@ public class FilterApplicator {
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));
                     }
                 }
-                newGrid[index] |= (red << 16) | (green << 8) | blue;
+                newGrid[index] |= counter.color(red, green, blue);
             }
         }
 
@@ -204,7 +211,7 @@ public class FilterApplicator {
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));
                     }
                 }
-                newGrid[index] |= (red << 16) | (green << 8) | blue;
+                newGrid[index] |= counter.color(red, green, blue);
             }
         }
 
@@ -226,7 +233,7 @@ public class FilterApplicator {
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));
                     }
                 }
-                newGrid[index] |= (red << 16) | (green << 8) | blue;
+                newGrid[index] |= counter.color(red, green, blue) ;
             }
         }
 

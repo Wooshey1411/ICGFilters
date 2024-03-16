@@ -17,8 +17,7 @@ public class BlackAndWhite implements Transformation {
     @Override
     public ImageInterface apply(ImageInterface oldImage) {
         int gridSize = oldImage.getHeight() * oldImage.getWidth();
-        int[] grid = new int[gridSize];
-        grid = oldImage.getARGB(null);
+        int[] grid = oldImage.getARGB(null);
         for (int pixel = 0; pixel < gridSize; pixel++) {
             int newC =
                     (int) (((grid[pixel] & 0x00FF0000) >> 16) * 0.299) + // r

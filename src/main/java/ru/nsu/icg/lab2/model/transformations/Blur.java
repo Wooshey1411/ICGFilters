@@ -30,7 +30,7 @@ public class Blur implements Transformation {
         }
 
         FilterApplicator applicator = new FilterApplicator(matrix, windowSize, imageFactory);
-        return applicator.apply(oldImage);
+        return applicator.apply(oldImage, ((red, green, blue) -> (red << 16) | (green << 8) | blue));
 
     }
 }
