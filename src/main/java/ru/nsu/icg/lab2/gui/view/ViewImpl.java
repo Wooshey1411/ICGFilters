@@ -35,7 +35,7 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
         final UndoController undoController = new UndoController(context);
         final OneToOneController oneToOneController = new OneToOneController(context);
         final WindowSizeController windowSizeController = new WindowSizeController(context);
-        final RotationController rotationController = new RotationController(context, this, null);
+        final RotationController rotationController = new RotationController(context, this, context.getBufferedImageFactory());
         final BlackAndWhiteController blackAndWhiteController = new BlackAndWhiteController(context, context.getBufferedImageFactory());
         final InversionController inversionController = new InversionController(context, context.getBufferedImageFactory());
         final GammaCorrectionController gammaCorrectionController = new GammaCorrectionController(context, this, context.getBufferedImageFactory());
