@@ -40,7 +40,7 @@ public class GammaCorrectionController implements ActionListener {
 
         final JTextField textField = new JTextField();
         final JSlider slider = new JSlider(SLIDER_MIN_VALUE, SLIDER_MAX_VALUE);
-        this.panel = Utils.createSimpleDialogInputPanel(textField, slider,"Gamma:",1);
+        this.panel = Utils.createSimpleSliderDialogInputPanel(textField, slider,"Gamma:",1);
         this.dialogWindowController = new TextFieldSliderController(
                 textField,
                 slider,

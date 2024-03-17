@@ -34,7 +34,7 @@ public class EdgeDetectionController implements ActionListener {
         this.edgeDetection = new EdgeDetection(imageFactory);
         JTextField textField = new JTextField();
         JSlider slider = new JSlider(SLIDER_MIN_VALUE,SLIDER_MAX_VALUE);
-        this.optionsSetWindow = Utils.createSimpleDialogInputPanel(textField,slider,"Binarization:",1);
+        this.optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(textField,slider,"Binarization:",1);
         algComboBox = new JComboBox<>(edgeDetection.getTypesAsString());
         Utils.addComboBoxTo3ColsPanel(this.optionsSetWindow, algComboBox,"Algorithm:", 1);
         this.textFieldSliderController = new TextFieldSliderController(

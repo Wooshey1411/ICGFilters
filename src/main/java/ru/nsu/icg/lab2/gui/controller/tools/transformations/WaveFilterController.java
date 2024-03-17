@@ -55,7 +55,7 @@ public class WaveFilterController implements ActionListener {
         JTextField ampYTextField = new JTextField();
         JTextField freqXTextField = new JTextField();
         JTextField freqYTextField = new JTextField();
-        this.optionsSetWindow = Utils.createSimpleDialogInputPanel(ampXTextField,ampXSlider,"X amplitude",1);
+        this.optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(ampXTextField,ampXSlider,"X amplitude",1);
         Utils.addSyncSliderTo3ColsPanel(this.optionsSetWindow,freqXTextField,freqXSlider,"X frequency",1);
         Utils.addSyncSliderTo3ColsPanel(this.optionsSetWindow,ampYTextField,ampYSlider,"Y amplitude",1);
         Utils.addSyncSliderTo3ColsPanel(this.optionsSetWindow,freqYTextField,freqYSlider,"Y frequency",1);

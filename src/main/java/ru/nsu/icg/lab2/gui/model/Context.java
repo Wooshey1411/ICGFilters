@@ -15,6 +15,11 @@ public class Context {
     private final BufferedImageFactory bufferedImageFactory;
     @Getter
     private ViewMode viewMode;
+
+    @Getter
+    @Setter
+    private InterpolationMethod interpolationMethod;
+
     @Getter
     @Setter
     private BufferedImageImpl originalImage;

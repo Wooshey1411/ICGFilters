@@ -10,7 +10,7 @@ public final class Utils {
     private Utils() {
     }
 
-    public static JPanel createSimpleDialogInputPanel(JTextField textField, JSlider slider, String name, int textShift) {
+    public static JPanel createSimpleSliderDialogInputPanel(JTextField textField, JSlider slider, String name, int textShift) {
         final JPanel result = new JPanel();
         textField.setSize(40,40);
         result.setLayout(new GridLayout(1, 3));
@@ -34,6 +34,14 @@ public final class Utils {
         jPanel.add(new JLabel(" ".repeat(textShift) +name));
         jPanel.add(comboBox);
     }
+
+    public static JPanel createSimpleComboDialogInputPanel(JComboBox<?> comboBox,String name, int textShift){
+        final JPanel result = new JPanel(new GridLayout(1,2));
+        result.add(new JLabel(" ".repeat(textShift) +name));
+        result.add(comboBox);
+        return result;
+    }
+
     public static BufferedImageImpl deepCopy(BufferedImageImpl bufferedImageImpl) {
         final BufferedImage bufferedImage = bufferedImageImpl.bufferedImage();
         ColorModel cm = bufferedImage.getColorModel();

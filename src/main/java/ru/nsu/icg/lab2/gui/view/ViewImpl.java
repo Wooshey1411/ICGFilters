@@ -34,7 +34,7 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
         final HandController handController = new HandController();
         final UndoController undoController = new UndoController(context);
         final OneToOneController oneToOneController = new OneToOneController(context);
-        final WindowSizeController windowSizeController = new WindowSizeController(context);
+        final WindowSizeController windowSizeController = new WindowSizeController(context,this);
         final RotationController rotationController = new RotationController(context, this, context.getBufferedImageFactory());
         final BlackAndWhiteController blackAndWhiteController = new BlackAndWhiteController(context, context.getBufferedImageFactory());
         final InversionController inversionController = new InversionController(context, context.getBufferedImageFactory());
@@ -141,10 +141,19 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
                 context.getDrawingAreaHeight(),
                 BufferedImage.TYPE_INT_ARGB
         );
+
+        Object hintValue;
+        switch (context.getInterpolationMethod()){
+            case BICUBIC -> hintValue = RenderingHints.VALUE_INTERPOLATION_BICUBIC;
+            case BILINEAR -> hintValue = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
+            case NEAREST_NEIGHBOR -> hintValue = RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR;
+            default -> throw new IllegalArgumentException("Unexpected interpolation method");
+        }
+
         Graphics2D graphics2D = resizedImage.createGraphics();
         graphics2D.setRenderingHint(
                 RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR
+                hintValue
         );
         graphics2D.drawImage(
                 image.bufferedImage(),
