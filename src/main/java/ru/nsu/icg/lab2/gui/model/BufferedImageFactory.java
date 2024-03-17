@@ -14,4 +14,9 @@ public class BufferedImageFactory implements ImageFactory {
     public ImageInterface createImage(int width, int height) {
         return new BufferedImageImpl(new BufferedImage(width, height, type));
     }
+
+    @Override
+    public ImageInterface createImage(ImageInterface imageInterface) {
+        return createImage(imageInterface.getWidth(), imageInterface.getHeight());
+    }
 }
