@@ -1,35 +1,51 @@
 package ru.nsu.icg.lab2.model.transformations;
 
+import lombok.Getter;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
 
 public class Blur implements Transformation {
-    private final ImageFactory imageFactory;
+    private final FilterApplicator filterApplicator;
 
-    private int windowSize = 15;
+    @Getter
+    private int windowSize;
 
+    @Getter
+    private double sigma;
 
-    private double sigma = 1.5;
-
+    private double[][] matrix;
 
     public Blur(ImageFactory imageFactory) {
-        this.imageFactory = imageFactory;
+        this.filterApplicator = new FilterApplicator(imageFactory);
     }
-    @Override
-    public ImageInterface apply(ImageInterface oldImage) {
-        double[][] matrix = new double[15][15];
-        int borderStep = (windowSize - 1) / 2;
+
+    public void setParameters(double sigma, int windowSize) {
+        this.sigma = sigma;
+        this.windowSize = windowSize;
+        this.matrix = new double[windowSize][windowSize];
+
+        final int borderStep = (windowSize - 1) / 2;
+        final double squared_doubled_sigma = 2 * sigma * sigma;
+        final double k = 1.0 / (Math.PI * squared_doubled_sigma);
+
         for (int y = 0; y < windowSize; y++){
             for (int x = 0; x < windowSize; x++){
-                int xMoved = x - borderStep;
-                int yMoved = y - borderStep;
-                matrix[y][x] = (1.0 / (2 * Math.PI * sigma * sigma)) *
-                        Math.exp(-((double) (xMoved * xMoved + yMoved * yMoved) /(2 * sigma * sigma)));
+                final int xMoved = x - borderStep;
+                final int yMoved = y - borderStep;
+                final double numerator = xMoved * xMoved + yMoved * yMoved;
+                matrix[y][x] = k * Math.exp(-numerator / squared_doubled_sigma);
             }
         }
+    }
 
-        FilterApplicator applicator = new FilterApplicator(matrix, windowSize, imageFactory);
-        return applicator.apply(oldImage, ((red, green, blue) -> (red << 16) | (green << 8) | blue));
+    @Override
+    public ImageInterface apply(ImageInterface oldImage) {
+        return filterApplicator.apply(
+                oldImage,
+                ((red, green, blue) -> (red << 16) | (green << 8) | blue),
+                matrix,
+                windowSize
+        );
     }
 }

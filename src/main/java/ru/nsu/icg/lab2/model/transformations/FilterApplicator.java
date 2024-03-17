@@ -6,29 +6,18 @@ import ru.nsu.icg.lab2.model.ImageInterface;
 import java.util.Arrays;
 
 public class FilterApplicator {
-
-
     public interface RGBCounter{
         int color(int red, int green, int blue);
     }
 
-
-
-    private final double[][] matrix;
-
-    private final int windowSize;
-
-
     private final ImageFactory imageFactory;
 
 
-    public FilterApplicator(double[][] matrix, int windowSize, ImageFactory imageFactory) {
-        this.matrix = matrix;
-        this.windowSize = windowSize;
+    public FilterApplicator(ImageFactory imageFactory) {
         this.imageFactory = imageFactory;
     }
 
-    public ImageInterface apply(ImageInterface oldImage, RGBCounter counter){
+    public ImageInterface apply(ImageInterface oldImage, RGBCounter counter, double[][] matrix, int windowSize){
         int borderStep = (windowSize - 1) / 2;
         int width = oldImage.getWidth();
         int height = oldImage.getHeight();

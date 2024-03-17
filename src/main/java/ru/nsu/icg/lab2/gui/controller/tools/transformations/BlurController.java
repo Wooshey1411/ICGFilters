@@ -21,6 +21,7 @@ public class BlurController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+        blur.setParameters(1.5, 15);
         context.setTransformation(blur);
     }
 }
