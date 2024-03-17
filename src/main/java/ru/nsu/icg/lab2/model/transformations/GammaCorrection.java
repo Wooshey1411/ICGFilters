@@ -6,7 +6,7 @@ import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
 
 public class GammaCorrection implements Transformation {
-    private final int[] gammaCorrectionValues = new int[256];
+    private final int[] correctedValues = new int[256];
 
     private final ImageFactory imageFactory;
 
@@ -22,7 +22,7 @@ public class GammaCorrection implements Transformation {
         this.gamma = gamma;
 
         for (int i = 0; i < 256; i++) {
-            gammaCorrectionValues[i] = (int) (Math.pow(i / 255.0, gamma) * 255);
+            correctedValues[i] = (int) (Math.pow(i / 255.0, gamma) * 255);
         }
     }
 
@@ -38,9 +38,9 @@ public class GammaCorrection implements Transformation {
             final int oldGreen = TransformationUtils.getGreen(grid[pixel]);
             final int oldBlue = TransformationUtils.getBlue(grid[pixel]);
 
-            final int newRed = gammaCorrectionValues[oldRed];
-            final int newGreen = gammaCorrectionValues[oldGreen];
-            final int newBlue = gammaCorrectionValues[oldBlue];
+            final int newRed = correctedValues[oldRed];
+            final int newGreen = correctedValues[oldGreen];
+            final int newBlue = correctedValues[oldBlue];
 
             grid[pixel] = TransformationUtils.getARGB(
                     oldAlpha,
