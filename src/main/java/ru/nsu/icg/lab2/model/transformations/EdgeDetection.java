@@ -1,7 +1,6 @@
 package ru.nsu.icg.lab2.model.transformations;
 
 import lombok.Data;
-import lombok.NonNull;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
@@ -10,10 +9,10 @@ import java.util.Arrays;
 
 @Data
 public class EdgeDetection implements Transformation {
-    public enum FilterType{
+    public enum EdgeDetectionType{
         ROBERTS, SOBEL
     }
-    private FilterType type;
+    private EdgeDetectionType type;
 
     private int brightnessBorder;
 
@@ -22,30 +21,8 @@ public class EdgeDetection implements Transformation {
     public EdgeDetection(ImageFactory imageFactory) {
         this.imageFactory = imageFactory;
         this.brightnessBorder = 256;
-        this.type = FilterType.ROBERTS;
+        this.type = EdgeDetectionType.ROBERTS;
     }
-
-    public String getTypeAsString(){
-        switch (type){
-            case ROBERTS -> {return "Roberts";}
-            case SOBEL -> {return "Sobel";}
-        }
-        return null;
-    }
-    public String[] getTypesAsString(){
-        return new String[]{
-                "Roberts",
-                "Sobel"
-        };
-    }
-    public void setTypeFromString(@NonNull String typeName){
-        switch (typeName){
-            case "Roberts" -> this.type = FilterType.ROBERTS;
-            case "Sobel" -> this.type = FilterType.SOBEL;
-            default -> throw new IllegalArgumentException("No such type in edge detection filter: " + typeName);
-        }
-    }
-
 
 
     private ImageInterface applyRoberts(ImageInterface oldImage){
@@ -170,7 +147,7 @@ public class EdgeDetection implements Transformation {
 
     @Override
     public ImageInterface apply(ImageInterface oldImage) {
-        if (type == FilterType.SOBEL){
+        if (type == EdgeDetectionType.SOBEL){
             return applySobel(oldImage);
         }
         return applyRoberts(oldImage);

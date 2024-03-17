@@ -10,7 +10,8 @@ import ru.nsu.icg.lab2.model.transformations.EdgeDetection;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EdgeDetectionController implements ActionListener {
 
@@ -27,15 +28,20 @@ public class EdgeDetectionController implements ActionListener {
     private final JPanel optionsSetWindow;
     private final TextFieldSliderController textFieldSliderController;
     private final JComboBox<String> algComboBox;
+    private final HashMap<String, EdgeDetection.EdgeDetectionType> edgeDetectionTypeHashMap;
 
     public EdgeDetectionController(Context context,View view, ImageFactory imageFactory) {
         this.context = context;
         this.view = view;
         this.edgeDetection = new EdgeDetection(imageFactory);
+        this.edgeDetectionTypeHashMap = new HashMap<>(Map.of(
+                "Sobel", EdgeDetection.EdgeDetectionType.SOBEL,
+                "Roberts", EdgeDetection.EdgeDetectionType.ROBERTS
+        ));
+        algComboBox = new JComboBox<>(edgeDetectionTypeHashMap.keySet().toArray(new String[0]));
         JTextField textField = new JTextField();
         JSlider slider = new JSlider(SLIDER_MIN_VALUE,SLIDER_MAX_VALUE);
         this.optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(textField,slider,"Binarization:",1);
-        algComboBox = new JComboBox<>(edgeDetection.getTypesAsString());
         Utils.addComboBoxTo3ColsPanel(this.optionsSetWindow, algComboBox,"Algorithm:", 1);
         this.textFieldSliderController = new TextFieldSliderController(
                 textField,
@@ -52,8 +58,19 @@ public class EdgeDetectionController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         while (true) {
+            String edgeDetectionType = null;
+            for(Map.Entry<String, EdgeDetection.EdgeDetectionType> entry : edgeDetectionTypeHashMap.entrySet()){
+                if(entry.getValue() == edgeDetection.getType()){
+                    edgeDetectionType = entry.getKey();
+                }
+            }
+
+            if(edgeDetectionType == null){
+                throw new IllegalArgumentException("No such edge detection type: " + edgeDetection.getType());
+            }
+
+            algComboBox.setSelectedItem(edgeDetectionType);
             textFieldSliderController.reset(edgeDetection.getBrightnessBorder());
-            algComboBox.setSelectedItem(edgeDetection.getTypeAsString());
 
             final boolean ok = view.showConfirmationDialog("Edge Detection", optionsSetWindow);
             if (!ok) {
@@ -64,7 +81,7 @@ public class EdgeDetectionController implements ActionListener {
                 edgeDetection.setBrightnessBorder(textFieldSliderController.getIntValue());
             }
             if (!textFieldSliderController.hasError()) {
-                edgeDetection.setTypeFromString((String) Objects.requireNonNull(algComboBox.getSelectedItem()));
+                edgeDetection.setType(edgeDetectionTypeHashMap.get((String)algComboBox.getSelectedItem()));
                 break;
             }
             view.showError(INCORRECT_VALUE_MESSAGE);
