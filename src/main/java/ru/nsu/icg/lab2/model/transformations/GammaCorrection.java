@@ -29,8 +29,7 @@ public class GammaCorrection implements Transformation {
     @Override
     public ImageInterface apply(ImageInterface oldImage) {
         final int gridSize = oldImage.getHeight() * oldImage.getWidth();
-        final int[] grid = new int[gridSize];
-        oldImage.getARGB(grid);
+        final int[] grid = oldImage.getARGB();
 
         for (int pixel = 0; pixel < gridSize; pixel++) {
             final int oldAlpha = TransformationUtils.getAlpha(grid[pixel]);

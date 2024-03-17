@@ -7,6 +7,9 @@ public interface ImageInterface {
 
     int getARGB(int x, int y);
 
+    // Returns new array with pixels
+    int[] getARGB();
+
     // Returns new array if rgbArray is null or just returns rgbArray
     int[] getARGB(int[] rgbArray);
 
