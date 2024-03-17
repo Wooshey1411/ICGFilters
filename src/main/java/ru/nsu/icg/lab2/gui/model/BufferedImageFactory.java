@@ -11,12 +11,20 @@ public class BufferedImageFactory implements ImageFactory {
     private int type;
 
     @Override
-    public ImageInterface createImage(int width, int height) {
-        return new BufferedImageImpl(new BufferedImage(width, height, type));
+    public ImageInterface createImage(int width, int height, int[] grid) {
+        final ImageInterface result = createImage(width, height);
+        result.setARGB(grid);
+        return result;
     }
 
     @Override
-    public ImageInterface createImage(ImageInterface imageInterface) {
-        return createImage(imageInterface.getWidth(), imageInterface.getHeight());
+    public ImageInterface createImage(ImageInterface baseImage, int[] grid) {
+        final ImageInterface result = createImage(baseImage.getWidth(), baseImage.getHeight(), grid);
+        result.setARGB(grid);
+        return result;
+    }
+
+    private ImageInterface createImage(int width, int height) {
+        return new BufferedImageImpl(new BufferedImage(width, height, type));
     }
 }

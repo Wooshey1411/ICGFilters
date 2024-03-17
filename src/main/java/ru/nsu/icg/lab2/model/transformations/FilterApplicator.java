@@ -237,8 +237,6 @@ public class FilterApplicator {
             }
         }
 
-        ImageInterface imageInterface = imageFactory.createImage(oldImage.getWidth(),oldImage.getHeight());
-        imageInterface.setARGB(newGrid);
-        return imageInterface;
+        return imageFactory.createImage(oldImage, newGrid);
     }
 }

@@ -7,14 +7,17 @@ import ru.nsu.icg.lab2.model.Transformation;
 import java.util.Arrays;
 
 public class Watercoloring implements Transformation {
-
     private final ImageFactory imageFactory;
+
+    private final Sharpening sharpening;
 
     private int windowSize = 5;
 
     public Watercoloring(ImageFactory imageFactory) {
         this.imageFactory = imageFactory;
+        this.sharpening = new Sharpening(imageFactory);
     }
+
     @Override
     public ImageInterface apply(ImageInterface oldImage) {
         int borderStep = (windowSize - 1) / 2;
@@ -53,11 +56,6 @@ public class Watercoloring implements Transformation {
             }
         }
 
-
-        ImageInterface imageInterface = imageFactory.createImage(oldImage.getWidth(),oldImage.getHeight());
-        imageInterface.setARGB(newGrid);
-
-        Sharpening sharpening = new Sharpening(imageFactory);
-        return sharpening.apply(imageInterface);
+        return sharpening.apply(imageFactory.createImage(oldImage, newGrid));
     }
 }

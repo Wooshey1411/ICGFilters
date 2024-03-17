@@ -69,9 +69,6 @@ public class Rotation implements Transformation {
             }
         }
 
-
-        ImageInterface imageInterface = imageFactory.createImage(newWidth,newHeight);
-        imageInterface.setARGB(newGrid);
-        return imageInterface;
+        return imageFactory.createImage(newWidth, newHeight, newGrid);
     }
 }

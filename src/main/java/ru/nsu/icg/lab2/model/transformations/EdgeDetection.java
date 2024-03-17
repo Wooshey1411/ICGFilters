@@ -67,9 +67,7 @@ public class EdgeDetection implements Transformation {
             }
         }
 
-        ImageInterface imageInterface = imageFactory.createImage(oldImage.getWidth(),oldImage.getHeight());
-        imageInterface.setARGB(newGrid);
-        return imageInterface;
+        return imageFactory.createImage(oldImage, newGrid);
     }
 
 
@@ -139,9 +137,7 @@ public class EdgeDetection implements Transformation {
             }
         }
 
-        ImageInterface imageInterface = imageFactory.createImage(oldImage.getWidth(),oldImage.getHeight());
-        imageInterface.setARGB(newGrid);
-        return imageInterface;
+        return imageFactory.createImage(oldImage, newGrid);
     }
 
 

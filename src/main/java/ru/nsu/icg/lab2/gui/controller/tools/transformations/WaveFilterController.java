@@ -46,7 +46,7 @@ public class WaveFilterController implements ActionListener {
         this.context = context;
         this.view = view;
         this.waveFilter = new WaveFilter(imageFactory);
-        this.orderComboBox = new JComboBox<>(waveFilter.getTypesAsString());
+        this.orderComboBox = null; //new JComboBox<>(waveFilter.getTypesAsString());
         JSlider ampXSlider = new JSlider(AMP_SLIDER_MIN_VALUE,AMP_SLIDER_MAX_VALUE);
         JSlider ampYSlider = new JSlider(AMP_SLIDER_MIN_VALUE,AMP_SLIDER_MAX_VALUE);
         JSlider freqXSlider = new JSlider(FREQ_SLIDER_MIN_VALUE,FREQ_SLIDER_MAX_VALUE);
@@ -59,7 +59,7 @@ public class WaveFilterController implements ActionListener {
         Utils.addSyncSliderTo3ColsPanel(this.optionsSetWindow,freqXTextField,freqXSlider,"X frequency",1);
         Utils.addSyncSliderTo3ColsPanel(this.optionsSetWindow,ampYTextField,ampYSlider,"Y amplitude",1);
         Utils.addSyncSliderTo3ColsPanel(this.optionsSetWindow,freqYTextField,freqYSlider,"Y frequency",1);
-        Utils.addComboBoxTo3ColsPanel(this.optionsSetWindow,orderComboBox,"Order",1);
+        //Utils.addComboBoxTo3ColsPanel(this.optionsSetWindow, orderComboBox,"Order",1);
         this.ampXTextFieldSliderController = new TextFieldSliderController(
                 ampXTextField,
                 ampXSlider,
@@ -112,7 +112,7 @@ public class WaveFilterController implements ActionListener {
             ampYTextFieldSliderController.reset(waveFilter.getAmpY());
             freqXTextFieldSliderController.reset(waveFilter.getFreqX());
             freqYTextFieldSliderController.reset(waveFilter.getFreqY());
-            orderComboBox.setSelectedItem(waveFilter.getTypeAsString());
+            //orderComboBox.setSelectedItem(waveFilter.getTypeAsString());
 
             final boolean ok = view.showConfirmationDialog("Wave", optionsSetWindow);
             if (!ok) {
@@ -164,7 +164,7 @@ public class WaveFilterController implements ActionListener {
 
             break;
         }
-        waveFilter.setTypeFromString((String) Objects.requireNonNull(orderComboBox.getSelectedItem()));
+        //waveFilter.setTypeFromString((String) Objects.requireNonNull(orderComboBox.getSelectedItem()));
 
 
 

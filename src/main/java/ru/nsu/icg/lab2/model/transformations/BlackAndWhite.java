@@ -32,10 +32,7 @@ public class BlackAndWhite implements Transformation {
             );
         }
 
-        final ImageInterface newImage = imageFactory.createImage(oldImage);
-        newImage.setARGB(grid);
-
-        return newImage;
+        return imageFactory.createImage(oldImage, grid);
     }
 
     private static int getBlackAndWhite(int red, int green, int blue) {
