@@ -82,7 +82,7 @@ public class WaveFilterController implements ActionListener {
         );
         doubleRounder2 = new DoubleRounder(2);
         doubleRounder3 = new DoubleRounder(3);
-        System.out.println(step);
+        //System.out.println(step);
         this.freqXTextFieldSliderController = new TextFieldSliderController( // 0-1 -> 0.001 ; 1-10 -> 0.01
                 freqXTextField,
                 freqXSlider,
