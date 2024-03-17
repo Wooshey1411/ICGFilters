@@ -1,35 +1,58 @@
 package ru.nsu.icg.lab2.model.transformations;
 
-import lombok.Data;
+import lombok.Getter;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
 
-@Data
 public class GammaCorrection implements Transformation {
-    private double gamma;
+    private final int[] gammaCorrectionValues = new int[256];
 
     private final ImageFactory imageFactory;
+
+    @Getter
+    private double gamma;
+
     public GammaCorrection(ImageFactory imageFactory) {
         this.gamma = 1;
         this.imageFactory = imageFactory;
     }
 
+    public void setGamma(double gamma) {
+        this.gamma = gamma;
+
+        for (int i = 0; i < 256; i++) {
+            gammaCorrectionValues[i] = (int) (Math.pow(i / 255.0, gamma) * 255);
+        }
+    }
+
     @Override
     public ImageInterface apply(ImageInterface oldImage) {
-
-        int gridSize = oldImage.getHeight() * oldImage.getWidth();
-        int[] grid = new int[gridSize];
+        final int gridSize = oldImage.getHeight() * oldImage.getWidth();
+        final int[] grid = new int[gridSize];
         oldImage.getARGB(grid);
-        for (int pixel = 0; pixel < gridSize; pixel++) {
-            grid[pixel] = (grid[pixel] & 0xFF000000) |
-                    ((int) (Math.pow((((grid[pixel] & 0x00FF0000) >> 16) / 255.0), gamma) * 255) << 16) |
-                    ((int) (Math.pow((((grid[pixel] & 0x0000FF00) >> 8) / 255.0), gamma) * 255) << 8) |
-                    (int) (Math.pow((((grid[pixel] & 0x000000FF)) / 255.0), gamma) * 255);
-        }
 
-        ImageInterface imageInterface = imageFactory.createImage(oldImage.getWidth(),oldImage.getHeight());
+        for (int pixel = 0; pixel < gridSize; pixel++) {
+            final int oldAlpha = TransformationUtils.getAlpha(grid[pixel]);
+            final int oldRed = TransformationUtils.getRed(grid[pixel]);
+            final int oldGreen = TransformationUtils.getGreen(grid[pixel]);
+            final int oldBlue = TransformationUtils.getBlue(grid[pixel]);
+
+            final int newRed = gammaCorrectionValues[oldRed];
+            final int newGreen = gammaCorrectionValues[oldGreen];
+            final int newBlue = gammaCorrectionValues[oldBlue];
+
+            grid[pixel] = TransformationUtils.getARGB(
+                    oldAlpha,
+                    newRed,
+                    newGreen,
+                    newBlue
+                );
+            }
+
+        final ImageInterface imageInterface = imageFactory.createImage(oldImage);
         imageInterface.setARGB(grid);
+
         return imageInterface;
     }
 }
