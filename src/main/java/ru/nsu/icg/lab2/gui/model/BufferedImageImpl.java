@@ -21,6 +21,11 @@ public record BufferedImageImpl(BufferedImage bufferedImage) implements ImageInt
     }
 
     @Override
+    public int[] getARGB() {
+        return getARGB(null);
+    }
+
+    @Override
     public int[] getARGB(int[] rgbArray) {
         return bufferedImage.getRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), rgbArray, 0, bufferedImage.getWidth());
     }
