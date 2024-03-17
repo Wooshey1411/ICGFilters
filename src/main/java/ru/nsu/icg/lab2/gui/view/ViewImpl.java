@@ -46,7 +46,7 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
         final WatercoloringController watercoloringController = new WatercoloringController(context, context.getBufferedImageFactory());
         final FloydSteinbergDitheringController floydSteinbergDitheringController = new FloydSteinbergDitheringController(context, this, context.getBufferedImageFactory());
         final OrderedDitheringController orderedDitheringController = new OrderedDitheringController(context, this, context.getBufferedImageFactory());
-        final WaveFilterController waveFilterController = new WaveFilterController(context, context.getBufferedImageFactory());
+        final WaveFilterController waveFilterController = new WaveFilterController(context, this ,context.getBufferedImageFactory());
 
         final HelpController helpController = new HelpController(this);
         final AboutController aboutController = new AboutController(this);

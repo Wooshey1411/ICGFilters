@@ -1,35 +1,54 @@
 package ru.nsu.icg.lab2.model.transformations;
 
-import lombok.Setter;
+import lombok.Data;
+import lombok.NonNull;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
 
+@Data
 public class WaveFilter implements Transformation {
 
-    @Setter
     private double ampX;
 
-    @Setter
     private double ampY;
 
-    @Setter
     private double freqX;
 
-    @Setter
     private double freqY;
 
-    @Setter
     private boolean isXFirst;
+
     private final ImageFactory imageFactory;
 
     public WaveFilter(ImageFactory imageFactory) {
         this.imageFactory = imageFactory;
         ampX = 10;
-        freqX = 0.1;
+        freqX = 0;
         ampY = 0;
         freqY = 0;
         isXFirst = true;
+    }
+
+    public String getTypeAsString(){
+        if(isXFirst){
+            return "From X to Y";
+        } else {
+            return "From Y to X";
+        }
+    }
+    public String[] getTypesAsString(){
+        return new String[]{
+                "From X to Y",
+                "From Y to X"
+        };
+    }
+    public void setTypeFromString(@NonNull String typeName){
+        switch (typeName){
+            case "From X to Y" -> this.isXFirst = true;
+            case "From Y to X" -> this.isXFirst = false;
+            default -> throw new IllegalArgumentException("No such type in wave filter: " + typeName);
+        }
     }
 
     @Override

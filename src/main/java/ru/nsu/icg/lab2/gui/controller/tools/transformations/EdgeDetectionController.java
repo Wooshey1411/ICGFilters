@@ -17,7 +17,7 @@ public class EdgeDetectionController implements ActionListener {
     private static final int SLIDER_MIN_VALUE = 0;
     private static final int SLIDER_MAX_VALUE = 1000;
     private static final String INCORRECT_VALUE_MESSAGE = String.format(
-            "Incorrect rotation! It must be between %d and %d",
+            "Incorrect binarization! It must be between %d and %d",
             SLIDER_MIN_VALUE,
             SLIDER_MAX_VALUE
     );
