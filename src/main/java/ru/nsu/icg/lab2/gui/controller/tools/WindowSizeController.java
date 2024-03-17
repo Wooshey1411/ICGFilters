@@ -25,7 +25,7 @@ public class WindowSizeController implements ActionListener {
                 "Bicubic",InterpolationMethod.BICUBIC,
                 "Nearest neighbor",InterpolationMethod.NEAREST_NEIGHBOR));
         this.comboBox = new JComboBox<>(methodHashMap.keySet().toArray(new String[0]));
-        this.optionsPanel = Utils.createSimpleComboDialogInputPanel(comboBox,"Interpolation method",1);
+        this.optionsPanel = Utils.createSimpleComboDialogInputPanel(comboBox,"Interpolation method:",1);
     }
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
