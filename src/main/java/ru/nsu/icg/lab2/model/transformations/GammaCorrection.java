@@ -46,12 +46,12 @@ public class GammaCorrection implements Transformation {
                     newRed,
                     newGreen,
                     newBlue
-                );
-            }
+            );
+        }
 
-        final ImageInterface imageInterface = imageFactory.createImage(oldImage);
-        imageInterface.setARGB(grid);
+        final ImageInterface newImage = imageFactory.createImage(oldImage);
+        newImage.setARGB(grid);
 
-        return imageInterface;
+        return newImage;
     }
 }
