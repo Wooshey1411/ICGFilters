@@ -16,6 +16,11 @@ public record BufferedImageImpl(BufferedImage bufferedImage) implements ImageInt
     }
 
     @Override
+    public int getGridSize() {
+        return bufferedImage.getWidth() * bufferedImage.getHeight();
+    }
+
+    @Override
     public int getARGB(int x, int y) {
         return bufferedImage.getRGB(x, y);
     }

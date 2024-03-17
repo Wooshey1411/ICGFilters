@@ -5,6 +5,9 @@ public interface ImageInterface {
 
     int getHeight();
 
+    // Returns width * height
+    int getGridSize();
+
     int getARGB(int x, int y);
 
     // Returns new array with pixels
