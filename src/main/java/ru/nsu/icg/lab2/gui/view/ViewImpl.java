@@ -40,7 +40,7 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
         final InversionController inversionController = new InversionController(context, context.getBufferedImageFactory());
         final GammaCorrectionController gammaCorrectionController = new GammaCorrectionController(context, this, context.getBufferedImageFactory());
         final SharpeningController sharpeningController = new SharpeningController(context, context.getBufferedImageFactory());
-        final EdgeDetectionController edgeDetectionController = new EdgeDetectionController(context, context.getBufferedImageFactory());
+        final EdgeDetectionController edgeDetectionController = new EdgeDetectionController(context, this,context.getBufferedImageFactory());
         final EmbossingController embossingController = new EmbossingController(context, context.getBufferedImageFactory());
         final BlurController blurController = new BlurController(context, this, context.getBufferedImageFactory());
         final WatercoloringController watercoloringController = new WatercoloringController(context, context.getBufferedImageFactory());

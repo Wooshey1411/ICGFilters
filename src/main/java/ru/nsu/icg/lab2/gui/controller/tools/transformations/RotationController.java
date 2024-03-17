@@ -33,7 +33,7 @@ public class RotationController implements ActionListener {
 
         final JTextField textField = new JTextField();
         final JSlider slider = new JSlider(SLIDER_MIN_VALUE, SLIDER_MAX_VALUE);
-        this.panel = Utils.createDialogInputPanel(textField, slider);
+        this.panel = Utils.createSimpleDialogInputPanel(textField, slider,"Angle:",1);
         this.dialogWindowController = new TextFieldSliderController(
                 textField,
                 slider,

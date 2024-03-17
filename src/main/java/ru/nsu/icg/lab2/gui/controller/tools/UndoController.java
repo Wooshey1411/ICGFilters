@@ -19,6 +19,9 @@ public class UndoController implements ActionListener {
         if(context.getCurrentImage() == context.getProcessedImage()){
             context.setCurrentImage(context.getOriginalImage());
         } else {
+            if(context.getProcessedImage() == null){
+                return;
+            }
             context.setCurrentImage(context.getProcessedImage());
         }
     }

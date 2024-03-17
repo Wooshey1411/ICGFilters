@@ -10,14 +10,30 @@ public final class Utils {
     private Utils() {
     }
 
-    public static JPanel createDialogInputPanel(JTextField textField, JSlider slider) {
+    public static JPanel createSimpleDialogInputPanel(JTextField textField, JSlider slider, String name, int textShift) {
         final JPanel result = new JPanel();
-        result.setLayout(new GridLayout(2, 1));
+        textField.setSize(40,40);
+        result.setLayout(new GridLayout(1, 3));
+        result.add(new JLabel(" ".repeat(textShift) +name));
         result.add(textField);
         result.add(slider);
         return result;
     }
 
+    public static void addSyncSliderTo3ColsPanel(JPanel jPanel, JTextField textField, JSlider slider, String name, int textShift){
+        GridLayout gridLayout = (GridLayout) jPanel.getLayout();
+        jPanel.setLayout(new GridLayout(gridLayout.getRows()+1,3));
+        jPanel.add(new JLabel(" ".repeat(textShift) +name));
+        jPanel.add(textField);
+        jPanel.add(slider);
+    }
+
+    public static void addComboBoxTo3ColsPanel(JPanel jPanel, JComboBox<?> comboBox,String name, int textShift){
+        GridLayout gridLayout = (GridLayout) jPanel.getLayout();
+        jPanel.setLayout(new GridLayout(gridLayout.getRows()+1,3));
+        jPanel.add(new JLabel(" ".repeat(textShift) +name));
+        jPanel.add(comboBox);
+    }
     public static BufferedImageImpl deepCopy(BufferedImageImpl bufferedImageImpl) {
         final BufferedImage bufferedImage = bufferedImageImpl.bufferedImage();
         ColorModel cm = bufferedImage.getColorModel();
