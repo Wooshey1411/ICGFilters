@@ -6,19 +6,31 @@ import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
 
-@Setter
+import java.util.Arrays;
 @Getter
+@Setter
 public class OrderedDithering extends Transformation {
+
+    private int redK = 8;
+
+    private int greenK = 8;
+
+    private int blueK = 4;
+
+
     private static final double[][] MATRIX2 = {
             {0, 2},
             {3, 1}
     };
+
     private static final double[][] MATRIX4 = {
             {0, 8, 2, 10},
             {12, 4, 14, 6},
             {3, 11, 1, 9},
             {15, 7, 13, 5}
     };
+
+
     private static final double[][] MATRIX8 = {
             {0, 32, 8, 40, 2, 34, 10, 42},
             {48, 16, 56, 24, 50, 18, 58, 26},
@@ -29,6 +41,7 @@ public class OrderedDithering extends Transformation {
             {15, 47, 7, 39, 13, 45, 5, 37},
             {63, 31, 55, 23, 61, 29, 53, 21}
     };
+
 
     private static final double[][] MATRIX16 = {
             {0, 128, 32, 160, 8, 136, 40, 168, 2, 130, 34, 162, 10, 138, 42, 170},
@@ -49,16 +62,137 @@ public class OrderedDithering extends Transformation {
             {255, 127, 223, 95, 247, 119, 215, 87, 253, 125, 221, 93, 245, 117, 213, 85 }
     };
 
-    private int redK = 3;
-    private int greenK = 3;
-    private int blueK = 3;
+    //нормализация матриц
+    static {
+        for (int i = 0; i < 2; i++ ){
+            for (int j = 0; j < 2; j++){
+                MATRIX2[i][j] = (MATRIX2[i][j] / 4.0) - 0.5;
+            }
+        }
+
+        for (int i = 0; i < 4; i++ ){
+            for (int j = 0; j < 4; j++){
+                MATRIX4[i][j] = (MATRIX4[i][j] / 16.0) - 0.5;
+            }
+        }
+
+        for (int i = 0; i < 8; i++ ){
+            for (int j = 0; j < 8; j++){
+                MATRIX8[i][j] = (MATRIX8[i][j] / 128.0) - 0.5;
+            }
+        }
+
+        for (int i = 0; i < 16; i++ ){
+            for (int j = 0; j < 16; j++){
+                MATRIX16[i][j] = (MATRIX16[i][j] / 256.0) - 0.5;
+            }
+        }
+    }
 
     public OrderedDithering(ImageFactory imageFactory) {
         super(imageFactory);
     }
 
+
     @Override
     public ImageInterface apply(ImageInterface oldImage) {
-        return null;
+
+        return applySirotkin(oldImage);
     }
+
+
+
+
+
+
+
+
+    //Sirotkin version
+
+    private static double colorRedDiv;
+
+
+    private static double colorGreenDiv;
+
+
+    private static double colorBlueDiv;
+
+
+    private int roundColorRed(double red){
+        if (red > 1.0){
+            return 255;
+        }
+        return (int) ((255 / (redK - 1)) * Math.round(red / colorRedDiv));
+    }
+
+
+    private int roundColorGreen(double green){
+        if (green > 1.0){
+            return 255;
+        }
+        return (int) ((255 / (greenK - 1)) * Math.round(green / colorGreenDiv));
+    }
+
+
+    private int roundColorBlue(double blue){
+        if (blue > 1.0){
+            return 255;
+        }
+        return (int) ((255 / (blueK - 1)) * Math.round(blue / colorBlueDiv));
+    }
+
+
+    private double[][] chooseMatrix(int k){
+        if (k <= 4){
+            return MATRIX2;
+        }
+        else if (k <= 16){
+            return MATRIX4;
+        }
+        else if (k <= 64){
+            return MATRIX8;
+        }
+        return MATRIX16;
+    }
+
+
+    private ImageInterface applySirotkin(ImageInterface oldImage){
+        colorRedDiv = 1.0 / (redK - 1);
+        colorGreenDiv = 1.0 / (greenK - 1);
+        colorBlueDiv = 1.0 / (blueK - 1);
+        double[][] matrixRed = chooseMatrix(redK);
+        double[][] matrixGreen = chooseMatrix(greenK);
+        double[][] matrixBlue = chooseMatrix(blueK);
+        int matrixRedSize = matrixRed.length;
+        int matrixGreenSize = matrixGreen.length;
+        int matrixBlueSize = matrixBlue.length;
+        int width = oldImage.getWidth();
+        int height = oldImage.getHeight();
+        int gridSize = height * width;
+        int[] grid = new int[gridSize];
+        oldImage.getARGB(grid);
+        int[] newGrid = new int[gridSize];
+        Arrays.fill(newGrid, 0xFF000000);
+        for (int y = 0; y < height; y++){
+            for (int x = 0 ; x < width; x++){
+                int index = y * width + x;
+                int matrixRedIndexX = (x % matrixRedSize);
+                int matrixRedIndexY = (y % matrixRedSize);
+                int matrixGreenIndexX = (x % matrixGreenSize);
+                int matrixGreenIndexY = (y % matrixGreenSize);
+                int matrixBlueIndexX = (x % matrixBlueSize);
+                int matrixBlueIndexY = (y % matrixBlueSize);
+                int pixelColor = grid[index];
+                int red = roundColorRed((((pixelColor & 0x00FF0000) >> 16) / 255.0) + colorRedDiv * matrixRed[matrixRedIndexY][matrixRedIndexX]);
+                int green = roundColorGreen((((pixelColor & 0x0000FF00) >> 8) / 255.0) + colorGreenDiv * matrixGreen[matrixGreenIndexY][matrixGreenIndexX]);
+                int blue = roundColorBlue(((pixelColor & 0x000000FF) / 255.0) + colorBlueDiv * matrixBlue[matrixBlueIndexY][matrixBlueIndexX]);
+                newGrid[index] |= (red << 16) | (green << 8) | blue;
+            }
+        }
+
+
+
+        return getImageFactory().createImage(oldImage, newGrid);
+    }
+
 }
