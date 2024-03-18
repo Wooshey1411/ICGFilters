@@ -3,10 +3,11 @@ package ru.nsu.icg.lab2.gui.view;
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
 import ru.nsu.icg.lab2.gui.controller.WindowResizeController;
 import ru.nsu.icg.lab2.gui.controller.menu.*;
-import ru.nsu.icg.lab2.gui.controller.tools.*;
 import ru.nsu.icg.lab2.gui.model.*;
+import ru.nsu.icg.lab2.model.Tool;
 import ru.nsu.icg.lab2.model.ViewConfig;
 
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,35 +17,22 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
     private final DrawingArea drawingArea;
     private final MainWindow mainWindow;
 
-    public ViewImpl(ViewConfig viewConfig, Context context, ImageReader imageReader, ImageWriter imageWriter) {
+    public ViewImpl(ViewConfig viewConfig, List<Tool> tools, Context context, ImageReader imageReader, ImageWriter imageWriter) {
         FlatArcDarkOrangeIJTheme.setup();
 
         this.context = context;
         context.setViewModeChangeListener(this);
-        final IconsSupplier iconsSupplier = new IconsSupplier();
 
         final OpenController openController = new OpenController(context, this, imageReader);
         final SaveController saveController = new SaveController(context, this, imageWriter);
         final ExitController exitController = new ExitController(this);
 
-        final HandController handController = new HandController(context, this, context.getBufferedImageFactory());
-        final BackController backController = new BackController(context, this, context.getBufferedImageFactory());
-        final OneToOneController oneToOneController = new OneToOneController(context, this, context.getBufferedImageFactory());
-        final WindowSizeController windowSizeController = new WindowSizeController(context, this, context.getBufferedImageFactory());
-        final RotationController rotationController = new RotationController(context, this, context.getBufferedImageFactory());
-        final BlackAndWhiteController blackAndWhiteController = new BlackAndWhiteController(context, this, context.getBufferedImageFactory());
-        final InversionController inversionController = new InversionController(context, this, context.getBufferedImageFactory());
-        final GammaCorrectionController gammaCorrectionController = new GammaCorrectionController(context, this, context.getBufferedImageFactory());
-        final SharpeningController sharpeningController = new SharpeningController(context, this, context.getBufferedImageFactory());
-        final EdgeDetectionController edgeDetectionController = new EdgeDetectionController(context, this, context.getBufferedImageFactory());
-        final EmbossingController embossingController = new EmbossingController(context, this, context.getBufferedImageFactory());
-        final BlurController blurController = new BlurController(context, this, context.getBufferedImageFactory());
-        final WatercoloringController watercoloringController = new WatercoloringController(context, this, context.getBufferedImageFactory());
-        final FloydSteinbergDitheringController floydSteinbergDitheringController = new FloydSteinbergDitheringController(context, this, context.getBufferedImageFactory());
-        final OrderedDitheringController orderedDitheringController = new OrderedDitheringController(context, this, context.getBufferedImageFactory());
-        final WaveFilterController waveFilterController = new WaveFilterController(context, this, context.getBufferedImageFactory());
-        final GlassEffectController glassEffectController = new GlassEffectController(context, this, context.getBufferedImageFactory());
-        final FisheyeEffectController fisheyeEffectController = new FisheyeEffectController(context, this, context.getBufferedImageFactory());
+        final ToolControllersFactory toolControllersFactory = new ToolControllersFactory(
+                context,
+                this,
+                context.getBufferedImageFactory(),
+                tools
+        );
 
         final HelpController helpController = new HelpController(this);
         final AboutController aboutController = new AboutController(this);
@@ -56,49 +44,12 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
                 openController,
                 saveController,
                 exitController,
-                handController,
-                backController,
-                oneToOneController,
-                windowSizeController,
-                rotationController,
-                blackAndWhiteController,
-                inversionController,
-                gammaCorrectionController,
-                sharpeningController,
-                edgeDetectionController,
-                embossingController,
-                blurController,
-                watercoloringController,
-                floydSteinbergDitheringController,
-                orderedDitheringController,
-                waveFilterController,
-                glassEffectController,
-                fisheyeEffectController,
                 helpController,
-                aboutController
+                aboutController,
+                toolControllersFactory.getToolControllers()
         );
 
-        final ToolsArea toolsArea = new ToolsArea(
-                iconsSupplier,
-                handController,
-                backController,
-                oneToOneController,
-                windowSizeController,
-                rotationController,
-                blackAndWhiteController,
-                inversionController,
-                gammaCorrectionController,
-                sharpeningController,
-                edgeDetectionController,
-                embossingController,
-                blurController,
-                watercoloringController,
-                floydSteinbergDitheringController,
-                orderedDitheringController,
-                waveFilterController,
-                glassEffectController,
-                fisheyeEffectController
-        );
+        final ToolsArea toolsArea = new ToolsArea(toolControllersFactory.getToolControllers());
 
         mainWindow = new MainWindow(
                 viewConfig.windowName(),

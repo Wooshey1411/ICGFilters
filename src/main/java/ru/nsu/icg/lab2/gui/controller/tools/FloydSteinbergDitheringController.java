@@ -4,6 +4,7 @@ import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.gui.model.Context;
 import ru.nsu.icg.lab2.gui.model.View;
 import ru.nsu.icg.lab2.model.ImageFactory;
+import ru.nsu.icg.lab2.model.Tool;
 import ru.nsu.icg.lab2.model.transformations.FloydSteinbergDithering;
 
 import java.awt.event.ActionEvent;
@@ -11,8 +12,8 @@ import java.awt.event.ActionEvent;
 public class FloydSteinbergDitheringController extends ToolController {
     private final FloydSteinbergDithering floydSteinbergDithering;
 
-    public FloydSteinbergDitheringController(Context context, View view, ImageFactory imageFactory) {
-        super(context, view, imageFactory);
+    public FloydSteinbergDitheringController(Context context, View view, ImageFactory imageFactory, Tool tool) {
+        super(context, view, imageFactory, tool);
         floydSteinbergDithering = new FloydSteinbergDithering(imageFactory);
     }
 

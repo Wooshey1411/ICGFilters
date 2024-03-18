@@ -5,12 +5,13 @@ import ru.nsu.icg.lab2.gui.model.Context;
 import ru.nsu.icg.lab2.gui.model.View;
 import ru.nsu.icg.lab2.gui.model.ViewMode;
 import ru.nsu.icg.lab2.model.ImageFactory;
+import ru.nsu.icg.lab2.model.Tool;
 
 import java.awt.event.ActionEvent;
 
 public class OneToOneController extends ToolController {
-    public OneToOneController(Context context, View view, ImageFactory imageFactory) {
-        super(context, view, imageFactory);
+    public OneToOneController(Context context, View view, ImageFactory imageFactory, Tool tool) {
+        super(context, view, imageFactory, tool);
     }
 
     @Override

@@ -3,110 +3,110 @@
     "name": "Hand",
     "tip": "hand",
     "icon": "/icons/hand.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.HandController"
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.HandController"
   },
   {
     "name": "Back",
     "tip": "back",
     "icon": "/icons/back.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.BackController"
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.BackController"
   },
   {
     "name": "1:1",
     "tip": "1:1",
     "icon": "/icons/one-to-one.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.OneToOneController",
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.OneToOneController",
     "group": 1
   },
   {
     "name": "To window size",
     "tip": "to window size",
     "icon": "/icons/to-window-size.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.ToWindowSizeController",
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.ToWindowSizeController",
     "group": 1
   },
   {
     "name": "Rotation",
     "tip": "rotation",
     "icon": "/icons/rotation.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.RotationController"
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.RotationController"
   },
   {
     "name": "Black-And-White",
     "tip": "black-and-white",
     "icon": "/icons/black-and-white.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.BlackAndWhiteController"
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.BlackAndWhiteController"
   },
   {
     "name": "Inversion",
     "tip": "Inversion",
     "icon": "/icons/inversion.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.InversionController"
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.InversionController"
   },
   {
     "name": "Gamma-correction",
     "tip": "gamma-correction",
     "icon": "/icons/gamma-correction.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.GammaCorrectionController"
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.GammaCorrectionController"
   },
   {
     "name": "Sharpening",
     "tip": "sharpening",
     "icon": "/icons/sharpening.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.SharpeningController"
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.SharpeningController"
   },
   {
     "name": "Edge detection",
     "tip": "edge detection",
     "icon": "/icons/edge-detection.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.EdgeDetectionController"
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.EdgeDetectionController"
   },
   {
     "name": "Embossing",
     "tip": "embossing",
     "icon": "/icons/embossing.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.EmbossingController"
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.EmbossingController"
   },
   {
     "name": "Blur",
     "tip": "blur",
     "icon": "/icons/blur.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.BlurController"
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.BlurController"
   },
   {
     "name": "Watercoloring",
     "tip": "watercoloring",
     "icon": "/icons/watercoloring.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.WatercoloringController"
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.WatercoloringController"
   },
   {
     "name": "Floyd-Steinberg dithering",
     "tip": "Floyd-Steinberg dithering",
     "icon": "/icons/dithering-1.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.FloydSteinbergDitheringController"
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.FloydSteinbergDitheringController"
   },
   {
     "name": "Ordered dithering",
     "tip": "Ordered dithering",
     "icon": "/icons/dithering-2.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.OrderedDitheringController"
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.OrderedDitheringController"
   },
   {
     "name": "Wave filter",
     "tip": "Wave filter",
     "icon": "/icons/wave-filter.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.WaveFilterController"
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.WaveFilterController"
   },
   {
     "name": "Glass effect",
     "tip": "glass effect",
     "icon": "/icons/glass-effect.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.GlassEffectController"
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.GlassEffectController"
   },
   {
     "name": "Fish-eye effect",
     "tip": "fish-eye effect",
     "icon": "/icons/fisheye-effect.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.FisheyeController"
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.FisheyeEffectController"
   }
 ]

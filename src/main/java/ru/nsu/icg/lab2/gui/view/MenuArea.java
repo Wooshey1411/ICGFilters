@@ -1,7 +1,9 @@
 package ru.nsu.icg.lab2.gui.view;
 
 import lombok.Getter;
+import ru.nsu.icg.lab2.gui.controller.ToolController;
 
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -19,26 +21,9 @@ public class MenuArea extends JPanel {
             ActionListener openListener,
             ActionListener saveListener,
             ActionListener exitListener,
-            ActionListener handListener,
-            ActionListener undoListener,
-            ActionListener oneToOneListener,
-            ActionListener windowSizeListener,
-            ActionListener rotationListener,
-            ActionListener blackAndWhiteListener,
-            ActionListener inversionListener,
-            ActionListener gammaCorrectionListener,
-            ActionListener sharpeningListener,
-            ActionListener edgeDetectionListener,
-            ActionListener embossingListener,
-            ActionListener blurListener,
-            ActionListener watercoloringListener,
-            ActionListener floydSteinbergDitheringListener,
-            ActionListener orderedDitheringListener,
-            ActionListener waveFilterListener,
-            ActionListener glassEffectListener,
-            ActionListener fisheyeEffectListener,
             ActionListener helpListener,
-            ActionListener aboutListener
+            ActionListener aboutListener,
+            List<ToolController> toolControllers
     ) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setBackground(MENU_BACKGROUND_COLOR);
@@ -51,26 +36,7 @@ public class MenuArea extends JPanel {
                 saveListener,
                 exitListener
         ));
-        menuBar.add(createEditMenu(
-                handListener,
-                undoListener,
-                oneToOneListener,
-                windowSizeListener,
-                rotationListener,
-                blackAndWhiteListener,
-                inversionListener,
-                gammaCorrectionListener,
-                sharpeningListener,
-                edgeDetectionListener,
-                embossingListener,
-                blurListener,
-                watercoloringListener,
-                floydSteinbergDitheringListener,
-                orderedDitheringListener,
-                waveFilterListener,
-                glassEffectListener,
-                fisheyeEffectListener
-        ));
+        menuBar.add(createEditMenu(toolControllers));
         menuBar.add(createInfoMenu(
                 helpListener,
                 aboutListener
@@ -87,44 +53,11 @@ public class MenuArea extends JPanel {
         return result;
     }
 
-    private static JMenu createEditMenu(ActionListener handListener,
-                                        ActionListener undoListener,
-                                        ActionListener oneToOneListener,
-                                        ActionListener windowSizeListener,
-                                        ActionListener rotationListener,
-                                        ActionListener blackAndWhiteListener,
-                                        ActionListener inversionListener,
-                                        ActionListener gammaCorrectionListener,
-                                        ActionListener sharpeningListener,
-                                        ActionListener edgeDetectionListener,
-                                        ActionListener embossingListener,
-                                        ActionListener blurListener,
-                                        ActionListener watercoloringListener,
-                                        ActionListener floydSteinbergDitheringListener,
-                                        ActionListener orderedDitheringListener,
-                                        ActionListener waveFilterListener,
-                                        ActionListener glassEffectListener,
-                                        ActionListener fisheyeEffectListener) {
+    private static JMenu createEditMenu(List<ToolController> toolControllers) {
         final JMenu result = createMenu("Edit");
-        result.add(createMenuItem("Hand", handListener));
-        result.add(createMenuItem("Undo", undoListener));
-        result.add(createMenuItem("One-To-One", oneToOneListener));
-        result.add(createMenuItem("To window size", windowSizeListener));
-        result.add(createMenuItem("Rotation", rotationListener));
-        result.add(createMenuItem("Black-And-White", blackAndWhiteListener));
-        result.add(createMenuItem("Inversion", inversionListener));
-        result.add(createMenuItem("Gamma correction", gammaCorrectionListener));
-        result.add(createMenuItem("Sharpening", sharpeningListener));
-        result.add(createMenuItem("Edge detection", edgeDetectionListener));
-        result.add(createMenuItem("Embossing", embossingListener));
-        result.add(createMenuItem("Blur", blurListener));
-        result.add(createMenuItem("Watercoloring", watercoloringListener));
-        result.add(createMenuItem("Floyd-Steinberg dithering", floydSteinbergDitheringListener));
-        result.add(createMenuItem("Ordered dithering", orderedDitheringListener));
-        result.add(createMenuItem("Wave filter", waveFilterListener));
-        result.add(createMenuItem("Glass effect", glassEffectListener));
-        result.add(createMenuItem("Fish-eye effect", fisheyeEffectListener));
-
+        for (final var it : toolControllers) {
+            result.add(createMenuItem(it.getTool().getName(), it));
+        }
         return result;
     }
 

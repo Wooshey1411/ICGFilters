@@ -7,6 +7,7 @@ import ru.nsu.icg.lab2.gui.model.Context;
 import ru.nsu.icg.lab2.gui.model.Utils;
 import ru.nsu.icg.lab2.gui.model.View;
 import ru.nsu.icg.lab2.model.ImageFactory;
+import ru.nsu.icg.lab2.model.Tool;
 import ru.nsu.icg.lab2.model.transformations.GammaCorrection;
 
 import javax.swing.*;
@@ -30,8 +31,8 @@ public class GammaCorrectionController extends ToolController {
     private final TextFieldSliderController dialogWindowController;
     private final JPanel panel;
 
-    public GammaCorrectionController(Context context, View view, ImageFactory imageFactory) {
-        super(context, view, imageFactory);
+    public GammaCorrectionController(Context context, View view, ImageFactory imageFactory, Tool tool) {
+        super(context, view, imageFactory, tool);
 
         gammaCorrection = new GammaCorrection(imageFactory);
         rounder = new DoubleRounder(1);

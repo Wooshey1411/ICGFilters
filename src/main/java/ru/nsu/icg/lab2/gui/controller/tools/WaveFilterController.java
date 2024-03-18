@@ -7,6 +7,7 @@ import ru.nsu.icg.lab2.gui.model.Context;
 import ru.nsu.icg.lab2.gui.model.Utils;
 import ru.nsu.icg.lab2.gui.model.View;
 import ru.nsu.icg.lab2.model.ImageFactory;
+import ru.nsu.icg.lab2.model.Tool;
 import ru.nsu.icg.lab2.model.transformations.WaveFilter;
 
 import javax.swing.*;
@@ -42,8 +43,8 @@ public class WaveFilterController extends ToolController {
 
     private final HashMap<String,WaveFilter.WaveFilterOrder> waveFilterOrderHashMap;
 
-    public WaveFilterController(Context context, View view, ImageFactory imageFactory) {
-        super(context, view, imageFactory);
+    public WaveFilterController(Context context, View view, ImageFactory imageFactory, Tool tool) {
+        super(context, view, imageFactory, tool);
 
         waveFilter = new WaveFilter(imageFactory);
         waveFilterOrderHashMap = new HashMap<>(Map.of(

@@ -3,19 +3,20 @@ package ru.nsu.icg.lab2.gui.controller.tools;
 import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.gui.model.*;
 import ru.nsu.icg.lab2.model.ImageFactory;
+import ru.nsu.icg.lab2.model.Tool;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WindowSizeController extends ToolController {
+public class ToWindowSizeController extends ToolController {
     private final JPanel optionsPanel;
     private final JComboBox<String> comboBox;
     private final HashMap<String, InterpolationMethod> methodHashMap;
 
-    public WindowSizeController(Context context, View view, ImageFactory imageFactory) {
-        super(context, view, imageFactory);
+    public ToWindowSizeController(Context context, View view, ImageFactory imageFactory, Tool tool) {
+        super(context, view, imageFactory, tool);
 
         methodHashMap = new HashMap<>(Map.of(
                 "Bilinear",InterpolationMethod.BILINEAR,

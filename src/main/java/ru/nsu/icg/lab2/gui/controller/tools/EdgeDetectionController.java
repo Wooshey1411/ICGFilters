@@ -6,6 +6,7 @@ import ru.nsu.icg.lab2.gui.model.Context;
 import ru.nsu.icg.lab2.gui.model.Utils;
 import ru.nsu.icg.lab2.gui.model.View;
 import ru.nsu.icg.lab2.model.ImageFactory;
+import ru.nsu.icg.lab2.model.Tool;
 import ru.nsu.icg.lab2.model.transformations.EdgeDetection;
 
 import javax.swing.*;
@@ -28,8 +29,8 @@ public class EdgeDetectionController extends ToolController {
     private final JComboBox<String> algComboBox;
     private final HashMap<String, EdgeDetection.EdgeDetectionType> edgeDetectionTypeHashMap;
 
-    public EdgeDetectionController(Context context, View view, ImageFactory imageFactory) {
-        super(context, view, imageFactory);
+    public EdgeDetectionController(Context context, View view, ImageFactory imageFactory, Tool tool) {
+        super(context, view, imageFactory, tool);
         edgeDetection = new EdgeDetection(imageFactory);
         edgeDetectionTypeHashMap = new HashMap<>(Map.of(
                 "Sobel", EdgeDetection.EdgeDetectionType.SOBEL,
