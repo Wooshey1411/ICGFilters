@@ -28,9 +28,9 @@ public class IconsSupplier {
 
     public IconsSupplier() {
         handIcon = loadIcon("hand.png");
-        undoIcon = loadIcon("arrows.png");
+        undoIcon = loadIcon("back.png");
         oneToOneIcon = loadIcon("one-to-one.png");
-        windowSizeIcon = loadIcon("display.png");
+        windowSizeIcon = loadIcon("to-window-size.png");
         rotationIcon = loadIcon("rotation.png");
         blackAndWhiteIcon = loadIcon("black-and-white.png");
         inversionIcon = loadIcon("inversion.png");
@@ -43,8 +43,8 @@ public class IconsSupplier {
         floydSteinbergDitheringIcon = loadIcon("dithering-1.png");
         orderedDitheringIcon = loadIcon("dithering-2.png");
         waveFilterIcon = loadIcon("wave-filter.png");
-        glassEffectIcon = loadIcon("glass.png");
-        fisheyeEffectIcon = loadIcon("fisheye.png");
+        glassEffectIcon = loadIcon("glass-effect.png");
+        fisheyeEffectIcon = loadIcon("fisheye-effect.png");
     }
 
     private static ImageIcon loadIcon(String path) {
