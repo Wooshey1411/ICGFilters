@@ -87,13 +87,13 @@
   },
   {
     "name": "Ordered dithering",
-    "tip": "Ordered dithering",
+    "tip": "ordered dithering",
     "icon": "/icons/dithering-2.png",
     "controller": "ru.nsu.icg.lab2.gui.controller.tools.OrderedDitheringController"
   },
   {
     "name": "Wave filter",
-    "tip": "Wave filter",
+    "tip": "wave filter",
     "icon": "/icons/wave-filter.png",
     "controller": "ru.nsu.icg.lab2.gui.controller.tools.WaveFilterController"
   },
