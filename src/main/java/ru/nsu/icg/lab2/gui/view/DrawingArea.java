@@ -4,6 +4,7 @@ import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
 
 @Setter
@@ -13,13 +14,15 @@ public class DrawingArea extends JPanel {
     private static final int BORDER_SPACING = 3;
     private BufferedImage image;
 
-    public DrawingArea() {
+    public DrawingArea(MouseAdapter mouseAdapter) {
         setBorder(BorderFactory.createDashedBorder(
                 Color.GREEN, BORDER_THICKNESS,
                 BORDER_LENGTH, BORDER_SPACING,
                 false
         ));
         setBackground(Color.DARK_GRAY);
+        this.addMouseListener(mouseAdapter);
+        this.addMouseMotionListener(mouseAdapter);
     }
 
     public void resizeSoftly(int width, int height) {

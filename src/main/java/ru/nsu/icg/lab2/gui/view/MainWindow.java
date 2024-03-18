@@ -1,5 +1,6 @@
 package ru.nsu.icg.lab2.gui.view;
 
+import lombok.Getter;
 import ru.nsu.icg.lab2.gui.common.Context;
 import ru.nsu.icg.lab2.gui.common.ViewMode;
 import ru.nsu.icg.lab2.gui.common.WindowResizeListener;
@@ -14,6 +15,7 @@ public class MainWindow extends JFrame {
     // TODO: add to config
     private static final int SCROLL_PANE_BORDER_THICKNESS = 10;
 
+    @Getter
     private final JScrollPane scrollPane;
     private final JPanel drawingArea;
 

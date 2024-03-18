@@ -1,6 +1,7 @@
 package ru.nsu.icg.lab2.gui.view;
 
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
+import ru.nsu.icg.lab2.gui.controller.DrawingAreaController;
 import ru.nsu.icg.lab2.gui.controller.WindowResizeController;
 import ru.nsu.icg.lab2.gui.controller.menu.*;
 import ru.nsu.icg.lab2.gui.common.*;
@@ -37,8 +38,9 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
         final HelpController helpController = new HelpController(this);
         final AboutController aboutController = new AboutController(this);
         final WindowResizeController windowResizeController = new WindowResizeController(context, this);
+        final DrawingAreaController drawingAreaController = new DrawingAreaController(context,this);
 
-        drawingArea = new DrawingArea();
+        drawingArea = new DrawingArea(drawingAreaController);
 
         final MenuArea menuArea = new MenuArea(
                 openController,
@@ -195,6 +197,11 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
     @Override
     public JFrame getFrame() {
         return mainWindow;
+    }
+
+    @Override
+    public JScrollPane getMainScrollPane() {
+        return mainWindow.getScrollPane();
     }
 
     @Override

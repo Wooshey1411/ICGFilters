@@ -22,4 +22,6 @@ public interface View {
     boolean showConfirmationDialog(String title, JPanel content);
 
     JFrame getFrame();
+
+    JScrollPane getMainScrollPane();
 }

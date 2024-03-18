@@ -18,6 +18,10 @@ public class Context {
 
     @Getter
     @Setter
+    private DrawingAreaAction drawingAreaAction;
+
+    @Getter
+    @Setter
     private InterpolationMethod interpolationMethod;
 
     @Getter
@@ -44,6 +48,7 @@ public class Context {
 
     public Context(ViewMode viewMode, BufferedImageFactory bufferedImageFactory) {
         this.viewMode = viewMode;
+        this.drawingAreaAction = DrawingAreaAction.SWAP_IMAGE;
         this.bufferedImageFactory = bufferedImageFactory;
     }
 
@@ -74,5 +79,19 @@ public class Context {
     public void setViewMode(ViewMode viewMode){
         this.viewMode = viewMode;
         viewModeChangeListener.onChangeViewMode(this);
+    }
+
+    public void swapImage(){
+        if(currentImage == originalImage){
+            if(processedImage == null){
+                return;
+            }
+            setCurrentImage(processedImage);
+        } else{
+            if(originalImage == null){
+                return;
+            }
+            setCurrentImage(originalImage);
+        }
     }
 }

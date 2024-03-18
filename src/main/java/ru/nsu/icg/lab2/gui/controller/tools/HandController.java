@@ -1,5 +1,6 @@
 package ru.nsu.icg.lab2.gui.controller.tools;
 
+import ru.nsu.icg.lab2.gui.common.DrawingAreaAction;
 import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.gui.common.Context;
 import ru.nsu.icg.lab2.gui.common.View;
@@ -15,6 +16,6 @@ public class HandController extends ToolController {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-
+        getContext().setDrawingAreaAction(DrawingAreaAction.MOVE_SCROLLS);
     }
 }
