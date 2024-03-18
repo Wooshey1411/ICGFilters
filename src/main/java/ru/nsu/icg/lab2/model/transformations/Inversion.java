@@ -4,11 +4,9 @@ import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
 
-public class Inversion implements Transformation {
-    private final ImageFactory imageFactory;
-
+public class Inversion extends Transformation {
     public Inversion(ImageFactory imageFactory) {
-        this.imageFactory = imageFactory;
+        super(imageFactory);
     }
 
     @Override
@@ -34,7 +32,7 @@ public class Inversion implements Transformation {
             );
         }
 
-        return imageFactory.createImage(oldImage, grid);
+        return getImageFactory().createImage(oldImage, grid);
     }
 
     private static int getInvertedValue(final int value) {

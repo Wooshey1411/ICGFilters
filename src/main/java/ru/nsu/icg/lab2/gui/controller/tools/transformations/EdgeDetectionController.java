@@ -70,7 +70,7 @@ public class EdgeDetectionController implements ActionListener {
             }
 
             algComboBox.setSelectedItem(edgeDetectionType);
-            textFieldSliderController.reset(edgeDetection.getBrightnessBorder());
+            textFieldSliderController.reset(edgeDetection.getBorderBrightness());
 
             final boolean ok = view.showConfirmationDialog("Edge Detection", optionsSetWindow);
             if (!ok) {
@@ -78,7 +78,7 @@ public class EdgeDetectionController implements ActionListener {
             }
 
             if (textFieldSliderController.hasValue()) {
-                edgeDetection.setBrightnessBorder(textFieldSliderController.getIntValue());
+                edgeDetection.setBorderBrightness(textFieldSliderController.getIntValue());
             }
             if (!textFieldSliderController.hasError()) {
                 edgeDetection.setType(edgeDetectionTypeHashMap.get((String)algComboBox.getSelectedItem()));

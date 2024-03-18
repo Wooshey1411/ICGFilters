@@ -1,21 +1,23 @@
 package ru.nsu.icg.lab2.model.transformations;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
 
 import java.util.Arrays;
 
-public class Watercoloring implements Transformation {
-    private final ImageFactory imageFactory;
-
+public class Watercoloring extends Transformation {
     private final Sharpening sharpening;
 
+    @Getter
+    @Setter
     private int windowSize = 5;
 
     public Watercoloring(ImageFactory imageFactory) {
-        this.imageFactory = imageFactory;
-        this.sharpening = new Sharpening(imageFactory);
+        super(imageFactory);
+        sharpening = new Sharpening(imageFactory);
     }
 
     @Override
@@ -32,7 +34,6 @@ public class Watercoloring implements Transformation {
         int[] red = new int[windowSize * windowSize];
         int[] green = new int[windowSize * windowSize];
         int[] blue = new int[windowSize * windowSize];
-
 
         //without borders
         for (int y = borderStep; y < height - borderStep; y++){
@@ -56,6 +57,6 @@ public class Watercoloring implements Transformation {
             }
         }
 
-        return sharpening.apply(imageFactory.createImage(oldImage, newGrid));
+        return sharpening.apply(getImageFactory().createImage(oldImage, newGrid));
     }
 }

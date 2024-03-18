@@ -5,17 +5,15 @@ import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
 
-public class GammaCorrection implements Transformation {
+public class GammaCorrection extends Transformation {
     private final int[] correctedValues = new int[256];
-
-    private final ImageFactory imageFactory;
 
     @Getter
     private double gamma;
 
     public GammaCorrection(ImageFactory imageFactory) {
+        super(imageFactory);
         this.gamma = 1;
-        this.imageFactory = imageFactory;
     }
 
     public void setGamma(double gamma) {
@@ -49,6 +47,6 @@ public class GammaCorrection implements Transformation {
             );
         }
 
-        return imageFactory.createImage(oldImage, grid);
+        return getImageFactory().createImage(oldImage, grid);
     }
 }

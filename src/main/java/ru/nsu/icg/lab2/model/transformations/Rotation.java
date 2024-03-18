@@ -8,14 +8,13 @@ import ru.nsu.icg.lab2.model.Transformation;
 
 import java.util.Arrays;
 
-public class Rotation implements Transformation {
-    private final ImageFactory imageFactory;
-    @Setter
-    @Getter
+@Setter
+@Getter
+public class Rotation extends Transformation {
     private int degrees;
 
     public Rotation(ImageFactory imageFactory) {
-        this.imageFactory = imageFactory;
+        super(imageFactory);
     }
 
     @Override
@@ -69,6 +68,6 @@ public class Rotation implements Transformation {
             }
         }
 
-        return imageFactory.createImage(newWidth, newHeight, newGrid);
+        return getImageFactory().createImage(newWidth, newHeight, newGrid);
     }
 }

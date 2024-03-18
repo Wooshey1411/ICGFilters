@@ -47,6 +47,8 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
         final FloydSteinbergDitheringController floydSteinbergDitheringController = new FloydSteinbergDitheringController(context, this, context.getBufferedImageFactory());
         final OrderedDitheringController orderedDitheringController = new OrderedDitheringController(context, this, context.getBufferedImageFactory());
         final WaveFilterController waveFilterController = new WaveFilterController(context, this ,context.getBufferedImageFactory());
+        final GlassEffectController glassEffectController = new GlassEffectController(context, context.getBufferedImageFactory());
+        final FisheyeEffectController fisheyeEffectController = new FisheyeEffectController(context, context.getBufferedImageFactory());
 
         final HelpController helpController = new HelpController(this);
         final AboutController aboutController = new AboutController(this);
@@ -74,6 +76,8 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
                 floydSteinbergDitheringController,
                 orderedDitheringController,
                 waveFilterController,
+                glassEffectController,
+                fisheyeEffectController,
                 helpController,
                 aboutController
         );
@@ -95,7 +99,9 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
                 watercoloringController,
                 floydSteinbergDitheringController,
                 orderedDitheringController,
-                waveFilterController
+                waveFilterController,
+                glassEffectController,
+                fisheyeEffectController
         );
 
         mainWindow = new MainWindow(

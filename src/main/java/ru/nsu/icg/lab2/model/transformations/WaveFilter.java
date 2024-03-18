@@ -1,32 +1,27 @@
 package ru.nsu.icg.lab2.model.transformations;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
 
-@Data
-public class WaveFilter implements Transformation {
-
+@Getter
+@Setter
+public class WaveFilter extends Transformation {
     public enum WaveFilterOrder{
         FROM_X_TO_Y,
         FROM_Y_TO_X
     }
 
+    private WaveFilterOrder order;
     private double ampX;
-
     private double ampY;
-
     private double freqX;
-
     private double freqY;
 
-    private final ImageFactory imageFactory;
-
-    private WaveFilterOrder order;
-
     public WaveFilter(ImageFactory imageFactory) {
-        this.imageFactory = imageFactory;
+        super(imageFactory);
         ampX = 10;
         freqX = 0;
         ampY = 0;
@@ -60,7 +55,7 @@ public class WaveFilter implements Transformation {
         if (ampX == 0 && ampY == 0) {
             newImage = grid;
         }
-        return imageFactory.createImage(oldImage, newImage);
+        return getImageFactory().createImage(oldImage, newImage);
     }
 
     private void waveOnX(int[] grid, int width, int height, int[] newGrid) {
@@ -91,6 +86,5 @@ public class WaveFilter implements Transformation {
                 }
             }
         }
-
     }
 }

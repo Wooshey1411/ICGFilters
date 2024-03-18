@@ -5,7 +5,7 @@ import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
 
-public class Blur implements Transformation {
+public class Blur extends Transformation {
     private final FilterApplicator filterApplicator;
 
     @Getter
@@ -14,16 +14,16 @@ public class Blur implements Transformation {
     @Getter
     private double sigma;
 
-    private double[][] matrix;
-
     public Blur(ImageFactory imageFactory) {
-        this.filterApplicator = new FilterApplicator(imageFactory);
+        super(imageFactory);
+        filterApplicator = new FilterApplicator(imageFactory);
+        filterApplicator.setCounter(((red, green, blue) -> (red << 16) | (green << 8) | blue));
     }
 
     public void setParameters(double sigma, int windowSize) {
         this.sigma = sigma;
         this.windowSize = windowSize;
-        this.matrix = new double[windowSize][windowSize];
+        final double[][] matrix = new double[windowSize][windowSize];
 
         final int borderStep = (windowSize - 1) / 2;
         final double squared_doubled_sigma = 2 * sigma * sigma;
@@ -37,15 +37,13 @@ public class Blur implements Transformation {
                 matrix[y][x] = k * Math.exp(-numerator / squared_doubled_sigma);
             }
         }
+
+        filterApplicator.setMatrix(matrix);
+        filterApplicator.setWindowSize(windowSize);
     }
 
     @Override
     public ImageInterface apply(ImageInterface oldImage) {
-        return filterApplicator.apply(
-                oldImage,
-                ((red, green, blue) -> (red << 16) | (green << 8) | blue),
-                matrix,
-                windowSize
-        );
+        return filterApplicator.apply(oldImage);
     }
 }

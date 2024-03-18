@@ -4,11 +4,9 @@ import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
 
-public class BlackAndWhite implements Transformation {
-    private final ImageFactory imageFactory;
-
+public class BlackAndWhite extends Transformation {
     public BlackAndWhite(ImageFactory imageFactory) {
-        this.imageFactory = imageFactory;
+        super(imageFactory);
     }
 
     @Override
@@ -32,7 +30,7 @@ public class BlackAndWhite implements Transformation {
             );
         }
 
-        return imageFactory.createImage(oldImage, grid);
+        return getImageFactory().createImage(oldImage, grid);
     }
 
     private static int getBlackAndWhite(int red, int green, int blue) {

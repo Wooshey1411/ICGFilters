@@ -26,7 +26,9 @@ public class ToolsArea extends JPanel {
                      ActionListener watercoloringListener,
                      ActionListener floydSteinbergDitheringListener,
                      ActionListener orderedDitheringListener,
-                     ActionListener waveFilterListener
+                     ActionListener waveFilterListener,
+                     ActionListener glassEffectListener,
+                     ActionListener fisheyeEffectListener
     ) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setBackground(AREA_BACKGROUND_COLOR);
@@ -47,6 +49,9 @@ public class ToolsArea extends JPanel {
         add(createToolButton(iconsSupplier.getFloydSteinbergDitheringIcon(), "Floyd-Steinberg dithering", floydSteinbergDitheringListener));
         add(createToolButton(iconsSupplier.getOrderedDitheringIcon(), "ordered dithering", orderedDitheringListener));
         add(createToolButton(iconsSupplier.getWaveFilterIcon(), "wave filter", waveFilterListener));
+        add(createToolButton(iconsSupplier.getGlassEffectIcon(), "glass effect", glassEffectListener));
+        add(createToolButton(iconsSupplier.getFisheyeEffectIcon(), "fish-eye effect", fisheyeEffectListener));
+
     }
 
     private static void initButton(AbstractButton button, String tip, ActionListener actionListener) {

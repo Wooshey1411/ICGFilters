@@ -1,23 +1,30 @@
 package ru.nsu.icg.lab2.model.transformations;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
+import ru.nsu.icg.lab2.model.Transformation;
 
 import java.util.Arrays;
 
-public class FilterApplicator {
+@Setter
+@Getter
+public class FilterApplicator extends Transformation {
     public interface RGBCounter{
         int color(int red, int green, int blue);
     }
 
-    private final ImageFactory imageFactory;
-
+    private double[][] matrix;
+    private int windowSize;
+    private RGBCounter counter;
 
     public FilterApplicator(ImageFactory imageFactory) {
-        this.imageFactory = imageFactory;
+        super(imageFactory);
     }
 
-    public ImageInterface apply(ImageInterface oldImage, RGBCounter counter, double[][] matrix, int windowSize){
+    @Override
+    public ImageInterface apply(ImageInterface oldImage){
         int borderStep = (windowSize - 1) / 2;
         int width = oldImage.getWidth();
         int height = oldImage.getHeight();
@@ -226,6 +233,6 @@ public class FilterApplicator {
             }
         }
 
-        return imageFactory.createImage(oldImage, newGrid);
+        return getImageFactory().createImage(oldImage, newGrid);
     }
 }

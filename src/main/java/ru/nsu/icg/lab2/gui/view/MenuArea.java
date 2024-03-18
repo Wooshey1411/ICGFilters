@@ -35,6 +35,8 @@ public class MenuArea extends JPanel {
             ActionListener floydSteinbergDitheringListener,
             ActionListener orderedDitheringListener,
             ActionListener waveFilterListener,
+            ActionListener glassEffectListener,
+            ActionListener fisheyeEffectListener,
             ActionListener helpListener,
             ActionListener aboutListener
     ) {
@@ -65,7 +67,9 @@ public class MenuArea extends JPanel {
                 watercoloringListener,
                 floydSteinbergDitheringListener,
                 orderedDitheringListener,
-                waveFilterListener
+                waveFilterListener,
+                glassEffectListener,
+                fisheyeEffectListener
         ));
         menuBar.add(createInfoMenu(
                 helpListener,
@@ -98,7 +102,9 @@ public class MenuArea extends JPanel {
                                         ActionListener watercoloringListener,
                                         ActionListener floydSteinbergDitheringListener,
                                         ActionListener orderedDitheringListener,
-                                        ActionListener waveFilterListener) {
+                                        ActionListener waveFilterListener,
+                                        ActionListener glassEffectListener,
+                                        ActionListener fisheyeEffectListener) {
         final JMenu result = createMenu("Edit");
         result.add(createMenuItem("Hand", handListener));
         result.add(createMenuItem("Undo", undoListener));
@@ -116,6 +122,9 @@ public class MenuArea extends JPanel {
         result.add(createMenuItem("Floyd-Steinberg dithering", floydSteinbergDitheringListener));
         result.add(createMenuItem("Ordered dithering", orderedDitheringListener));
         result.add(createMenuItem("Wave filter", waveFilterListener));
+        result.add(createMenuItem("Glass effect", glassEffectListener));
+        result.add(createMenuItem("Fish-eye effect", fisheyeEffectListener));
+
         return result;
     }
 

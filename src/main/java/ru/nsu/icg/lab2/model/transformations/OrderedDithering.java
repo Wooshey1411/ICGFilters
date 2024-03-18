@@ -1,32 +1,24 @@
 package ru.nsu.icg.lab2.model.transformations;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
 
-import java.util.Arrays;
-
-@Data
-public class OrderedDithering implements Transformation {
-    private int redK = 3;
-    private int greenK = 3;
-    private int blueK = 3;
-
-
+@Setter
+@Getter
+public class OrderedDithering extends Transformation {
     private static final double[][] MATRIX2 = {
             {0, 2},
             {3, 1}
     };
-
     private static final double[][] MATRIX4 = {
             {0, 8, 2, 10},
             {12, 4, 14, 6},
             {3, 11, 1, 9},
             {15, 7, 13, 5}
     };
-
-
     private static final double[][] MATRIX8 = {
             {0, 32, 8, 40, 2, 34, 10, 42},
             {48, 16, 56, 24, 50, 18, 58, 26},
@@ -37,7 +29,6 @@ public class OrderedDithering implements Transformation {
             {15, 47, 7, 39, 13, 45, 5, 37},
             {63, 31, 55, 23, 61, 29, 53, 21}
     };
-
 
     private static final double[][] MATRIX16 = {
             {0, 128, 32, 160, 8, 136, 40, 168, 2, 130, 34, 162, 10, 138, 42, 170},
@@ -57,14 +48,17 @@ public class OrderedDithering implements Transformation {
             {63, 191, 31, 159, 55, 183, 23, 151, 61, 189, 29, 157, 53, 181, 21, 149 },
             {255, 127, 223, 95, 247, 119, 215, 87, 253, 125, 221, 93, 245, 117, 213, 85 }
     };
-    private final ImageFactory imageFactory;
+
+    private int redK = 3;
+    private int greenK = 3;
+    private int blueK = 3;
 
     public OrderedDithering(ImageFactory imageFactory) {
-        this.imageFactory = imageFactory;
+        super(imageFactory);
     }
+
     @Override
     public ImageInterface apply(ImageInterface oldImage) {
-
         return null;
     }
 }

@@ -1,29 +1,28 @@
 package ru.nsu.icg.lab2.model.transformations;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
 
 import java.util.Arrays;
 
-@Data
-public class EdgeDetection implements Transformation {
+@Setter
+@Getter
+public class EdgeDetection extends Transformation {
     public enum EdgeDetectionType{
         ROBERTS, SOBEL
     }
+
     private EdgeDetectionType type;
-
-    private int brightnessBorder;
-
-    private final ImageFactory imageFactory;
+    private int borderBrightness;
 
     public EdgeDetection(ImageFactory imageFactory) {
-        this.imageFactory = imageFactory;
-        this.brightnessBorder = 256;
+        super(imageFactory);
+        this.borderBrightness = 256;
         this.type = EdgeDetectionType.ROBERTS;
     }
-
 
     private ImageInterface applyRoberts(ImageInterface oldImage){
         int borderStep = 1;
@@ -57,7 +56,7 @@ public class EdgeDetection implements Transformation {
                 int deltaGreen = (int) Math.sqrt(colorXGreen * colorXGreen + colorYGreen * colorYGreen);
                 int deltaBlue = (int) Math.sqrt(colorXBlue * colorXBlue + colorYBlue * colorYBlue);
 
-                if (deltaRed > brightnessBorder || deltaGreen > brightnessBorder || deltaBlue > brightnessBorder){
+                if (deltaRed > borderBrightness || deltaGreen > borderBrightness || deltaBlue > borderBrightness){
                     red = 255;
                     green = 255;
                     blue = 255;
@@ -67,7 +66,7 @@ public class EdgeDetection implements Transformation {
             }
         }
 
-        return imageFactory.createImage(oldImage, newGrid);
+        return getImageFactory().createImage(oldImage, newGrid);
     }
 
 
@@ -127,7 +126,7 @@ public class EdgeDetection implements Transformation {
                 int green = 0;
                 int blue = 0;
 
-                if (deltaRed > brightnessBorder || deltaGreen > brightnessBorder || deltaBlue > brightnessBorder){
+                if (deltaRed > borderBrightness || deltaGreen > borderBrightness || deltaBlue > borderBrightness){
                     red = 255;
                     green = 255;
                     blue = 255;
@@ -137,7 +136,7 @@ public class EdgeDetection implements Transformation {
             }
         }
 
-        return imageFactory.createImage(oldImage, newGrid);
+        return getImageFactory().createImage(oldImage, newGrid);
     }
 
 
