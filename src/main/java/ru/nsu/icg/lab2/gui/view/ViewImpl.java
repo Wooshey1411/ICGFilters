@@ -28,7 +28,7 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
         final ExitController exitController = new ExitController(this);
 
         final HandController handController = new HandController(context, this, context.getBufferedImageFactory());
-        final UndoController undoController = new UndoController(context, this, context.getBufferedImageFactory());
+        final BackController backController = new BackController(context, this, context.getBufferedImageFactory());
         final OneToOneController oneToOneController = new OneToOneController(context, this, context.getBufferedImageFactory());
         final WindowSizeController windowSizeController = new WindowSizeController(context, this, context.getBufferedImageFactory());
         final RotationController rotationController = new RotationController(context, this, context.getBufferedImageFactory());
@@ -57,7 +57,7 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
                 saveController,
                 exitController,
                 handController,
-                undoController,
+                backController,
                 oneToOneController,
                 windowSizeController,
                 rotationController,
@@ -81,7 +81,7 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
         final ToolsArea toolsArea = new ToolsArea(
                 iconsSupplier,
                 handController,
-                undoController,
+                backController,
                 oneToOneController,
                 windowSizeController,
                 rotationController,

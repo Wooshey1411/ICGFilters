@@ -8,8 +8,8 @@ import ru.nsu.icg.lab2.model.ImageFactory;
 
 import java.awt.event.ActionEvent;
 
-public class UndoController extends ToolController {
-    public UndoController(Context context, View view, ImageFactory imageFactory) {
+public class BackController extends ToolController {
+    public BackController(Context context, View view, ImageFactory imageFactory) {
         super(context, view, imageFactory);
     }
 
