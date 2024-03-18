@@ -2,8 +2,8 @@ package ru.nsu.icg.lab2.model.json;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.ToolsConfigParser;
+import ru.nsu.icg.lab2.model.dto.Tool;
 
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
@@ -20,7 +20,8 @@ public class JSONToolsConfigParser implements ToolsConfigParser {
 
     @Override
     public List<Tool> parse() {
-        final Type listOfMyClassObject = new TypeToken<ArrayList<Tool>>() {}.getType();
+        final Type listOfTools = new TypeToken<ArrayList<Tool>>() {
+        }.getType();
 
         try {
             return new Gson().fromJson(
@@ -28,7 +29,7 @@ public class JSONToolsConfigParser implements ToolsConfigParser {
                             Objects.requireNonNull(this.getClass().getResourceAsStream("/" + fileName)).readAllBytes(),
                             StandardCharsets.UTF_8
                     ),
-                    listOfMyClassObject
+                    listOfTools
             );
         } catch (Exception exception) {
             throw new RuntimeException(String.format("Invalid tools config \"%s\"", fileName), exception);
