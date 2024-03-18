@@ -1,6 +1,6 @@
 package ru.nsu.icg.lab2.gui;
 
-import ru.nsu.icg.lab2.gui.model.*;
+import ru.nsu.icg.lab2.gui.common.*;
 import ru.nsu.icg.lab2.gui.view.ViewImpl;
 import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.ToolsConfigParser;

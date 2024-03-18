@@ -1,9 +1,9 @@
 package ru.nsu.icg.lab2.gui.controller.menu;
 
 import ru.nsu.icg.lab2.gui.controller.files.ImageSavingChooser;
-import ru.nsu.icg.lab2.gui.model.Context;
-import ru.nsu.icg.lab2.gui.model.ImageWriter;
-import ru.nsu.icg.lab2.gui.model.View;
+import ru.nsu.icg.lab2.gui.common.Context;
+import ru.nsu.icg.lab2.gui.common.ImageWriter;
+import ru.nsu.icg.lab2.gui.common.View;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

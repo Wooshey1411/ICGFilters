@@ -1,7 +1,7 @@
 package ru.nsu.icg.lab2.gui.controller.menu;
 
 import ru.nsu.icg.lab2.gui.controller.files.ImageOpeningChooser;
-import ru.nsu.icg.lab2.gui.model.*;
+import ru.nsu.icg.lab2.gui.common.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

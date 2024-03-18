@@ -1,8 +1,8 @@
 package ru.nsu.icg.lab2.gui.view;
 
-import ru.nsu.icg.lab2.gui.model.Context;
-import ru.nsu.icg.lab2.gui.model.ViewMode;
-import ru.nsu.icg.lab2.gui.model.WindowResizeListener;
+import ru.nsu.icg.lab2.gui.common.Context;
+import ru.nsu.icg.lab2.gui.common.ViewMode;
+import ru.nsu.icg.lab2.gui.common.WindowResizeListener;
 
 import javax.swing.*;
 import java.awt.*;

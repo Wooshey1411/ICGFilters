@@ -1,4 +1,4 @@
-package ru.nsu.icg.lab2.gui.model;
+package ru.nsu.icg.lab2.gui.common;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

@@ -1,4 +1,4 @@
-package ru.nsu.icg.lab2.gui.model;
+package ru.nsu.icg.lab2.gui.common;
 
 import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.model.ImageFactory;
