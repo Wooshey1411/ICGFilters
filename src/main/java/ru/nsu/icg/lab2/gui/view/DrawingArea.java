@@ -19,7 +19,7 @@ public class DrawingArea extends JPanel {
                 BORDER_LENGTH, BORDER_SPACING,
                 false
         ));
-        setBackground(Color.WHITE);
+        setBackground(Color.DARK_GRAY);
     }
 
     public void resizeSoftly(int width, int height) {

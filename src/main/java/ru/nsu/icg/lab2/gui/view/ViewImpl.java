@@ -141,10 +141,21 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
         if (image == null) {
             return;
         }
+        int newHeight;
+        int newWidth;
+
+        double k = image.getWidth()*1.0/image.getHeight();
+        if(context.getDrawingAreaWidth()*1.0 / context.getDrawingAreaHeight() >= k ) {
+            newHeight = context.getDrawingAreaHeight();
+            newWidth = (int) (newHeight * k);
+        } else{
+            newWidth = context.getDrawingAreaWidth();
+            newHeight = (int)(newWidth / k);
+        }
 
         BufferedImage resizedImage = new BufferedImage(
-                context.getDrawingAreaWidth(),
-                context.getDrawingAreaHeight(),
+                newWidth,
+                newHeight,
                 BufferedImage.TYPE_INT_ARGB
         );
 
@@ -165,12 +176,12 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
                 image.bufferedImage(),
                 0,
                 0,
-                context.getDrawingAreaWidth(),
-                context.getDrawingAreaHeight(),
+                newWidth,
+                newHeight,
                 null
         );
         graphics2D.dispose();
-        drawingArea.resizeSoftly(resizedImage.getWidth(), resizedImage.getHeight());
+        drawingArea.resizeSoftly(newWidth, newHeight);
         drawingArea.setImage(resizedImage);
         drawingArea.repaint();
         drawingArea.revalidate();
