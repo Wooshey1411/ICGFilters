@@ -1,7 +1,8 @@
-package ru.nsu.icg.lab2.gui.controller.tools.transformations;
+package ru.nsu.icg.lab2.gui.controller.tools;
 
 import org.decimal4j.util.DoubleRounder;
 import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
+import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.gui.model.Context;
 import ru.nsu.icg.lab2.gui.model.Utils;
 import ru.nsu.icg.lab2.gui.model.View;
@@ -10,12 +11,10 @@ import ru.nsu.icg.lab2.model.transformations.WaveFilter;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WaveFilterController implements ActionListener {
-
+public class WaveFilterController extends ToolController {
     private static final int AMP_SLIDER_MIN_VALUE = 0;
     private static final int AMP_SLIDER_MAX_VALUE = 100;
     private static final int FREQ_MIN_VALUE = 0;
@@ -30,9 +29,7 @@ public class WaveFilterController implements ActionListener {
 
     private static final double step = (FREQ_MAX_VALUE-FREQ_BOUND_VALUE)*1.0/(FREQ_SLIDER_MAX_VALUE-FREQ_SLIDER_BOUND_VALUE);
 
-    private final Context context;
     private final WaveFilter waveFilter;
-    private final View view;
     private final JPanel optionsSetWindow;
     private final TextFieldSliderController ampXTextFieldSliderController;
     private final TextFieldSliderController ampYTextFieldSliderController;
@@ -46,14 +43,14 @@ public class WaveFilterController implements ActionListener {
     private final HashMap<String,WaveFilter.WaveFilterOrder> waveFilterOrderHashMap;
 
     public WaveFilterController(Context context, View view, ImageFactory imageFactory) {
-        this.context = context;
-        this.view = view;
-        this.waveFilter = new WaveFilter(imageFactory);
-        this.waveFilterOrderHashMap = new HashMap<>(Map.of(
+        super(context, view, imageFactory);
+
+        waveFilter = new WaveFilter(imageFactory);
+        waveFilterOrderHashMap = new HashMap<>(Map.of(
                 "From X to Y", WaveFilter.WaveFilterOrder.FROM_X_TO_Y,
                 "From Y to X", WaveFilter.WaveFilterOrder.FROM_Y_TO_X
         ));
-        this.orderComboBox = new JComboBox<>(waveFilterOrderHashMap.keySet().toArray(new String[0]));
+        orderComboBox = new JComboBox<>(waveFilterOrderHashMap.keySet().toArray(new String[0]));
         JSlider ampXSlider = new JSlider(AMP_SLIDER_MIN_VALUE,AMP_SLIDER_MAX_VALUE);
         JSlider ampYSlider = new JSlider(AMP_SLIDER_MIN_VALUE,AMP_SLIDER_MAX_VALUE);
         JSlider freqXSlider = new JSlider(FREQ_SLIDER_MIN_VALUE,FREQ_SLIDER_MAX_VALUE);
@@ -62,12 +59,12 @@ public class WaveFilterController implements ActionListener {
         JTextField ampYTextField = new JTextField();
         JTextField freqXTextField = new JTextField();
         JTextField freqYTextField = new JTextField();
-        this.optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(ampXTextField,ampXSlider,"X amplitude:",1);
-        Utils.addSyncSliderTo3ColsPanel(this.optionsSetWindow,freqXTextField,freqXSlider,"X frequency:",1);
-        Utils.addSyncSliderTo3ColsPanel(this.optionsSetWindow,ampYTextField,ampYSlider,"Y amplitude:",1);
-        Utils.addSyncSliderTo3ColsPanel(this.optionsSetWindow,freqYTextField,freqYSlider,"Y frequency:",1);
-        Utils.addComboBoxTo3ColsPanel(this.optionsSetWindow,orderComboBox,"Order:",1);
-        this.ampXTextFieldSliderController = new TextFieldSliderController(
+        optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(ampXTextField,ampXSlider,"X amplitude:",1);
+        Utils.addSyncSliderTo3ColsPanel(optionsSetWindow,freqXTextField,freqXSlider,"X frequency:",1);
+        Utils.addSyncSliderTo3ColsPanel(optionsSetWindow,ampYTextField,ampYSlider,"Y amplitude:",1);
+        Utils.addSyncSliderTo3ColsPanel(optionsSetWindow,freqYTextField,freqYSlider,"Y frequency:",1);
+        Utils.addComboBoxTo3ColsPanel(optionsSetWindow,orderComboBox,"Order:",1);
+        ampXTextFieldSliderController = new TextFieldSliderController(
                 ampXTextField,
                 ampXSlider,
                 AMP_SLIDER_MIN_VALUE,
@@ -77,7 +74,7 @@ public class WaveFilterController implements ActionListener {
                 Double::intValue,
                 (x) -> String.valueOf(Math.round(x))
         );
-        this.ampYTextFieldSliderController = new TextFieldSliderController(
+        ampYTextFieldSliderController = new TextFieldSliderController(
                 ampYTextField,
                 ampYSlider,
                 AMP_SLIDER_MIN_VALUE,
@@ -89,7 +86,7 @@ public class WaveFilterController implements ActionListener {
         );
         doubleRounder2 = new DoubleRounder(2);
         doubleRounder3 = new DoubleRounder(3);
-        this.freqXTextFieldSliderController = new TextFieldSliderController( // 0-1 -> 0.001 ; 1-10 -> 0.01
+        freqXTextFieldSliderController = new TextFieldSliderController( // 0-1 -> 0.001 ; 1-10 -> 0.01
                 freqXTextField,
                 freqXSlider,
                 FREQ_MIN_VALUE,
@@ -99,7 +96,7 @@ public class WaveFilterController implements ActionListener {
                 this::getSliderValueFrom,
                 this::toTextFieldValue
         );
-        this.freqYTextFieldSliderController = new TextFieldSliderController( // 0-1 -> 0.001 ; 1-10 -> 0.01
+        freqYTextFieldSliderController = new TextFieldSliderController( // 0-1 -> 0.001 ; 1-10 -> 0.01
                 freqYTextField,
                 freqYSlider,
                 FREQ_MIN_VALUE,
@@ -113,6 +110,8 @@ public class WaveFilterController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+        final View view = getView();
+
         while (true) {
             String order = null;
             for(Map.Entry<String, WaveFilter.WaveFilterOrder> entry : waveFilterOrderHashMap.entrySet()){
@@ -181,7 +180,7 @@ public class WaveFilterController implements ActionListener {
             break;
         }
         waveFilter.setOrder(waveFilterOrderHashMap.get((String)orderComboBox.getSelectedItem()));
-        context.setTransformation(waveFilter);
+        getContext().setTransformation(waveFilter);
     }
 
     private double getFromSliderValue(int sliderValue) {

@@ -1,6 +1,7 @@
-package ru.nsu.icg.lab2.gui.controller.tools.transformations;
+package ru.nsu.icg.lab2.gui.controller.tools;
 
 import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
+import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.gui.model.Context;
 import ru.nsu.icg.lab2.gui.model.Utils;
 import ru.nsu.icg.lab2.gui.model.View;
@@ -9,9 +10,8 @@ import ru.nsu.icg.lab2.model.transformations.Rotation;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class RotationController implements ActionListener {
+public class RotationController extends ToolController {
     private static final int SLIDER_MIN_VALUE = -180;
     private static final int SLIDER_MAX_VALUE = 180;
     private static final String INCORRECT_VALUE_MESSAGE = String.format(
@@ -20,21 +20,18 @@ public class RotationController implements ActionListener {
             SLIDER_MAX_VALUE
     );
 
-    private final Context context;
-    private final View view;
     private final Rotation rotation;
     private final TextFieldSliderController dialogWindowController;
     private final JPanel panel;
 
     public RotationController(Context context, View view, ImageFactory imageFactory) {
-        this.context = context;
-        this.view = view;
-        this.rotation = new Rotation(imageFactory);
+        super(context, view, imageFactory);
 
+        rotation = new Rotation(imageFactory);
         final JTextField textField = new JTextField();
         final JSlider slider = new JSlider(SLIDER_MIN_VALUE, SLIDER_MAX_VALUE);
-        this.panel = Utils.createSimpleSliderDialogInputPanel(textField, slider,"Angle:",1);
-        this.dialogWindowController = new TextFieldSliderController(
+        panel = Utils.createSimpleSliderDialogInputPanel(textField, slider,"Angle:",1);
+        dialogWindowController = new TextFieldSliderController(
                 textField,
                 slider,
                 SLIDER_MIN_VALUE,
@@ -48,6 +45,8 @@ public class RotationController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+        final View view = getView();
+
         while (true) {
             dialogWindowController.reset(rotation.getDegrees());
 
@@ -65,6 +64,6 @@ public class RotationController implements ActionListener {
             view.showError(INCORRECT_VALUE_MESSAGE);
         }
 
-        context.setTransformation(rotation);
+        getContext().setTransformation(rotation);
     }
 }

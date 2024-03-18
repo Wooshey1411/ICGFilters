@@ -1,9 +1,17 @@
 package ru.nsu.icg.lab2.gui.controller.tools;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import ru.nsu.icg.lab2.gui.controller.ToolController;
+import ru.nsu.icg.lab2.gui.model.Context;
+import ru.nsu.icg.lab2.gui.model.View;
+import ru.nsu.icg.lab2.model.ImageFactory;
 
-public class HandController implements ActionListener {
+import java.awt.event.ActionEvent;
+
+public class HandController extends ToolController {
+    public HandController(Context context, View view, ImageFactory imageFactory) {
+        super(context, view, imageFactory);
+    }
+
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 

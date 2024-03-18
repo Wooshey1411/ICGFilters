@@ -1,22 +1,19 @@
-package ru.nsu.icg.lab2.gui.controller.tools.transformations;
+package ru.nsu.icg.lab2.gui.controller.tools;
 
+import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.gui.model.Context;
 import ru.nsu.icg.lab2.gui.model.View;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.transformations.FloydSteinbergDithering;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class FloydSteinbergDitheringController implements ActionListener {
-    private final Context context;
-    private final View view;
+public class FloydSteinbergDitheringController extends ToolController {
     private final FloydSteinbergDithering floydSteinbergDithering;
 
     public FloydSteinbergDitheringController(Context context, View view, ImageFactory imageFactory) {
-        this.context = context;
-        this.view = view;
-        this.floydSteinbergDithering = new FloydSteinbergDithering(imageFactory);
+        super(context, view, imageFactory);
+        floydSteinbergDithering = new FloydSteinbergDithering(imageFactory);
     }
 
     @Override

@@ -1,0 +1,112 @@
+[
+  {
+    "name": "Рука",
+    "tip": "рука",
+    "icon": "/icons/hand.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.HandController"
+  },
+  {
+    "name": "Назад",
+    "tip": "назад",
+    "icon": "/icons/arrows.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.BackController"
+  },
+  {
+    "name": "1:1",
+    "tip": "1:1",
+    "icon": "/icons/one-to-one.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.OneToOneController",
+    "group": 1
+  },
+  {
+    "name": "Под размер окна",
+    "tip": "подогнать под размер окна",
+    "icon": "/icons/display.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.ToWindowSizeController",
+    "group": 1
+  },
+  {
+    "name": "Вращение",
+    "tip": "вращение",
+    "icon": "/icons/rotation.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.RotationController"
+  },
+  {
+    "name": "Перевод в чёрно-белое",
+    "tip": "перевод в чёрно-белое",
+    "icon": "/icons/black-and-white.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.BlackAndWhiteController"
+  },
+  {
+    "name": "Инверсия",
+    "tip": "инверсия",
+    "icon": "/icons/inversion.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.InversionController"
+  },
+  {
+    "name": "Гамма-коррекция",
+    "tip": "гамма-коррекция",
+    "icon": "/icons/gamma-correction.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.GammaCorrectionController"
+  },
+  {
+    "name": "Повышение резкости",
+    "tip": "повышение резкости",
+    "icon": "/icons/sharpening.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.SharpeningController"
+  },
+  {
+    "name": "Выделение границ",
+    "tip": "выделение границ",
+    "icon": "/icons/edge-detection.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.EdgeDetectionController"
+  },
+  {
+    "name": "Тиснение",
+    "tip": "тиснение",
+    "icon": "/icons/embossing.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.EmbossingController"
+  },
+  {
+    "name": "Сглаживание",
+    "tip": "сглаживание",
+    "icon": "/icons/blur.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.BlurController"
+  },
+  {
+    "name": "Акварелизация",
+    "tip": "акварелизация",
+    "icon": "/icons/watercoloring.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.WatercoloringController"
+  },
+  {
+    "name": "Дизеринг Флойда-Стейнберга",
+    "tip": "дизеринг Флойда-Стейнберга",
+    "icon": "/icons/dithering-1.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.FloydSteinbergDitheringController"
+  },
+  {
+    "name": "Упорядоченный дизеринг",
+    "tip": "упорядоченный дизеринг",
+    "icon": "/icons/dithering-2.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.OrderedDitheringController"
+  },
+  {
+    "name": "Волновой фильтр",
+    "tip": "волновой фильтр",
+    "icon": "/icons/wave-filter.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.WaveFilterController"
+  },
+  {
+    "name": "Эффект стекла",
+    "tip": "Эффект матового стекла",
+    "icon": "/icons/glass.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.GlassEffectController"
+  },
+  {
+    "name": "Рыбий глаз",
+    "tip": "Эффект рыбьего глаза",
+    "icon": "/icons/fisheye.png",
+    "controller": "ru.nsu.icg.lab2.gui.controller.FisheyeController"
+  }
+]

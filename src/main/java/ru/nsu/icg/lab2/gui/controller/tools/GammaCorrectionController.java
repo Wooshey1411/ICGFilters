@@ -1,7 +1,8 @@
-package ru.nsu.icg.lab2.gui.controller.tools.transformations;
+package ru.nsu.icg.lab2.gui.controller.tools;
 
 import org.decimal4j.util.DoubleRounder;
 import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
+import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.gui.model.Context;
 import ru.nsu.icg.lab2.gui.model.Utils;
 import ru.nsu.icg.lab2.gui.model.View;
@@ -10,9 +11,8 @@ import ru.nsu.icg.lab2.model.transformations.GammaCorrection;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class GammaCorrectionController implements ActionListener {
+public class GammaCorrectionController extends ToolController {
     private static final int SLIDER_MIN_VALUE = 0;
     private static final int SLIDER_MAX_VALUE = 1000;
     private static final int SLIDER_MAX_VALUE_HALF = SLIDER_MAX_VALUE / 2;
@@ -24,24 +24,21 @@ public class GammaCorrectionController implements ActionListener {
             GAMMA_MIN_VALUE,
             GAMMA_MAX_VALUE
     );
-    private final Context context;
-    private final View view;
+
     private final GammaCorrection gammaCorrection;
     private final DoubleRounder rounder;
-
     private final TextFieldSliderController dialogWindowController;
     private final JPanel panel;
 
     public GammaCorrectionController(Context context, View view, ImageFactory imageFactory) {
-        this.context = context;
-        this.view = view;
-        this.gammaCorrection = new GammaCorrection(imageFactory);
-        this.rounder = new DoubleRounder(1);
+        super(context, view, imageFactory);
 
+        gammaCorrection = new GammaCorrection(imageFactory);
+        rounder = new DoubleRounder(1);
         final JTextField textField = new JTextField();
         final JSlider slider = new JSlider(SLIDER_MIN_VALUE, SLIDER_MAX_VALUE);
-        this.panel = Utils.createSimpleSliderDialogInputPanel(textField, slider,"Gamma:",1);
-        this.dialogWindowController = new TextFieldSliderController(
+        panel = Utils.createSimpleSliderDialogInputPanel(textField, slider, "Gamma:", 1);
+        dialogWindowController = new TextFieldSliderController(
                 textField,
                 slider,
                 GAMMA_MIN_VALUE,
@@ -55,6 +52,8 @@ public class GammaCorrectionController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+        final View view = getView();
+
         while (true) {
             dialogWindowController.reset(gammaCorrection.getGamma());
 
@@ -72,7 +71,7 @@ public class GammaCorrectionController implements ActionListener {
             view.showError(INCORRECT_VALUE_MESSAGE);
         }
 
-        context.setTransformation(gammaCorrection);
+        getContext().setTransformation(gammaCorrection);
     }
 
     private double getGammaFromSliderValue(int sliderValue) {

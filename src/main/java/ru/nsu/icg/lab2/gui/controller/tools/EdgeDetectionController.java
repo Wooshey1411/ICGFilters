@@ -1,6 +1,7 @@
-package ru.nsu.icg.lab2.gui.controller.tools.transformations;
+package ru.nsu.icg.lab2.gui.controller.tools;
 
 import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
+import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.gui.model.Context;
 import ru.nsu.icg.lab2.gui.model.Utils;
 import ru.nsu.icg.lab2.gui.model.View;
@@ -9,12 +10,10 @@ import ru.nsu.icg.lab2.model.transformations.EdgeDetection;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EdgeDetectionController implements ActionListener {
-
+public class EdgeDetectionController extends ToolController {
     private static final int SLIDER_MIN_VALUE = 0;
     private static final int SLIDER_MAX_VALUE = 1000;
     private static final String INCORRECT_VALUE_MESSAGE = String.format(
@@ -22,28 +21,26 @@ public class EdgeDetectionController implements ActionListener {
             SLIDER_MIN_VALUE,
             SLIDER_MAX_VALUE
     );
-    private final Context context;
+
     private final EdgeDetection edgeDetection;
-    private final View view;
     private final JPanel optionsSetWindow;
     private final TextFieldSliderController textFieldSliderController;
     private final JComboBox<String> algComboBox;
     private final HashMap<String, EdgeDetection.EdgeDetectionType> edgeDetectionTypeHashMap;
 
-    public EdgeDetectionController(Context context,View view, ImageFactory imageFactory) {
-        this.context = context;
-        this.view = view;
-        this.edgeDetection = new EdgeDetection(imageFactory);
-        this.edgeDetectionTypeHashMap = new HashMap<>(Map.of(
+    public EdgeDetectionController(Context context, View view, ImageFactory imageFactory) {
+        super(context, view, imageFactory);
+        edgeDetection = new EdgeDetection(imageFactory);
+        edgeDetectionTypeHashMap = new HashMap<>(Map.of(
                 "Sobel", EdgeDetection.EdgeDetectionType.SOBEL,
                 "Roberts", EdgeDetection.EdgeDetectionType.ROBERTS
         ));
         algComboBox = new JComboBox<>(edgeDetectionTypeHashMap.keySet().toArray(new String[0]));
         JTextField textField = new JTextField();
         JSlider slider = new JSlider(SLIDER_MIN_VALUE,SLIDER_MAX_VALUE);
-        this.optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(textField,slider,"Binarization:",1);
-        Utils.addComboBoxTo3ColsPanel(this.optionsSetWindow, algComboBox,"Algorithm:", 1);
-        this.textFieldSliderController = new TextFieldSliderController(
+        optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(textField,slider,"Binarization:",1);
+        Utils.addComboBoxTo3ColsPanel(optionsSetWindow, algComboBox,"Algorithm:", 1);
+        textFieldSliderController = new TextFieldSliderController(
                 textField,
                 slider,
                 SLIDER_MIN_VALUE,
@@ -57,6 +54,8 @@ public class EdgeDetectionController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+        final View view = getView();
+
         while (true) {
             String edgeDetectionType = null;
             for(Map.Entry<String, EdgeDetection.EdgeDetectionType> entry : edgeDetectionTypeHashMap.entrySet()){
@@ -87,6 +86,6 @@ public class EdgeDetectionController implements ActionListener {
             view.showError(INCORRECT_VALUE_MESSAGE);
         }
 
-        context.setTransformation(edgeDetection);
+        getContext().setTransformation(edgeDetection);
     }
 }
