@@ -41,27 +41,26 @@ public class WaveFilter implements Transformation {
         int gridSize = width * height;
         int[] grid = new int[gridSize];
         oldImage.getARGB(grid);
-        int[] newGrid = new int[gridSize];
+        int[] newImage = new int[gridSize];
         if(order == WaveFilterOrder.FROM_X_TO_Y) {
-            waveOnX(grid, width, height, newGrid);
+            waveOnX(grid, width, height, newImage);
             if (ampX != 0 && ampY != 0) {
-                System.arraycopy(newGrid, 0, grid, 0, gridSize);
+                System.arraycopy(newImage, 0, grid, 0, gridSize);
             }
-            waveOnY(grid, width, height, newGrid);
+            waveOnY(grid, width, height, newImage);
         }
         if(order == WaveFilterOrder.FROM_Y_TO_X) {
-            waveOnY(grid, width, height, newGrid);
+            waveOnY(grid, width, height, newImage);
             if (ampX != 0 && ampY != 0) {
-                System.arraycopy(newGrid, 0, grid, 0, gridSize);
+                System.arraycopy(newImage, 0, grid, 0, gridSize);
             }
-            waveOnX(grid, width, height, newGrid);
+            waveOnX(grid, width, height, newImage);
         }
 
         if (ampX == 0 && ampY == 0) {
-            newGrid = grid;
+            newImage = grid;
         }
-
-        return imageFactory.createImage(oldImage, newGrid);
+        return imageFactory.createImage(oldImage, newImage);
     }
 
     private void waveOnX(int[] grid, int width, int height, int[] newGrid) {

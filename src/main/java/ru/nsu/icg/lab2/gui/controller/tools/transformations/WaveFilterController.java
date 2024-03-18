@@ -11,7 +11,8 @@ import ru.nsu.icg.lab2.model.transformations.WaveFilter;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WaveFilterController implements ActionListener {
 
@@ -42,11 +43,17 @@ public class WaveFilterController implements ActionListener {
     private final DoubleRounder doubleRounder3;
     private final DoubleRounder doubleRounder2;
 
+    private final HashMap<String,WaveFilter.WaveFilterOrder> waveFilterOrderHashMap;
+
     public WaveFilterController(Context context, View view, ImageFactory imageFactory) {
         this.context = context;
         this.view = view;
         this.waveFilter = new WaveFilter(imageFactory);
-        this.orderComboBox = null; //new JComboBox<>(waveFilter.getTypesAsString());
+        this.waveFilterOrderHashMap = new HashMap<>(Map.of(
+                "From X to Y", WaveFilter.WaveFilterOrder.FROM_X_TO_Y,
+                "From Y to X", WaveFilter.WaveFilterOrder.FROM_Y_TO_X
+        ));
+        this.orderComboBox = new JComboBox<>(waveFilterOrderHashMap.keySet().toArray(new String[0]));
         JSlider ampXSlider = new JSlider(AMP_SLIDER_MIN_VALUE,AMP_SLIDER_MAX_VALUE);
         JSlider ampYSlider = new JSlider(AMP_SLIDER_MIN_VALUE,AMP_SLIDER_MAX_VALUE);
         JSlider freqXSlider = new JSlider(FREQ_SLIDER_MIN_VALUE,FREQ_SLIDER_MAX_VALUE);
@@ -55,11 +62,11 @@ public class WaveFilterController implements ActionListener {
         JTextField ampYTextField = new JTextField();
         JTextField freqXTextField = new JTextField();
         JTextField freqYTextField = new JTextField();
-        this.optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(ampXTextField,ampXSlider,"X amplitude",1);
-        Utils.addSyncSliderTo3ColsPanel(this.optionsSetWindow,freqXTextField,freqXSlider,"X frequency",1);
-        Utils.addSyncSliderTo3ColsPanel(this.optionsSetWindow,ampYTextField,ampYSlider,"Y amplitude",1);
-        Utils.addSyncSliderTo3ColsPanel(this.optionsSetWindow,freqYTextField,freqYSlider,"Y frequency",1);
-        //Utils.addComboBoxTo3ColsPanel(this.optionsSetWindow, orderComboBox,"Order",1);
+        this.optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(ampXTextField,ampXSlider,"X amplitude:",1);
+        Utils.addSyncSliderTo3ColsPanel(this.optionsSetWindow,freqXTextField,freqXSlider,"X frequency:",1);
+        Utils.addSyncSliderTo3ColsPanel(this.optionsSetWindow,ampYTextField,ampYSlider,"Y amplitude:",1);
+        Utils.addSyncSliderTo3ColsPanel(this.optionsSetWindow,freqYTextField,freqYSlider,"Y frequency:",1);
+        Utils.addComboBoxTo3ColsPanel(this.optionsSetWindow,orderComboBox,"Order:",1);
         this.ampXTextFieldSliderController = new TextFieldSliderController(
                 ampXTextField,
                 ampXSlider,
@@ -82,7 +89,6 @@ public class WaveFilterController implements ActionListener {
         );
         doubleRounder2 = new DoubleRounder(2);
         doubleRounder3 = new DoubleRounder(3);
-        //System.out.println(step);
         this.freqXTextFieldSliderController = new TextFieldSliderController( // 0-1 -> 0.001 ; 1-10 -> 0.01
                 freqXTextField,
                 freqXSlider,
@@ -108,11 +114,21 @@ public class WaveFilterController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         while (true) {
+            String order = null;
+            for(Map.Entry<String, WaveFilter.WaveFilterOrder> entry : waveFilterOrderHashMap.entrySet()){
+                if(entry.getValue() == waveFilter.getOrder()){
+                    order = entry.getKey();
+                }
+            }
+
+            if(order == null){
+                throw new IllegalArgumentException("No such waveFilter order type: " + waveFilter.getOrder());
+            }
+            orderComboBox.setSelectedItem(order);
             ampXTextFieldSliderController.reset(waveFilter.getAmpX());
             ampYTextFieldSliderController.reset(waveFilter.getAmpY());
             freqXTextFieldSliderController.reset(waveFilter.getFreqX());
             freqYTextFieldSliderController.reset(waveFilter.getFreqY());
-            //orderComboBox.setSelectedItem(waveFilter.getTypeAsString());
 
             final boolean ok = view.showConfirmationDialog("Wave", optionsSetWindow);
             if (!ok) {
@@ -164,10 +180,7 @@ public class WaveFilterController implements ActionListener {
 
             break;
         }
-        //waveFilter.setTypeFromString((String) Objects.requireNonNull(orderComboBox.getSelectedItem()));
-
-
-
+        waveFilter.setOrder(waveFilterOrderHashMap.get((String)orderComboBox.getSelectedItem()));
         context.setTransformation(waveFilter);
     }
 
