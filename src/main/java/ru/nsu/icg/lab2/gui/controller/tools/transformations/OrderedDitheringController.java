@@ -21,6 +21,6 @@ public class OrderedDitheringController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-
+        context.setTransformation(orderedDithering);
     }
 }
