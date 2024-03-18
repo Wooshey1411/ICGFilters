@@ -16,6 +16,11 @@ public class HandController extends ToolController {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        getContext().setDrawingAreaAction(DrawingAreaAction.MOVE_SCROLLS);
+        if(getContext().getDrawingAreaAction() == DrawingAreaAction.SWAP_IMAGE) {
+            getContext().setDrawingAreaAction(DrawingAreaAction.MOVE_SCROLLS);
+        } else {
+            getContext().setDrawingAreaAction(DrawingAreaAction.SWAP_IMAGE);
+        }
+        // TODO: залипание/отлипание кнопки на соотв. случаи
     }
 }
