@@ -1,16 +1,20 @@
 package ru.nsu.icg.lab2.model.transformations;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
 
 import java.util.Arrays;
-
-@Data
+@Getter
+@Setter
 public class OrderedDithering extends Transformation {
+
     private int redK = 8;
+
     private int greenK = 8;
+
     private int blueK = 4;
 
 
