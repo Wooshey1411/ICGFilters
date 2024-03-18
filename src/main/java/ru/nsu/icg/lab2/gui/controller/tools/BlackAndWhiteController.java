@@ -4,7 +4,7 @@ import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.gui.model.Context;
 import ru.nsu.icg.lab2.gui.model.View;
 import ru.nsu.icg.lab2.model.ImageFactory;
-import ru.nsu.icg.lab2.model.Tool;
+import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.transformations.BlackAndWhite;
 
 import java.awt.event.ActionEvent;

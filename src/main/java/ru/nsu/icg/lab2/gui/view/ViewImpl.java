@@ -4,8 +4,8 @@ import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
 import ru.nsu.icg.lab2.gui.controller.WindowResizeController;
 import ru.nsu.icg.lab2.gui.controller.menu.*;
 import ru.nsu.icg.lab2.gui.model.*;
-import ru.nsu.icg.lab2.model.Tool;
-import ru.nsu.icg.lab2.model.ViewConfig;
+import ru.nsu.icg.lab2.model.dto.Tool;
+import ru.nsu.icg.lab2.model.dto.ViewConfig;
 
 import java.util.List;
 import javax.swing.*;

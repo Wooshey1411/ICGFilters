@@ -1,4 +1,4 @@
-package ru.nsu.icg.lab2.model;
+package ru.nsu.icg.lab2.model.dto;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;

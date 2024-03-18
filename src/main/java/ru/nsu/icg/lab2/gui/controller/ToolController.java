@@ -4,7 +4,7 @@ import lombok.Getter;
 import ru.nsu.icg.lab2.gui.model.Context;
 import ru.nsu.icg.lab2.gui.model.View;
 import ru.nsu.icg.lab2.model.ImageFactory;
-import ru.nsu.icg.lab2.model.Tool;
+import ru.nsu.icg.lab2.model.dto.Tool;
 
 import java.awt.event.ActionListener;
 

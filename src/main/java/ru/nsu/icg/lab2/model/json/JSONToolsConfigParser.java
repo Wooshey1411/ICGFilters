@@ -2,7 +2,7 @@ package ru.nsu.icg.lab2.model.json;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import ru.nsu.icg.lab2.model.Tool;
+import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.ToolsConfigParser;
 
 import java.lang.reflect.Type;

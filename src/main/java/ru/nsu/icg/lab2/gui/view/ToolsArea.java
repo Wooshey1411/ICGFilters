@@ -1,7 +1,7 @@
 package ru.nsu.icg.lab2.gui.view;
 
 import ru.nsu.icg.lab2.gui.controller.ToolController;
-import ru.nsu.icg.lab2.model.Tool;
+import ru.nsu.icg.lab2.model.dto.Tool;
 
 import java.net.URL;
 import java.util.List;
