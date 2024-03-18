@@ -43,9 +43,11 @@ public class MenuArea extends JPanel {
         ));
     }
 
-    private static JMenu createFileMenu(ActionListener openListener,
-                                        ActionListener saveListener,
-                                        ActionListener exitListener) {
+    private static JMenu createFileMenu(
+            ActionListener openListener,
+            ActionListener saveListener,
+            ActionListener exitListener
+    ) {
         final JMenu result = createMenu("File");
         result.add(createMenuItem("Open", openListener));
         result.add(createMenuItem("Save", saveListener));
@@ -61,8 +63,7 @@ public class MenuArea extends JPanel {
         return result;
     }
 
-    private static JMenu createInfoMenu(ActionListener helpListener,
-                                        ActionListener aboutListener) {
+    private static JMenu createInfoMenu(ActionListener helpListener, ActionListener aboutListener) {
         final JMenu result = createMenu("Info");
         result.add(createMenuItem("Help", helpListener));
         result.add(createMenuItem("About", aboutListener));

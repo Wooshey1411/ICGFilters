@@ -41,7 +41,7 @@ public class ToolsArea extends JPanel {
     }
 
     private static ImageIcon loadIcon(String path) {
-        final URL url = IconsSupplier.class.getResource(path);
+        final URL url = ToolsArea.class.getResource(path);
 
         if (url == null) {
             throw new RuntimeException("Icon not found: " + path);
