@@ -31,8 +31,8 @@ public class GlassEffect extends Transformation {
                 final int offset = random.nextInt(0, spread);
                 final int x1 = Integer.min(x + offset, width - 1);
                 final int y1 = Integer.min(y + offset, height - 1);
-                final int i = x + y * height;
-                final int j = x1 + y1 * height;
+                final int i = x + y * width;
+                final int j = x1 + y1 * width;
                 grid[i] = grid[j];
             }
         }
