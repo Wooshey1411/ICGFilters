@@ -16,6 +16,7 @@ public class Sharpening extends Transformation {
 
     public Sharpening(ImageFactory imageFactory) {
         super(imageFactory);
+
         filterApplicator = new FilterApplicator(imageFactory);
         filterApplicator.setWindowSize(WINDOW_SIZE);
         filterApplicator.setMatrix(MATRIX);

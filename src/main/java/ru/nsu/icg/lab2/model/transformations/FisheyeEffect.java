@@ -11,6 +11,6 @@ public class FisheyeEffect extends Transformation {
 
     @Override
     public ImageInterface apply(ImageInterface oldImage) {
-        return getImageFactory().createImage(oldImage, oldImage.getARGB());
+        return getImageFactory().createImage(oldImage, oldImage.getGrid());
     }
 }

@@ -11,10 +11,9 @@ public class BlackAndWhite extends Transformation {
 
     @Override
     public ImageInterface apply(ImageInterface oldImage) {
-        final int gridSize = oldImage.getGridSize();
-        final int[] grid = oldImage.getARGB();
+        final int[] grid = oldImage.getGrid();
 
-        for (int pixel = 0; pixel < gridSize; pixel++) {
+        for (int pixel = 0; pixel < grid.length; pixel++) {
             final int oldAlpha = TransformationUtils.getAlpha(grid[pixel]);
             final int oldRed = TransformationUtils.getRed(grid[pixel]);
             final int oldGreen = TransformationUtils.getGreen(grid[pixel]);

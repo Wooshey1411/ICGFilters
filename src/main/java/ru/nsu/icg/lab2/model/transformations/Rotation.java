@@ -41,10 +41,8 @@ public class Rotation extends Transformation {
         int newHeight = Math.max(Math.abs(topLeftY - botRightY), Math.abs(topRightY - botLeftY)) + 1;
         int newWidth = Math.max(Math.abs(botRightX - topLeftX), Math.abs(topRightX - botLeftX)) + 1;
         int newGridSize = newHeight * newWidth;
-        int gridSize = height * width;
-        int[] grid = new int[gridSize];
-        oldImage.getARGB(grid);
-        int[] newGrid = new int[newGridSize];
+        final int[] oldGrid = oldImage.getGrid();
+        final int[] newGrid = new int[newGridSize];
         Arrays.fill(newGrid, 0xFFFFFFFF);
 
         int newCenterX = newWidth / 2;
@@ -64,7 +62,7 @@ public class Rotation extends Transformation {
                     continue;
                 }
                 int oldIndex = width * oldY + oldX;
-                newGrid[index] = grid[oldIndex];
+                newGrid[index] = oldGrid[oldIndex];
             }
         }
 

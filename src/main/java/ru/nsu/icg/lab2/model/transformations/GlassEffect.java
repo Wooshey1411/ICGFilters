@@ -24,7 +24,7 @@ public class GlassEffect extends Transformation {
     public ImageInterface apply(ImageInterface oldImage) {
         final int height = oldImage.getHeight();
         final int width = oldImage.getWidth();
-        final int[] grid = oldImage.getARGB();
+        final int[] grid = oldImage.getGrid();
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {

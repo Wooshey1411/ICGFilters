@@ -24,8 +24,8 @@ public class MedianFilter extends Transformation {
         final int middle = (windowVolume + 1) / 2 ;
         final int width = oldImage.getWidth();
         final int height = oldImage.getHeight();
-        final int[] oldGrid = oldImage.getARGB();
-        final int[] newGrid = new int[width * height];
+        final int[] oldGrid = oldImage.getGrid();
+        final int[] newGrid = new int[oldGrid.length];
         final int[] red = new int[windowVolume];
         final int[] green = new int[windowVolume];
         final int[] blue = new int[windowVolume];

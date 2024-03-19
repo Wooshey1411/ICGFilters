@@ -25,23 +25,21 @@ public class EdgeDetection extends Transformation {
     }
 
     private ImageInterface applyRoberts(ImageInterface oldImage){
-        int borderStep = 1;
-        int width = oldImage.getWidth();
-        int height = oldImage.getHeight();
-        int gridSize = height * width;
-        int[] grid = new int[gridSize];
-        oldImage.getARGB(grid);
-        int[] newGrid = new int[gridSize];
+        final int borderStep = 1;
+        final int width = oldImage.getWidth();
+        final int height = oldImage.getHeight();
+        final int[] oldGrid = oldImage.getGrid();
+        final int[] newGrid = new int[oldGrid.length];
         Arrays.fill(newGrid, 0xFF000000);
 
         //without borders
         for (int y = 0; y < height - borderStep; y++){
             for (int x = 0; x < width - borderStep; x++){
                 int index = y * width + x;
-                int colorTopLeft = grid[index];
-                int colorTopRight = grid[index + 1];
-                int colorBottomLeft = grid[index + width];
-                int colorBottomRight = grid[index + width + 1];
+                int colorTopLeft = oldGrid[index];
+                int colorTopRight = oldGrid[index + 1];
+                int colorBottomLeft = oldGrid[index + width];
+                int colorBottomRight = oldGrid[index + width + 1];
                 int red = 0;
                 int green = 0;
                 int blue = 0;
@@ -71,13 +69,12 @@ public class EdgeDetection extends Transformation {
 
 
     private ImageInterface applySobel(ImageInterface oldImage){
-        int borderStep = 1;
-        int width = oldImage.getWidth();
-        int height = oldImage.getHeight();
-        int gridSize = height * width;
-        int[] grid = new int[gridSize];
-        oldImage.getARGB(grid);
-        int[] newGrid = new int[gridSize];
+        final int borderStep = 1;
+        final int width = oldImage.getWidth();
+        final int height = oldImage.getHeight();
+        final int gridSize = oldImage.getGridSize();
+        final int[] grid = oldImage.getGrid();
+        final int[] newGrid = new int[gridSize];
         Arrays.fill(newGrid, 0xFF000000);
 
         int[][] matrixX = {

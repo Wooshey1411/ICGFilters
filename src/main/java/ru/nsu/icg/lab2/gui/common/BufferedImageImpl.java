@@ -21,37 +21,12 @@ public record BufferedImageImpl(BufferedImage bufferedImage) implements ImageInt
     }
 
     @Override
-    public int getARGB(int x, int y) {
-        return bufferedImage.getRGB(x, y);
+    public int[] getGrid() {
+        return bufferedImage.getRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), null, 0, bufferedImage.getWidth());
     }
 
     @Override
-    public int[] getARGB() {
-        return getARGB(null);
-    }
-
-    @Override
-    public int[] getARGB(int[] rgbArray) {
-        return bufferedImage.getRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), rgbArray, 0, bufferedImage.getWidth());
-    }
-
-    @Override
-    public int[] getARGB(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scanSize) {
-        return bufferedImage.getRGB(startX, startY, w, h, rgbArray, offset, scanSize);
-    }
-
-    @Override
-    public void setARGB(int x, int y, int rgb) {
-        bufferedImage.setRGB(x, y, rgb);
-    }
-
-    @Override
-    public void setARGB(int[] rgbArray) {
-        bufferedImage.setRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), rgbArray, 0, bufferedImage.getWidth());
-    }
-
-    @Override
-    public void setARGB(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scanSize) {
-        bufferedImage.setRGB(startX, startY, w, h, rgbArray, offset, scanSize);
+    public void setGrid(int[] grid) {
+        bufferedImage.setRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), grid, 0, bufferedImage.getWidth());
     }
 }

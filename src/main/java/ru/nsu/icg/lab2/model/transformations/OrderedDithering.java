@@ -97,7 +97,7 @@ public class OrderedDithering extends Transformation {
     @Override
     public ImageInterface apply(ImageInterface oldImage) {
 
-        return applySirotkin(oldImage);
+        return applyMichael(oldImage);
     }
 
 
@@ -156,43 +156,38 @@ public class OrderedDithering extends Transformation {
     }
 
 
-    private ImageInterface applySirotkin(ImageInterface oldImage){
+    private ImageInterface applyMichael(ImageInterface oldImage){
         colorRedDiv = 1.0 / (redK - 1);
         colorGreenDiv = 1.0 / (greenK - 1);
         colorBlueDiv = 1.0 / (blueK - 1);
-        double[][] matrixRed = chooseMatrix(redK);
-        double[][] matrixGreen = chooseMatrix(greenK);
-        double[][] matrixBlue = chooseMatrix(blueK);
-        int matrixRedSize = matrixRed.length;
-        int matrixGreenSize = matrixGreen.length;
-        int matrixBlueSize = matrixBlue.length;
-        int width = oldImage.getWidth();
-        int height = oldImage.getHeight();
-        int gridSize = height * width;
-        int[] grid = new int[gridSize];
-        oldImage.getARGB(grid);
-        int[] newGrid = new int[gridSize];
+        final double[][] matrixRed = chooseMatrix(redK);
+        final double[][] matrixGreen = chooseMatrix(greenK);
+        final double[][] matrixBlue = chooseMatrix(blueK);
+        final int matrixRedSize = matrixRed.length;
+        final int matrixGreenSize = matrixGreen.length;
+        final int matrixBlueSize = matrixBlue.length;
+        final int width = oldImage.getWidth();
+        final int height = oldImage.getHeight();
+        final int[] oldGrid = oldImage.getGrid();
+        final int[] newGrid = new int[oldGrid.length];
         Arrays.fill(newGrid, 0xFF000000);
         for (int y = 0; y < height; y++){
             for (int x = 0 ; x < width; x++){
-                int index = y * width + x;
-                int matrixRedIndexX = (x % matrixRedSize);
-                int matrixRedIndexY = (y % matrixRedSize);
-                int matrixGreenIndexX = (x % matrixGreenSize);
-                int matrixGreenIndexY = (y % matrixGreenSize);
-                int matrixBlueIndexX = (x % matrixBlueSize);
-                int matrixBlueIndexY = (y % matrixBlueSize);
-                int pixelColor = grid[index];
-                int red = roundColorRed((((pixelColor & 0x00FF0000) >> 16) / 255.0) + colorRedDiv * matrixRed[matrixRedIndexY][matrixRedIndexX]);
-                int green = roundColorGreen((((pixelColor & 0x0000FF00) >> 8) / 255.0) + colorGreenDiv * matrixGreen[matrixGreenIndexY][matrixGreenIndexX]);
-                int blue = roundColorBlue(((pixelColor & 0x000000FF) / 255.0) + colorBlueDiv * matrixBlue[matrixBlueIndexY][matrixBlueIndexX]);
+                final int index = y * width + x;
+                final int matrixRedIndexX = (x % matrixRedSize);
+                final int matrixRedIndexY = (y % matrixRedSize);
+                final int matrixGreenIndexX = (x % matrixGreenSize);
+                final int matrixGreenIndexY = (y % matrixGreenSize);
+                final int matrixBlueIndexX = (x % matrixBlueSize);
+                final int matrixBlueIndexY = (y % matrixBlueSize);
+                final int pixelColor = oldGrid[index];
+                final int red = roundColorRed((((pixelColor & 0x00FF0000) >> 16) / 255.0) + colorRedDiv * matrixRed[matrixRedIndexY][matrixRedIndexX]);
+                final int green = roundColorGreen((((pixelColor & 0x0000FF00) >> 8) / 255.0) + colorGreenDiv * matrixGreen[matrixGreenIndexY][matrixGreenIndexX]);
+                final int blue = roundColorBlue(((pixelColor & 0x000000FF) / 255.0) + colorBlueDiv * matrixBlue[matrixBlueIndexY][matrixBlueIndexX]);
                 newGrid[index] |= (red << 16) | (green << 8) | blue;
             }
         }
 
-
-
         return getImageFactory().createImage(oldImage, newGrid);
     }
-
 }
