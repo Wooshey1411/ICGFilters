@@ -17,7 +17,6 @@ public class OneToOneController extends ToolController {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         final Context context = getContext();
-
         if (context.getViewMode() != ViewMode.ONE_TO_ONE) {
             context.setViewMode(ViewMode.ONE_TO_ONE);
         }

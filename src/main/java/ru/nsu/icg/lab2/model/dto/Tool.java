@@ -16,4 +16,8 @@ public class Tool {
     private String controllerClassPath;
 
     private int group;
+
+    public boolean hasGroup() {
+        return group != 0;
+    }
 }

@@ -42,7 +42,7 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
 
         drawingArea = new DrawingArea(drawingAreaController);
 
-        final MenuArea menuArea = new MenuArea(
+        MenuArea menuArea = new MenuArea(
                 openController,
                 saveController,
                 exitController,
@@ -66,6 +66,20 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
                 context,
                 windowResizeController
         );
+
+        final List<ToolsArea.SelectableTool> t1 = toolsArea.getSelectableTools();
+        final List<MenuArea.SelectableTool> t2 = menuArea.getSelectableTools();
+
+        for (final var it1 : t1) {
+            final Tool tool = it1.getTool();
+
+            for (final var it2 : t2) {
+                if (it2.getTool() == tool) {
+                    it1.addActionListener(actionEvent -> it2.setSelected(it1.isSelected()));
+                    it2.addActionListener(actionEvent -> it1.setSelected(it2.isSelected()));
+                }
+            }
+        }
     }
 
     @Override

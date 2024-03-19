@@ -14,6 +14,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         try {
+            // TODO: Synchronize ViewMode with start selected tools/items
             final Context context = new Context(ViewMode.ONE_TO_ONE, new BufferedImageFactory());
 
             final ViewConfigParser viewConfigParser = new JSONViewConfigParser("view_config.json");
