@@ -27,7 +27,9 @@ public class FisheyeEffect extends Transformation {
         int minNewX = width;
         int maxNewY = 0;
         int minNewY = height;
-        // Применение эффекта "рыбий глаз" к изображению
+
+
+
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 double deltaX = x - centerX;
@@ -70,8 +72,6 @@ public class FisheyeEffect extends Transformation {
             if (maxNewX + 1 - minNewX >= 0)
                 System.arraycopy(newGrid, y * width + minNewX, gridFinal, (y - minNewY) * newWidth, maxNewX + 1 - minNewX);
         }
-
-
 
         return getImageFactory().createImage(newWidth, newHeight, gridFinal);
     }
