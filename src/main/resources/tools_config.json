@@ -10,7 +10,9 @@
   {
     "name": "Back",
     "tip": "back",
-    "icon": "/icons/back.png",
+    "back": true,
+    "icon": "/icons/undo.png",
+    "selectedIcon": "/icons/redo.png",
     "controller": "ru.nsu.icg.lab2.gui.controller.tools.BackController"
   },
   {

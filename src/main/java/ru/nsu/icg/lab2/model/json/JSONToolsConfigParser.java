@@ -44,10 +44,12 @@ public class JSONToolsConfigParser implements ToolsConfigParser {
                 jsonTool.getName(),
                 jsonTool.getTip(),
                 jsonTool.getIconPath(),
+                jsonTool.getSelectedIconPath(),
                 jsonTool.getControllerClassPath(),
                 jsonTool.getGroup(),
                 jsonTool.isToggle(),
                 jsonTool.isHand(),
+                jsonTool.isBack(),
                 jsonTool.isOneToOne(),
                 jsonTool.isOnWindowSize()
         );

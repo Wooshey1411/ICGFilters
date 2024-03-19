@@ -77,6 +77,7 @@ public class ViewImpl extends ContextAdapter implements View {
         context.addViewModeListener(toolsArea);
         context.addDrawingAreaActionListener(menuArea);
         context.addDrawingAreaActionListener(toolsArea);
+        context.addImageListener(toolsArea);
     }
 
     @Override
