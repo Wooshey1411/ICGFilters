@@ -25,13 +25,11 @@ public class FilterApplicator extends Transformation {
 
     @Override
     public ImageInterface apply(ImageInterface oldImage){
-        int borderStep = (windowSize - 1) / 2;
-        int width = oldImage.getWidth();
-        int height = oldImage.getHeight();
-        int gridSize = height * width;
-        int[] grid = new int[gridSize];
-        oldImage.getARGB(grid);
-        int[] newGrid = new int[gridSize];
+        final int borderStep = (windowSize - 1) / 2;
+        final int width = oldImage.getWidth();
+        final int height = oldImage.getHeight();
+        final int[] oldGrid = oldImage.getGrid();
+        final int[] newGrid = new int[oldGrid.length];
         Arrays.fill(newGrid, 0xFF000000);
 
         //without borders
@@ -46,7 +44,7 @@ public class FilterApplicator extends Transformation {
                         int inXIndex = inX + borderStep;
                         int inYIndex = inY + borderStep;
                         int gridIndex = index + inY * width + inX;
-                        int pixelColor = grid[gridIndex];
+                        int pixelColor = oldGrid[gridIndex];
                         red += (int) ((((pixelColor & 0x00FF0000) >> 16) * matrix[inYIndex][inXIndex]));
                         green += (int) ((((pixelColor & 0x0000FF00) >> 8) * matrix[inYIndex][inXIndex]));
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));
@@ -69,7 +67,7 @@ public class FilterApplicator extends Transformation {
                         int inXIndex = inX + borderStep;
                         int inYIndex = inY + borderStep;
                         int gridIndex = Math.abs(inY + y) * width + Math.abs(inX + x);
-                        int pixelColor = grid[gridIndex];
+                        int pixelColor = oldGrid[gridIndex];
                         red += (int) ((((pixelColor & 0x00FF0000) >> 16) * matrix[inYIndex][inXIndex]));
                         green += (int) ((((pixelColor & 0x0000FF00) >> 8) * matrix[inYIndex][inXIndex]));
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));
@@ -91,7 +89,7 @@ public class FilterApplicator extends Transformation {
                         int inXIndex = inX + borderStep;
                         int inYIndex = inY + borderStep;
                         int gridIndex = Math.abs(inY + y) * width + inX + x;
-                        int pixelColor = grid[gridIndex];
+                        int pixelColor = oldGrid[gridIndex];
                         red += (int) ((((pixelColor & 0x00FF0000) >> 16) * matrix[inYIndex][inXIndex]));
                         green += (int) ((((pixelColor & 0x0000FF00) >> 8) * matrix[inYIndex][inXIndex]));
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));
@@ -113,7 +111,7 @@ public class FilterApplicator extends Transformation {
                         int inXIndex = inX + borderStep;
                         int inYIndex = inY + borderStep;
                         int gridIndex = Math.abs(inY + y) * width + ((inX + x) % width);
-                        int pixelColor = grid[gridIndex];
+                        int pixelColor = oldGrid[gridIndex];
                         red += (int) ((((pixelColor & 0x00FF0000) >> 16) * matrix[inYIndex][inXIndex]));
                         green += (int) ((((pixelColor & 0x0000FF00) >> 8) * matrix[inYIndex][inXIndex]));
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));
@@ -135,7 +133,7 @@ public class FilterApplicator extends Transformation {
                         int inXIndex = inX + borderStep;
                         int inYIndex = inY + borderStep;
                         int gridIndex = (y + inY) * width + ((inX + x) % width);
-                        int pixelColor = grid[gridIndex];
+                        int pixelColor = oldGrid[gridIndex];
                         red += (int) ((((pixelColor & 0x00FF0000) >> 16) * matrix[inYIndex][inXIndex]));
                         green += (int) ((((pixelColor & 0x0000FF00) >> 8) * matrix[inYIndex][inXIndex]));
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));
@@ -157,7 +155,7 @@ public class FilterApplicator extends Transformation {
                         int inXIndex = inX + borderStep;
                         int inYIndex = inY + borderStep;
                         int gridIndex = ((y + inY) % height)  * width + ((inX + x) % width);
-                        int pixelColor = grid[gridIndex];
+                        int pixelColor = oldGrid[gridIndex];
                         red += (int) ((((pixelColor & 0x00FF0000) >> 16) * matrix[inYIndex][inXIndex]));
                         green += (int) ((((pixelColor & 0x0000FF00) >> 8) * matrix[inYIndex][inXIndex]));
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));
@@ -179,7 +177,7 @@ public class FilterApplicator extends Transformation {
                         int inXIndex = inX + borderStep;
                         int inYIndex = inY + borderStep;
                         int gridIndex = ((y + inY) % height)  * width + inX + x;
-                        int pixelColor = grid[gridIndex];
+                        int pixelColor = oldGrid[gridIndex];
                         red += (int) ((((pixelColor & 0x00FF0000) >> 16) * matrix[inYIndex][inXIndex]));
                         green += (int) ((((pixelColor & 0x0000FF00) >> 8) * matrix[inYIndex][inXIndex]));
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));
@@ -201,7 +199,7 @@ public class FilterApplicator extends Transformation {
                         int inXIndex = inX + borderStep;
                         int inYIndex = inY + borderStep;
                         int gridIndex = ((y + inY) % height)  * width + Math.abs(inX + x);
-                        int pixelColor = grid[gridIndex];
+                        int pixelColor = oldGrid[gridIndex];
                         red += (int) ((((pixelColor & 0x00FF0000) >> 16) * matrix[inYIndex][inXIndex]));
                         green += (int) ((((pixelColor & 0x0000FF00) >> 8) * matrix[inYIndex][inXIndex]));
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));
@@ -223,7 +221,7 @@ public class FilterApplicator extends Transformation {
                         int inXIndex = inX + borderStep;
                         int inYIndex = inY + borderStep;
                         int gridIndex = (y + inY) * width + Math.abs(inX + x);
-                        int pixelColor = grid[gridIndex];
+                        int pixelColor = oldGrid[gridIndex];
                         red += (int) ((((pixelColor & 0x00FF0000) >> 16) * matrix[inYIndex][inXIndex]));
                         green += (int) ((((pixelColor & 0x0000FF00) >> 8) * matrix[inYIndex][inXIndex]));
                         blue += (int) ((((pixelColor & 0x000000FF)) * matrix[inYIndex][inXIndex]));

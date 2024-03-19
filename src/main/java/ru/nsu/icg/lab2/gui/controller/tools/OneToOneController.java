@@ -1,7 +1,7 @@
 package ru.nsu.icg.lab2.gui.controller.tools;
 
 import ru.nsu.icg.lab2.gui.controller.ToolController;
-import ru.nsu.icg.lab2.gui.common.Context;
+import ru.nsu.icg.lab2.gui.common.context.Context;
 import ru.nsu.icg.lab2.gui.common.View;
 import ru.nsu.icg.lab2.gui.common.ViewMode;
 import ru.nsu.icg.lab2.model.ImageFactory;
@@ -17,6 +17,7 @@ public class OneToOneController extends ToolController {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         final Context context = getContext();
+
         if (context.getViewMode() != ViewMode.ONE_TO_ONE) {
             context.setViewMode(ViewMode.ONE_TO_ONE);
         }

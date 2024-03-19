@@ -13,14 +13,14 @@ public class BufferedImageFactory implements ImageFactory {
     @Override
     public ImageInterface createImage(int width, int height, int[] grid) {
         final ImageInterface result = createImage(width, height);
-        result.setARGB(grid);
+        result.setGrid(grid);
         return result;
     }
 
     @Override
     public ImageInterface createImage(ImageInterface baseImage, int[] grid) {
         final ImageInterface result = createImage(baseImage.getWidth(), baseImage.getHeight(), grid);
-        result.setARGB(grid);
+        result.setGrid(grid);
         return result;
     }
 

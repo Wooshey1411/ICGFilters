@@ -21,8 +21,7 @@ public class FisheyeEffect extends Transformation {
         int width = oldImage.getWidth();
         int height = oldImage.getHeight();
         int gridSize = height * width;
-        int[] grid = new int[gridSize];
-        oldImage.getARGB(grid);
+        int[] grid = oldImage.getGrid();
         int[] newGrid = new int[gridSize];
         Arrays.fill(newGrid, 0xFFFFFFFF);
         int centerX = width / 2;

@@ -6,6 +6,8 @@ import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
 
+import java.util.Arrays;
+
 @Getter
 @Setter
 public class OrderedDithering extends Transformation {
@@ -142,7 +144,7 @@ public class OrderedDithering extends Transformation {
 
 
     private double[][] chooseMatrix(int k){
-        if (k == 2){
+        if (k <= 4){
             return MATRIX2;
         }
         else if (k <= 16){
@@ -168,9 +170,9 @@ public class OrderedDithering extends Transformation {
         int width = oldImage.getWidth();
         int height = oldImage.getHeight();
         int gridSize = height * width;
-        int[] grid = new int[gridSize];
-        oldImage.getARGB(grid);
+        int[] grid = oldImage.getGrid();
         int[] newGrid = new int[gridSize];
+        Arrays.fill(newGrid, 0xFF000000);
         for (int y = 0; y < height; y++){
             for (int x = 0 ; x < width; x++){
                 int index = y * width + x;
@@ -184,7 +186,7 @@ public class OrderedDithering extends Transformation {
                 int red = roundColorRed((((pixelColor & 0x00FF0000) >> 16) / 255.0) + colorRedDiv * matrixRed[matrixRedIndexY][matrixRedIndexX]);
                 int green = roundColorGreen((((pixelColor & 0x0000FF00) >> 8) / 255.0) + colorGreenDiv * matrixGreen[matrixGreenIndexY][matrixGreenIndexX]);
                 int blue = roundColorBlue(((pixelColor & 0x000000FF) / 255.0) + colorBlueDiv * matrixBlue[matrixBlueIndexY][matrixBlueIndexX]);
-                newGrid[index] = (pixelColor & 0xFF000000) | (red << 16) | (green << 8) | blue;
+                newGrid[index] |= (red << 16) | (green << 8) | blue;
             }
         }
 

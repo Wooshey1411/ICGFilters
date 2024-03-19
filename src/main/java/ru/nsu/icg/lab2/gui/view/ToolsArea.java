@@ -1,11 +1,14 @@
 package ru.nsu.icg.lab2.gui.view;
 
-import lombok.Getter;
+import ru.nsu.icg.lab2.gui.common.DrawingAreaAction;
+import ru.nsu.icg.lab2.gui.common.ViewMode;
+import ru.nsu.icg.lab2.gui.common.context.Context;
+import ru.nsu.icg.lab2.gui.common.context.ContextDrawingAreaActionListener;
+import ru.nsu.icg.lab2.gui.common.context.ContextViewModeListener;
 import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.model.dto.Tool;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.*;
@@ -13,73 +16,89 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
-@Getter
-public class ToolsArea extends JPanel {
-    @Getter
-    public static class SelectableTool extends JToggleButton {
-        private final Tool tool;
-
-        private SelectableTool(ImageIcon icon, Tool tool) {
-            super(icon);
-            this.tool = tool;
-        }
-    }
-
+public class ToolsArea extends JPanel implements ContextViewModeListener, ContextDrawingAreaActionListener {
     // TODO: вынести это в конфигурационный файл
     private static final Color AREA_BACKGROUND_COLOR = new Color(0.85f, 0.85f, 0.85f);
     private static final Color BUTTONS_BACKGROUND_COLOR = new Color(0.72f, 0.72f, 0.71f);
     private static final int TOOL_SIZE = 32;
 
-    private final Map<Integer, ButtonGroup> toolGroups = new HashMap<>();
-    private final List<SelectableTool> selectableTools = new ArrayList<>();
+    private AbstractButton handButton;
+    private AbstractButton onWindowSizeButton;
+    private AbstractButton oneToOneButton;
 
     public ToolsArea(List<ToolController> toolControllers) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setBackground(AREA_BACKGROUND_COLOR);
 
+        final Map<Integer, ButtonGroup> toolGroups = new HashMap<>();
+
         for (final var it : toolControllers) {
             final Tool tool = it.getTool();
 
-            if (!tool.hasGroup()) {
-                add(createToolButton(it));
-            } else {
-                final int group = tool.getGroup();
+            AbstractButton toolButton;
 
-                final SelectableTool toggleTool = createSelectableToolButton(it);
-                add(toggleTool);
-                selectableTools.add(toggleTool);
-
-                int counter = 0;
-                for (final var it2 : toolControllers) {
-                    if (it2.getTool().getGroup() == group) {
-                        counter++;
-                    }
-                }
-
-                if (counter == 1) {
-                    continue;
-                }
+            if (tool.isToggle()) {
+                toolButton = createToolToggleButton(it);
+            } else if (tool.hasGroup()) {
+                final int group = tool.group();
+                toolButton = createToolToggleButton(it);
 
                 if (!toolGroups.containsKey(group)) {
                     toolGroups.put(group, new ButtonGroup());
                 }
 
-                toolGroups.get(group).add(toggleTool);
+                toolGroups.get(group).add(toolButton);
+            } else {
+                toolButton = createToolButton(it);
             }
+
+            add(toolButton);
+
+            if (tool.isHand()) {
+                handButton = toolButton;
+            }
+            if (tool.isOneToOne()) {
+                oneToOneButton = toolButton;
+            }
+            if (tool.isOnWindowSize()) {
+                onWindowSizeButton = toolButton;
+            }
+        }
+    }
+
+    @Override
+    public void onDrawingAreaActionChange(Context context) {
+        if (handButton == null) {
+            return;
+        }
+
+        handButton.setSelected(context.getDrawingAreaAction() == DrawingAreaAction.MOVE_SCROLLS);
+    }
+
+    @Override
+    public void onChangeViewMode(Context context) {
+        final ViewMode viewMode = context.getViewMode();
+
+        if (oneToOneButton != null) {
+            oneToOneButton.setSelected(viewMode == ViewMode.ONE_TO_ONE);
+        }
+
+        if (onWindowSizeButton != null) {
+            onWindowSizeButton.setSelected(viewMode == ViewMode.ON_WINDOW_SIZE);
         }
     }
 
     private static JButton createToolButton(ToolController toolController) {
         final Tool tool = toolController.getTool();
-        final JButton result = new JButton(loadIcon(tool.getIconPath()));
-        initButton(result, tool.getTip(), toolController);
+        final JButton result = new JButton(loadIcon(tool.iconPath()));
+        initButton(result, tool.tip(), toolController);
         return result;
     }
 
-    private static SelectableTool createSelectableToolButton(ToolController toolController) {
+    private static JToggleButton createToolToggleButton(ToolController toolController) {
         final Tool tool = toolController.getTool();
-        final SelectableTool result = new SelectableTool(loadIcon(tool.getIconPath()), tool);
-        initButton(result, tool.getTip(), toolController);
+        final JToggleButton result = new JToggleButton(loadIcon(tool.iconPath()));
+        initButton(result, tool.tip(), toolController);
         return result;
     }
 

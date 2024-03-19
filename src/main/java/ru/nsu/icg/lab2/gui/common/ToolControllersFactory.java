@@ -1,5 +1,6 @@
 package ru.nsu.icg.lab2.gui.common;
 
+import ru.nsu.icg.lab2.gui.common.context.Context;
 import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.dto.Tool;
@@ -17,7 +18,7 @@ public class ToolControllersFactory {
 
         try {
             for (Tool tool : tools) {
-                final var clazz = Class.forName(tool.getControllerClassPath());
+                final var clazz = Class.forName(tool.controllerClassPath());
                 final var constructor = clazz.getDeclaredConstructor(parameters);
                 controllers.add((ToolController) constructor.newInstance(context, view, imageFactory, tool));
             }

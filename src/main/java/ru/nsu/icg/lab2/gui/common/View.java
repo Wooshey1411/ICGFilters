@@ -24,4 +24,8 @@ public interface View {
     JFrame getFrame();
 
     JScrollPane getMainScrollPane();
+
+    void setWaitCursor();
+
+    void setDefaultCursor();
 }

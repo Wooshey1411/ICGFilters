@@ -4,7 +4,8 @@
     "tip": "hand",
     "icon": "/icons/hand.png",
     "controller": "ru.nsu.icg.lab2.gui.controller.tools.HandController",
-    "group": 1
+    "isToggle": true,
+    "hand": true
   },
   {
     "name": "Back",
@@ -17,14 +18,16 @@
     "tip": "1:1",
     "icon": "/icons/one-to-one.png",
     "controller": "ru.nsu.icg.lab2.gui.controller.tools.OneToOneController",
-    "group": 2
+    "group": 1,
+    "1:1": true
   },
   {
     "name": "To window size",
     "tip": "to window size",
     "icon": "/icons/to-window-size.png",
     "controller": "ru.nsu.icg.lab2.gui.controller.tools.ToWindowSizeController",
-    "group": 2
+    "group": 1,
+    "onWindowSize": true
   },
   {
     "name": "Rotation",

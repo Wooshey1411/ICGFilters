@@ -31,31 +31,28 @@ public class WaveFilter extends Transformation {
 
     @Override
     public ImageInterface apply(ImageInterface oldImage) {
-        int width = oldImage.getWidth();
-        int height = oldImage.getHeight();
-        int gridSize = width * height;
-        int[] grid = new int[gridSize];
-        oldImage.getARGB(grid);
-        int[] newImage = new int[gridSize];
+        final int width = oldImage.getWidth();
+        final int height = oldImage.getHeight();
+        final int gridSize = width * height;
+        final int[] oldGrid = oldImage.getGrid();
+        final int[] newGrid = ampX == 0 && ampY == 0 ? oldGrid : new int[gridSize];
+
         if(order == WaveFilterOrder.FROM_X_TO_Y) {
-            waveOnX(grid, width, height, newImage);
+            waveOnX(oldGrid, width, height, newGrid);
             if (ampX != 0 && ampY != 0) {
-                System.arraycopy(newImage, 0, grid, 0, gridSize);
+                System.arraycopy(newGrid, 0, oldGrid, 0, gridSize);
             }
-            waveOnY(grid, width, height, newImage);
+            waveOnY(oldGrid, width, height, newGrid);
         }
         if(order == WaveFilterOrder.FROM_Y_TO_X) {
-            waveOnY(grid, width, height, newImage);
+            waveOnY(oldGrid, width, height, newGrid);
             if (ampX != 0 && ampY != 0) {
-                System.arraycopy(newImage, 0, grid, 0, gridSize);
+                System.arraycopy(newGrid, 0, oldGrid, 0, gridSize);
             }
-            waveOnX(grid, width, height, newImage);
+            waveOnX(oldGrid, width, height, newGrid);
         }
 
-        if (ampX == 0 && ampY == 0) {
-            newImage = grid;
-        }
-        return getImageFactory().createImage(oldImage, newImage);
+        return getImageFactory().createImage(oldImage, newGrid);
     }
 
     private void waveOnX(int[] grid, int width, int height, int[] newGrid) {
