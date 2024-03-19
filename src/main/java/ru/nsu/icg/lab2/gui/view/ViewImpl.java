@@ -17,6 +17,8 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
     private final Context context;
     private final DrawingArea drawingArea;
     private final MainWindow mainWindow;
+    private final ToolsArea toolsArea;
+    private final MenuArea menuArea;
 
     public ViewImpl(ViewConfig viewConfig, List<Tool> tools, Context context, ImageReader imageReader, ImageWriter imageWriter) {
         FlatArcDarkOrangeIJTheme.setup();
@@ -42,7 +44,7 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
 
         drawingArea = new DrawingArea(drawingAreaController);
 
-        final MenuArea menuArea = new MenuArea(
+        menuArea = new MenuArea(
                 openController,
                 saveController,
                 exitController,
@@ -51,7 +53,7 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
                 toolControllersFactory.getToolControllers()
         );
 
-        final ToolsArea toolsArea = new ToolsArea(toolControllersFactory.getToolControllers());
+        toolsArea = new ToolsArea(toolControllersFactory.getToolControllers());
 
         mainWindow = new MainWindow(
                 viewConfig.windowName(),
@@ -202,6 +204,12 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
     @Override
     public JScrollPane getMainScrollPane() {
         return mainWindow.getScrollPane();
+    }
+
+    @Override
+    public void selectTool(Tool tool) {
+        toolsArea.selectTool(tool);
+        menuArea.selectTool(tool);
     }
 
     @Override

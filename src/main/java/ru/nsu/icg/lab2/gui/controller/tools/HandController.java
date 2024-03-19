@@ -21,6 +21,5 @@ public class HandController extends ToolController {
         } else {
             getContext().setDrawingAreaAction(DrawingAreaAction.SWAP_IMAGE);
         }
-        // TODO: залипание/отлипание кнопки на соотв. случаи
     }
 }

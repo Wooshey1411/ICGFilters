@@ -3,7 +3,8 @@
     "name": "Hand",
     "tip": "hand",
     "icon": "/icons/hand.png",
-    "controller": "ru.nsu.icg.lab2.gui.controller.tools.HandController"
+    "controller": "ru.nsu.icg.lab2.gui.controller.tools.HandController",
+    "group": 1
   },
   {
     "name": "Back",
@@ -16,14 +17,14 @@
     "tip": "1:1",
     "icon": "/icons/one-to-one.png",
     "controller": "ru.nsu.icg.lab2.gui.controller.tools.OneToOneController",
-    "group": 1
+    "group": 2
   },
   {
     "name": "To window size",
     "tip": "to window size",
     "icon": "/icons/to-window-size.png",
     "controller": "ru.nsu.icg.lab2.gui.controller.tools.ToWindowSizeController",
-    "group": 1
+    "group": 2
   },
   {
     "name": "Rotation",
