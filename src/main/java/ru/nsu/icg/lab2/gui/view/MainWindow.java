@@ -1,7 +1,7 @@
 package ru.nsu.icg.lab2.gui.view;
 
 import lombok.Getter;
-import ru.nsu.icg.lab2.gui.common.Context;
+import ru.nsu.icg.lab2.gui.common.context.Context;
 import ru.nsu.icg.lab2.gui.common.ViewMode;
 import ru.nsu.icg.lab2.gui.common.WindowResizeListener;
 
@@ -93,7 +93,7 @@ public class MainWindow extends JFrame {
     public void setWaitCursor(){
         setCursor(new Cursor(Cursor.WAIT_CURSOR));
     }
-    public void resetCursor(){
+    public void setDefaultCursor(){
         setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 }

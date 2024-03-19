@@ -1,62 +1,32 @@
 package ru.nsu.icg.lab2.gui.view;
 
 import lombok.Getter;
+import ru.nsu.icg.lab2.gui.common.DrawingAreaAction;
+import ru.nsu.icg.lab2.gui.common.ViewMode;
+import ru.nsu.icg.lab2.gui.common.context.Context;
+import ru.nsu.icg.lab2.gui.common.context.ContextDrawingAreaActionListener;
+import ru.nsu.icg.lab2.gui.common.context.ContextViewModeListener;
 import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.model.dto.Tool;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.Map;
+import java.util.List;
 
-@Getter
-public class MenuArea extends JPanel {
-    @Getter
-    public static class SelectableTool {
-        private final Tool tool;
-        private final AbstractButton abstractButton;
-
-        private SelectableTool(AbstractButton abstractButton, Tool tool) {
-            this.tool = tool;
-            this.abstractButton = abstractButton;
-        }
-
-        public boolean isSelected() {
-            return abstractButton.isSelected();
-        }
-
-        public void setSelected(boolean b) {
-            abstractButton.setSelected(b);
-        }
-
-        public void addActionListener(ActionListener actionListener) {
-            abstractButton.addActionListener(actionListener);
-        }
-    }
-
-    @Getter
-    public static class SelectableToggleTool extends JCheckBoxMenuItem {
-        private final Tool tool;
-
-        private SelectableToggleTool(Tool tool) {
-            super(tool.getName());
-            this.tool = tool;
-        }
-    }
-
+public class MenuArea extends JPanel implements ContextViewModeListener, ContextDrawingAreaActionListener {
     // TODO: вынести это в конфигурационный файл
     private static final Font FONT = new Font("Go", Font.BOLD, 14);
     private static final Color MENU_BACKGROUND_COLOR = new Color(0.85f, 0.85f, 0.85f);
     private static final Color BUTTONS_FONT_COLOR = new Color(0.14f, 0.13f, 0.13f);
 
-    private final Map<Integer, ButtonGroup> toolGroups = new HashMap<>();
-    private final JMenuBar menuBar;
+    private AbstractButton handButton;
+    private AbstractButton onWindowSizeButton;
+    private AbstractButton oneToOneButton;
 
     @Getter
-    private final List<SelectableTool> selectableTools = new ArrayList<>();
+    private final JMenuBar menuBar;
 
     public MenuArea(
             ActionListener openListener,
@@ -99,37 +69,39 @@ public class MenuArea extends JPanel {
     private JMenu createEditMenu(List<ToolController> toolControllers) {
         final JMenu result = createMenu("Edit");
 
+        final Map<Integer, ButtonGroup> toolGroups = new HashMap<>();
+
         for (final var it : toolControllers) {
             final Tool tool = it.getTool();
+            final String toolName = tool.name();
 
-            if (!tool.hasGroup()) {
-                result.add(createItem(it.getTool().getName(), it));
+            JMenuItem item;
+
+            if (tool.isToggle()) {
+                item = createCheckboxItem(toolName, it);
+            } else if (tool.hasGroup()) {
+                item = createRadioItem(toolName, it);
+                final int group = tool.group();
+
+                if (!toolGroups.containsKey(group)) {
+                    toolGroups.put(group, new ButtonGroup());
+                }
+
+                toolGroups.get(group).add(item);
             } else {
-                final int group = tool.getGroup();
+                item = createItem(toolName, it);
+            }
 
-                int counter = 0;
-                for (final var it2 : toolControllers) {
-                    if (it2.getTool().getGroup() == group) {
-                        counter++;
-                    }
-                }
+            result.add(item);
 
-                if (counter == 1) {
-                    final SelectableTool toggleTool = createCheckboxItem(it);
-                    result.add(toggleTool.abstractButton);
-                    selectableTools.add(toggleTool);
-                } else {
-                    final SelectableTool selectableTool = createRadioItem(it);
-                    final AbstractButton button = selectableTool.abstractButton;
-
-                    result.add(button);
-                    selectableTools.add(selectableTool);
-
-                    if (!toolGroups.containsKey(group)) {
-                        toolGroups.put(group, new ButtonGroup());
-                    }
-                    toolGroups.get(group).add(button);
-                }
+            if (tool.isHand()) {
+                handButton = item;
+            }
+            if (tool.isOneToOne()) {
+                oneToOneButton = item;
+            }
+            if (tool.isOnWindowSize()) {
+                onWindowSizeButton = item;
             }
         }
 
@@ -157,18 +129,16 @@ public class MenuArea extends JPanel {
         return result;
     }
 
-    private static SelectableTool createRadioItem(ToolController toolController) {
-        final Tool tool = toolController.getTool();
-        final JRadioButtonMenuItem item = new JRadioButtonMenuItem(tool.getName());
-        initButton(item, toolController);
-        return new SelectableTool(item, tool);
+    private static JRadioButtonMenuItem createRadioItem(String label, ActionListener actionListener) {
+        final JRadioButtonMenuItem result = new JRadioButtonMenuItem(label);
+        initButton(result, actionListener);
+        return result;
     }
 
-    private static SelectableTool createCheckboxItem(ToolController toolController) {
-        final Tool tool = toolController.getTool();
-        final JCheckBoxMenuItem item = new JCheckBoxMenuItem(tool.getName());
-        initButton(item, toolController);
-        return new SelectableTool(item, tool);
+    private static JCheckBoxMenuItem createCheckboxItem(String label, ActionListener actionListener) {
+        final JCheckBoxMenuItem result = new JCheckBoxMenuItem(label);
+        initButton(result, actionListener);
+        return result;
     }
 
     private static void initButton(AbstractButton button, ActionListener actionListener) {
@@ -176,5 +146,27 @@ public class MenuArea extends JPanel {
         button.setFont(FONT);
         button.setForeground(MENU_BACKGROUND_COLOR);
         button.addActionListener(actionListener);
+    }
+
+    @Override
+    public void onDrawingAreaActionChange(Context context) {
+        if (handButton == null) {
+            return;
+        }
+
+        handButton.setSelected(context.getDrawingAreaAction() == DrawingAreaAction.MOVE_SCROLLS);
+    }
+
+    @Override
+    public void onChangeViewMode(Context context) {
+        final ViewMode viewMode = context.getViewMode();
+
+        if (oneToOneButton != null) {
+            oneToOneButton.setSelected(viewMode == ViewMode.ONE_TO_ONE);
+        }
+
+        if (onWindowSizeButton != null) {
+            onWindowSizeButton.setSelected(viewMode == ViewMode.ON_WINDOW_SIZE);
+        }
     }
 }

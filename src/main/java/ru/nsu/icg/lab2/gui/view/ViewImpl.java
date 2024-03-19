@@ -1,7 +1,9 @@
 package ru.nsu.icg.lab2.gui.view;
 
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
+import ru.nsu.icg.lab2.gui.common.context.*;
 import ru.nsu.icg.lab2.gui.controller.DrawingAreaController;
+import ru.nsu.icg.lab2.gui.controller.TransformationsController;
 import ru.nsu.icg.lab2.gui.controller.WindowResizeController;
 import ru.nsu.icg.lab2.gui.controller.menu.*;
 import ru.nsu.icg.lab2.gui.common.*;
@@ -13,7 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
+public class ViewImpl extends ContextAdapter implements View {
     private final Context context;
     private final DrawingArea drawingArea;
     private final MainWindow mainWindow;
@@ -22,7 +24,11 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
         FlatArcDarkOrangeIJTheme.setup();
 
         this.context = context;
-        context.setViewModeChangeListener(this);
+        context.addImageListener(this);
+        context.addViewModeListener(this);
+
+        final TransformationsController transformationsController = new TransformationsController(this);
+        context.addTransformationListener(transformationsController);
 
         final OpenController openController = new OpenController(context, this, imageReader);
         final SaveController saveController = new SaveController(context, this, imageWriter);
@@ -67,19 +73,10 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
                 windowResizeController
         );
 
-        final List<ToolsArea.SelectableTool> t1 = toolsArea.getSelectableTools();
-        final List<MenuArea.SelectableTool> t2 = menuArea.getSelectableTools();
-
-        for (final var it1 : t1) {
-            final Tool tool = it1.getTool();
-
-            for (final var it2 : t2) {
-                if (it2.getTool() == tool) {
-                    it1.addActionListener(actionEvent -> it2.setSelected(it1.isSelected()));
-                    it2.addActionListener(actionEvent -> it1.setSelected(it2.isSelected()));
-                }
-            }
-        }
+        context.addViewModeListener(menuArea);
+        context.addViewModeListener(toolsArea);
+        context.addDrawingAreaActionListener(menuArea);
+        context.addDrawingAreaActionListener(toolsArea);
     }
 
     @Override
@@ -99,7 +96,7 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
 
     @Override
     public void resize() {
-        final BufferedImageImpl image = context.getCurrentImage();
+        final BufferedImageImpl image = context.getImage();
 
         if (image == null) {
             return;
@@ -162,7 +159,7 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
 
     @Override
     public void repaint() {
-        final BufferedImageImpl image = context.getCurrentImage();
+        final BufferedImageImpl image = context.getImage();
         if(image == null){
             return;
         }
@@ -219,21 +216,18 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
     }
 
     @Override
-    public void onImageChange(Context context) {
-        repaint();
+    public void setWaitCursor() {
+        mainWindow.setWaitCursor();
     }
 
     @Override
-    public void onTransformationChange(Context context) {
-        // TODO: перенести
-        if(context.getCurrentImage() == null){
-            return;
-        }
-        mainWindow.setWaitCursor();
-        context.setProcessedImage(new BufferedImageImpl(((BufferedImageImpl) context.getTransformation().apply(context.getOriginalImage())).bufferedImage()));
-        context.setCurrentImage(context.getProcessedImage());
+    public void setDefaultCursor() {
+        mainWindow.setDefaultCursor();
+    }
+
+    @Override
+    public void onImageChange(Context context) {
         repaint();
-        mainWindow.resetCursor();
     }
 
     @Override

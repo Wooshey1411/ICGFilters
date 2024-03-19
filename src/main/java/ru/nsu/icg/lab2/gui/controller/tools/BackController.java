@@ -2,7 +2,7 @@ package ru.nsu.icg.lab2.gui.controller.tools;
 
 import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.gui.common.BufferedImageImpl;
-import ru.nsu.icg.lab2.gui.common.Context;
+import ru.nsu.icg.lab2.gui.common.context.Context;
 import ru.nsu.icg.lab2.gui.common.View;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.dto.Tool;
@@ -25,10 +25,10 @@ public class BackController extends ToolController {
             return;
         }
 
-        final BufferedImageImpl newCurrentImage = context.getCurrentImage() == context.getProcessedImage()
+        final BufferedImageImpl newCurrentImage = context.getImage() == context.getProcessedImage()
                 ? context.getOriginalImage()
                 : processedImage;
 
-        context.setCurrentImage(newCurrentImage);
+        context.setImage(newCurrentImage);
     }
 }

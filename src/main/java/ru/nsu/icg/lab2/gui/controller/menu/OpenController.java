@@ -1,5 +1,6 @@
 package ru.nsu.icg.lab2.gui.controller.menu;
 
+import ru.nsu.icg.lab2.gui.common.context.Context;
 import ru.nsu.icg.lab2.gui.controller.files.ImageOpeningChooser;
 import ru.nsu.icg.lab2.gui.common.*;
 
@@ -41,7 +42,7 @@ public class OpenController implements ActionListener {
             final BufferedImageImpl image = new BufferedImageImpl(imageReader.read(file));
             context.getBufferedImageFactory().setType(image.bufferedImage().getType());
             context.setOriginalImage(image);
-            context.setCurrentImage(context.getOriginalImage());
+            context.setImage(context.getOriginalImage());
             context.setProcessedImage(null);
         } catch (IOException exception) {
             view.showError(exception.getLocalizedMessage());

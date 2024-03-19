@@ -1,7 +1,7 @@
 package ru.nsu.icg.lab2.gui.controller.menu;
 
 import ru.nsu.icg.lab2.gui.controller.files.ImageSavingChooser;
-import ru.nsu.icg.lab2.gui.common.Context;
+import ru.nsu.icg.lab2.gui.common.context.Context;
 import ru.nsu.icg.lab2.gui.common.ImageWriter;
 import ru.nsu.icg.lab2.gui.common.View;
 

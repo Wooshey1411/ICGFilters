@@ -1,5 +1,6 @@
 package ru.nsu.icg.lab2.gui.controller.tools;
 
+import ru.nsu.icg.lab2.gui.common.context.Context;
 import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.gui.common.*;
 import ru.nsu.icg.lab2.model.ImageFactory;
@@ -28,13 +29,19 @@ public class ToWindowSizeController extends ToolController {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        comboBox.setSelectedItem("Bilinear");
-        final boolean ok = getView().showConfirmationDialog("Interpolation method", optionsPanel);
-        if(!ok){
+        final Context context = getContext();
+
+        if (context.getViewMode() == ViewMode.ON_WINDOW_SIZE) {
             return;
         }
 
-        final Context context = getContext();
+        comboBox.setSelectedItem("Bilinear");
+        final boolean ok = getView().showConfirmationDialog("Interpolation method", optionsPanel);
+        if(!ok){
+            context.setViewMode(ViewMode.ONE_TO_ONE);
+            return;
+        }
+
         context.setInterpolationMethod(methodHashMap.get((String)comboBox.getSelectedItem()));
         context.setViewMode(ViewMode.ON_WINDOW_SIZE);
     }

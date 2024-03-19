@@ -4,7 +4,7 @@ import org.decimal4j.util.DoubleRounder;
 import ru.nsu.icg.lab2.gui.common.Utils;
 import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
 import ru.nsu.icg.lab2.gui.controller.ToolController;
-import ru.nsu.icg.lab2.gui.common.Context;
+import ru.nsu.icg.lab2.gui.common.context.Context;
 import ru.nsu.icg.lab2.gui.common.View;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.dto.Tool;
