@@ -17,14 +17,33 @@ import java.awt.event.ActionListener;
 import java.util.Map;
 
 public class ToolsArea extends JPanel implements ContextViewModeListener, ContextDrawingAreaActionListener {
+    private class ToolButton {
+        private final Tool tool;
+        private final AbstractButton button;
+
+        private ToolButton(Tool tool, AbstractButton button) {
+            this.tool = tool;
+            this.button = button;
+        }
+
+        public void setSelected(boolean b) {
+            button.setSelected(b);
+            if (b) {
+                lastSelectedButtons.put(tool.group(), button);
+            }
+        }
+    }
+
     // TODO: вынести это в конфигурационный файл
     private static final Color AREA_BACKGROUND_COLOR = new Color(0.85f, 0.85f, 0.85f);
     private static final Color BUTTONS_BACKGROUND_COLOR = new Color(0.72f, 0.72f, 0.71f);
     private static final int TOOL_SIZE = 32;
 
-    private AbstractButton handButton;
-    private AbstractButton onWindowSizeButton;
-    private AbstractButton oneToOneButton;
+    private ToolButton handButton;
+    private ToolButton onWindowSizeButton;
+    private ToolButton oneToOneButton;
+
+    private final Map<Integer, AbstractButton> lastSelectedButtons = new HashMap<>();
 
     public ToolsArea(List<ToolController> toolControllers) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -35,33 +54,44 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
         for (final var it : toolControllers) {
             final Tool tool = it.getTool();
 
-            AbstractButton toolButton;
+            AbstractButton abstractButton;
 
             if (tool.isToggle()) {
-                toolButton = createToolToggleButton(it);
+                abstractButton = createToolToggleButton(it);
             } else if (tool.hasGroup()) {
                 final int group = tool.group();
-                toolButton = createToolToggleButton(it);
+                abstractButton = createToolToggleButton(it);
 
                 if (!toolGroups.containsKey(group)) {
                     toolGroups.put(group, new ButtonGroup());
                 }
 
-                toolGroups.get(group).add(toolButton);
+                toolGroups.get(group).add(abstractButton);
+
+                abstractButton.addActionListener(actionEvent -> {
+                    final AbstractButton lastSelectedButton = lastSelectedButtons.get(group);
+
+                    if (lastSelectedButton != null) {
+                        lastSelectedButton.setSelected(true);
+                    }
+
+                    lastSelectedButtons.put(group, abstractButton);
+                });
+
             } else {
-                toolButton = createToolButton(it);
+                abstractButton = createToolButton(it);
             }
 
-            add(toolButton);
+            add(abstractButton);
 
             if (tool.isHand()) {
-                handButton = toolButton;
+                handButton = new ToolButton(tool, abstractButton);
             }
             if (tool.isOneToOne()) {
-                oneToOneButton = toolButton;
+                oneToOneButton = new ToolButton(tool, abstractButton);
             }
             if (tool.isOnWindowSize()) {
-                onWindowSizeButton = toolButton;
+                onWindowSizeButton = new ToolButton(tool, abstractButton);
             }
         }
     }
