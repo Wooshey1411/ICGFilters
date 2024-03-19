@@ -38,6 +38,7 @@ public class MainWindow extends JFrame {
         this.drawingArea = drawingArea;
         scrollPane = new JScrollPane(drawingArea);
         scrollPane.setDoubleBuffered(true);
+        scrollPane.setAutoscrolls(false);
         scrollPane.setBounds(0, 0, 0, 0);
         addComponentListener(new ComponentAdapter() {
             @Override
