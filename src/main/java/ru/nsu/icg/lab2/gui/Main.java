@@ -13,7 +13,7 @@ import ru.nsu.icg.lab2.model.json.JSONViewConfigParser;
 import java.util.List;
 
 public class Main {
-    private static final ViewMode START_VIEW_MODE = ViewMode.ON_WINDOW_SIZE;
+    private static final ViewMode START_VIEW_MODE = ViewMode.ONE_TO_ONE;
     private static final InterpolationMethod START_INTERPOLATION_METHOD = InterpolationMethod.BILINEAR;
 
     public static void main(String[] args) {
