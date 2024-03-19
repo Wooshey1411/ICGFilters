@@ -1,7 +1,6 @@
 package ru.nsu.icg.lab2.gui.view;
 
 import lombok.Getter;
-import lombok.Setter;
 import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.model.dto.Tool;
 
@@ -16,23 +15,34 @@ import java.util.Map;
 @Getter
 public class MenuArea extends JPanel {
     @Getter
-    private static class SelectableRadioItem extends JRadioButtonMenuItem {
+    public static class SelectableTool {
         private final Tool tool;
+        private final AbstractButton abstractButton;
 
-        private SelectableRadioItem(String label, Tool tool) {
-            super(label);
+        private SelectableTool(AbstractButton abstractButton, Tool tool) {
             this.tool = tool;
+            this.abstractButton = abstractButton;
+        }
+
+        public boolean isSelected() {
+            return abstractButton.isSelected();
+        }
+
+        public void setSelected(boolean b) {
+            abstractButton.setSelected(b);
+        }
+
+        public void addActionListener(ActionListener actionListener) {
+            abstractButton.addActionListener(actionListener);
         }
     }
 
     @Getter
-    @Setter
-    private static class SelectableToggleItem extends JCheckBoxMenuItem {
+    public static class SelectableToggleTool extends JCheckBoxMenuItem {
         private final Tool tool;
-        private boolean needUpdate;
 
-        private SelectableToggleItem(String label, Tool tool) {
-            super(label);
+        private SelectableToggleTool(Tool tool) {
+            super(tool.getName());
             this.tool = tool;
         }
     }
@@ -42,10 +52,11 @@ public class MenuArea extends JPanel {
     private static final Color MENU_BACKGROUND_COLOR = new Color(0.85f, 0.85f, 0.85f);
     private static final Color BUTTONS_FONT_COLOR = new Color(0.14f, 0.13f, 0.13f);
 
-    private final Map<Integer, ButtonGroup> radioItemsGroups = new HashMap<>();
-    private final List<SelectableToggleItem> toggleItems = new ArrayList<>();
-
+    private final Map<Integer, ButtonGroup> toolGroups = new HashMap<>();
     private final JMenuBar menuBar;
+
+    @Getter
+    private final List<SelectableTool> selectableTools = new ArrayList<>();
 
     public MenuArea(
             ActionListener openListener,
@@ -73,46 +84,26 @@ public class MenuArea extends JPanel {
         ));
     }
 
-    public void selectTool(Tool tool) {
-        // Trying to find toggle-button-tool. Else - tool is radio-item
-        for (final var it : toggleItems) {
-            if (tool.equals(it.getTool())) {
-                it.setSelected(!it.isSelected());
-                return;
-            }
-        }
-
-        // Handling case when the tool is radio-item
-        final ButtonGroup toolsGroup = radioItemsGroups.get(tool.getGroup());
-        if (toolsGroup == null) {
-            return;
-        }
-        final var elements = toolsGroup.getElements();
-        while (elements.hasMoreElements()) {
-            final var item = (SelectableRadioItem)elements.nextElement();
-            item.setSelected(item.getTool() == tool);
-        }
-    }
-
     private static JMenu createFileMenu(
             ActionListener openListener,
             ActionListener saveListener,
             ActionListener exitListener
     ) {
         final JMenu result = createMenu("File");
-        result.add(createMenuItem("Open", openListener));
-        result.add(createMenuItem("Save", saveListener));
-        result.add(createMenuItem("Exit", exitListener));
+        result.add(createItem("Open", openListener));
+        result.add(createItem("Save", saveListener));
+        result.add(createItem("Exit", exitListener));
         return result;
     }
 
     private JMenu createEditMenu(List<ToolController> toolControllers) {
         final JMenu result = createMenu("Edit");
+
         for (final var it : toolControllers) {
             final Tool tool = it.getTool();
 
             if (!tool.hasGroup()) {
-                result.add(createMenuItem(it.getTool().getName(), it));
+                result.add(createItem(it.getTool().getName(), it));
             } else {
                 final int group = tool.getGroup();
 
@@ -124,17 +115,20 @@ public class MenuArea extends JPanel {
                 }
 
                 if (counter == 1) {
-                    final SelectableToggleItem toggleItem = createToggleButtonMenuItem(tool.getName(), it, tool);
-                    result.add(toggleItem);
-                    toggleItems.add(toggleItem);
+                    final SelectableTool toggleTool = createCheckboxItem(it);
+                    result.add(toggleTool.abstractButton);
+                    selectableTools.add(toggleTool);
                 } else {
-                    final SelectableRadioItem item = createRadioButtonMenuItem(tool.getName(), it, tool);
-                    result.add(item);
+                    final SelectableTool selectableTool = createRadioItem(it);
+                    final AbstractButton button = selectableTool.abstractButton;
 
-                    if (!radioItemsGroups.containsKey(group)) {
-                        radioItemsGroups.put(group, new ButtonGroup());
+                    result.add(button);
+                    selectableTools.add(selectableTool);
+
+                    if (!toolGroups.containsKey(group)) {
+                        toolGroups.put(group, new ButtonGroup());
                     }
-                    radioItemsGroups.get(group).add(item);
+                    toolGroups.get(group).add(button);
                 }
             }
         }
@@ -144,8 +138,8 @@ public class MenuArea extends JPanel {
 
     private static JMenu createInfoMenu(ActionListener helpListener, ActionListener aboutListener) {
         final JMenu result = createMenu("Info");
-        result.add(createMenuItem("Help", helpListener));
-        result.add(createMenuItem("About", aboutListener));
+        result.add(createItem("Help", helpListener));
+        result.add(createItem("About", aboutListener));
         return result;
     }
 
@@ -157,23 +151,24 @@ public class MenuArea extends JPanel {
         return result;
     }
 
-    private static JMenuItem createMenuItem(String label, ActionListener actionListener) {
+    private static JMenuItem createItem(String label, ActionListener actionListener) {
         final JMenuItem result = new JMenuItem(label);
         initButton(result, actionListener);
         return result;
     }
 
-    private static SelectableRadioItem createRadioButtonMenuItem(String label, ActionListener actionListener, Tool tool) {
-        final SelectableRadioItem result = new SelectableRadioItem(label, tool);
-        initButton(result, actionListener);
-        return result;
+    private static SelectableTool createRadioItem(ToolController toolController) {
+        final Tool tool = toolController.getTool();
+        final JRadioButtonMenuItem item = new JRadioButtonMenuItem(tool.getName());
+        initButton(item, toolController);
+        return new SelectableTool(item, tool);
     }
 
-    private static SelectableToggleItem createToggleButtonMenuItem(String label, ActionListener actionListener, Tool tool) {
-        final SelectableToggleItem result = new SelectableToggleItem(label, tool);
-        result.addActionListener(actionEvent -> result.setSelected(!result.isSelected()));
-        initButton(result, actionListener);
-        return result;
+    private static SelectableTool createCheckboxItem(ToolController toolController) {
+        final Tool tool = toolController.getTool();
+        final JCheckBoxMenuItem item = new JCheckBoxMenuItem(tool.getName());
+        initButton(item, toolController);
+        return new SelectableTool(item, tool);
     }
 
     private static void initButton(AbstractButton button, ActionListener actionListener) {

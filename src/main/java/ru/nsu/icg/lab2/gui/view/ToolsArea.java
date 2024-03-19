@@ -4,7 +4,6 @@ import lombok.Getter;
 import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.model.dto.Tool;
 
-import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,12 +13,13 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+@Getter
 public class ToolsArea extends JPanel {
     @Getter
-    private static class SelectableToolButton extends JToggleButton {
+    public static class SelectableTool extends JToggleButton {
         private final Tool tool;
 
-        private SelectableToolButton(ImageIcon icon, Tool tool) {
+        private SelectableTool(ImageIcon icon, Tool tool) {
             super(icon);
             this.tool = tool;
         }
@@ -30,10 +30,8 @@ public class ToolsArea extends JPanel {
     private static final Color BUTTONS_BACKGROUND_COLOR = new Color(0.72f, 0.72f, 0.71f);
     private static final int TOOL_SIZE = 32;
 
-    @Getter
-    private final Map<Integer, List<SelectableToolButton>> toolsGroups = new HashMap<>();
-
-    private final List<SelectableToolButton> toggleTools = new ArrayList<>();
+    private final Map<Integer, ButtonGroup> toolGroups = new HashMap<>();
+    private final List<SelectableTool> selectableTools = new ArrayList<>();
 
     public ToolsArea(List<ToolController> toolControllers) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -47,23 +45,26 @@ public class ToolsArea extends JPanel {
             } else {
                 final int group = tool.getGroup();
 
+                final SelectableTool toggleTool = createSelectableToolButton(it);
+                add(toggleTool);
+                selectableTools.add(toggleTool);
+
                 int counter = 0;
                 for (final var it2 : toolControllers) {
                     if (it2.getTool().getGroup() == group) {
                         counter++;
                     }
                 }
-                final SelectableToolButton toolToggleButton = createToolToggleButton(it);
-                add(toolToggleButton);
 
-                if (counter > 1) {
-                    if (!toolsGroups.containsKey(group)) {
-                        toolsGroups.put(group, new ArrayList<>());
-                    }
-                    toolsGroups.get(group).add(toolToggleButton);
-                } else {
-                    toggleTools.add(toolToggleButton);
+                if (counter == 1) {
+                    continue;
                 }
+
+                if (!toolGroups.containsKey(group)) {
+                    toolGroups.put(group, new ButtonGroup());
+                }
+
+                toolGroups.get(group).add(toggleTool);
             }
         }
     }
@@ -75,10 +76,9 @@ public class ToolsArea extends JPanel {
         return result;
     }
 
-    private static SelectableToolButton createToolToggleButton(ToolController toolController) {
+    private static SelectableTool createSelectableToolButton(ToolController toolController) {
         final Tool tool = toolController.getTool();
-        final SelectableToolButton result = new SelectableToolButton(loadIcon(tool.getIconPath()), tool);
-        result.addActionListener(actionEvent -> result.setSelected(!result.isSelected()));
+        final SelectableTool result = new SelectableTool(loadIcon(tool.getIconPath()), tool);
         initButton(result, tool.getTip(), toolController);
         return result;
     }

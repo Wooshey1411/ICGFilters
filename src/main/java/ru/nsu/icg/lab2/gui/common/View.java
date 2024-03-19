@@ -1,7 +1,5 @@
 package ru.nsu.icg.lab2.gui.common;
 
-import ru.nsu.icg.lab2.model.dto.Tool;
-
 import javax.swing.*;
 
 public interface View {
@@ -26,6 +24,4 @@ public interface View {
     JFrame getFrame();
 
     JScrollPane getMainScrollPane();
-
-    void selectTool(Tool tool);
 }
