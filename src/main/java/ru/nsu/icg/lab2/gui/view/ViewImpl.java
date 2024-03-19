@@ -68,6 +68,10 @@ public class ViewImpl implements View, ContextListener,ViewModeChangeListener {
                 context,
                 windowResizeController
         );
+
+        final var t1 = toolsArea.get
+
+
     }
 
     @Override

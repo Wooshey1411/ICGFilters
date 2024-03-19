@@ -30,7 +30,9 @@ public class ToolsArea extends JPanel {
     private static final Color BUTTONS_BACKGROUND_COLOR = new Color(0.72f, 0.72f, 0.71f);
     private static final int TOOL_SIZE = 32;
 
+    @Getter
     private final Map<Integer, List<SelectableToolButton>> toolsGroups = new HashMap<>();
+
     private final List<SelectableToolButton> toggleTools = new ArrayList<>();
 
     public ToolsArea(List<ToolController> toolControllers) {
@@ -63,25 +65,6 @@ public class ToolsArea extends JPanel {
                     toggleTools.add(toolToggleButton);
                 }
             }
-        }
-    }
-
-    public void selectTool(Tool tool) {
-        for (final var it : toggleTools) {
-            if (it.getTool().equals(tool)) {
-                it.setSelected(!it.isSelected());
-                return;
-            }
-        }
-
-        final List<SelectableToolButton> groupTools = toolsGroups.get(tool.getGroup());
-
-        if (groupTools == null) {
-            return;
-        }
-
-        for (final SelectableToolButton groupTool : groupTools) {
-            groupTool.setSelected(groupTool.tool.equals(tool));
         }
     }
 
