@@ -7,6 +7,11 @@ import ru.nsu.icg.lab2.model.Transformation;
 import java.util.Arrays;
 
 public class FisheyeEffect extends Transformation {
+
+
+    private double mult = 4;
+
+
     public FisheyeEffect(ImageFactory imageFactory) {
         super(imageFactory);
     }
@@ -22,7 +27,7 @@ public class FisheyeEffect extends Transformation {
         Arrays.fill(newGrid, 0xFFFFFFFF);
         int centerX = width / 2;
         int centerY = height / 2;
-        double center = 2 * Math.min(centerX, centerY) ;
+        double center = mult * Math.min(centerX, centerY) ;
         int maxNewX = 0;
         int minNewX = width;
         int maxNewY = 0;
