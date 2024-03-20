@@ -29,6 +29,10 @@ public class GlassEffect extends Transformation {
 
         int trueSpread = (int)(Integer.min(height,width)*spreadInPercent*1.0/1000);
 
+        if (trueSpread == 0){
+            return getImageFactory().createImage(oldImage,grid);
+        }
+
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 final int offset = random.nextInt(0, trueSpread);

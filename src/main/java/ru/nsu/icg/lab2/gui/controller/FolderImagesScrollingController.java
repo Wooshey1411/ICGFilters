@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FolderImagesScrollingController implements KeyEventDispatcher {
-    private static final boolean RETURN_VALUE = true;
+    private static final boolean RETURN_VALUE = false;
 
     private final Context context;
     private final View view;
