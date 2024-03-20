@@ -7,6 +7,7 @@ import ru.nsu.icg.lab2.gui.common.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -40,10 +41,14 @@ public class OpenController implements ActionListener {
 
         try {
             final BufferedImageImpl image = new BufferedImageImpl(imageReader.read(file));
-            context.getBufferedImageFactory().setType(image.bufferedImage().getType());
+            final int imageType = image.bufferedImage().getType();
+            final int imageFactoryType = imageType == BufferedImage.TYPE_CUSTOM
+                    ? BufferedImage.TYPE_INT_ARGB
+                    : imageType;
+            context.getBufferedImageFactory().setType(imageFactoryType);
             context.setOriginalImage(image);
-            context.setImage(context.getOriginalImage());
             context.setProcessedImage(null);
+            context.setImage(context.getOriginalImage());
         } catch (IOException exception) {
             view.showError(exception.getLocalizedMessage());
         }
