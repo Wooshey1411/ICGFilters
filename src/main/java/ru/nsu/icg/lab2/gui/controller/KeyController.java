@@ -5,7 +5,7 @@ import ru.nsu.icg.lab2.gui.common.ImageReader;
 import ru.nsu.icg.lab2.gui.common.View;
 import ru.nsu.icg.lab2.gui.common.context.Context;
 
-import java.awt.event.KeyAdapter;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class KeyController extends KeyAdapter {
+public class KeyController implements KeyEventDispatcher {
+    private static final boolean RETURN_VALUE = true;
+
     private final Context context;
     private final View view;
 
@@ -49,15 +51,19 @@ public class KeyController extends KeyAdapter {
     }
 
     @Override
-    public void keyPressed(KeyEvent keyEvent) {
+    public boolean dispatchKeyEvent(KeyEvent keyEvent) {
+        if (keyEvent.getID() != KeyEvent.KEY_PRESSED) {
+            return RETURN_VALUE;
+        }
+
         if (context.getCurrentFile() == null || context.getWorkingDirectory() == null) {
-            return;
+            return RETURN_VALUE;
         }
 
         final int keyCode = keyEvent.getKeyCode();
 
         if (keyCode != KeyEvent.VK_RIGHT && keyCode != KeyEvent.VK_LEFT) {
-            return;
+            return RETURN_VALUE;
         }
 
         final File workingDirectory = context.getWorkingDirectory();
@@ -67,27 +73,29 @@ public class KeyController extends KeyAdapter {
 
         if (filesArray == null || filesArray.length == 0) {
             // TODO: do something
-            return;
+            return RETURN_VALUE;
         }
 
         final List<File> filesList = Arrays.asList(filesArray);
 
-        final int index = filesList.indexOf(currentFile);
-        File file;
-        if (index == -1) {
-            file = filesList.get(0);
+        final int indexOfCurrentFile = filesList.indexOf(currentFile);
+
+        int indexOfNewFile;
+        if (indexOfCurrentFile == -1) {
+            indexOfNewFile = 0;
         } else {
             if (keyEvent.getKeyCode() == KeyEvent.VK_RIGHT) {
-                file = filesList.get((index + 1) % filesList.size());
+                indexOfNewFile = (indexOfCurrentFile + 1) % filesList.size();
             } else {
-                if (index == 0) {
-                    file = filesList.get(filesList.size() - 1);
+                if (indexOfCurrentFile == 0) {
+                    indexOfNewFile = filesList.size() - 1;
                 } else {
-                    file = filesList.get((index - 1) & filesList.size());
+                    indexOfNewFile = (indexOfCurrentFile - 1) % filesList.size();
                 }
             }
         }
 
+        final File file = filesList.get(indexOfNewFile);
         final ImageReader imageReader = new ImageReader();
 
         try {
@@ -106,5 +114,9 @@ public class KeyController extends KeyAdapter {
         } catch (IOException exception) {
             view.showError(exception.getLocalizedMessage());
         }
+
+
+
+        return RETURN_VALUE;
     }
 }

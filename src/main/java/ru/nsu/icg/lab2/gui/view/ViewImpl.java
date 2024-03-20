@@ -78,9 +78,9 @@ public class ViewImpl extends ContextAdapter implements View {
                 windowResizeController
         );
 
-        mainWindow.getContentPane().addKeyListener(keyListener);
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyListener);
 
-        drawingArea.addKeyListener(keyListener);
+
 
         context.addViewModeListener(menuArea);
         context.addViewModeListener(toolsArea);
