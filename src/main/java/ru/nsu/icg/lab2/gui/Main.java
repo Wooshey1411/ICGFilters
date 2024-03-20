@@ -20,7 +20,6 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            // TODO: Synchronize ViewMode with start selected tools/items
             final Context context = new Context(new BufferedImageFactory());
 
             final ViewConfigParser viewConfigParser = new JSONViewConfigParser("view_config.json");

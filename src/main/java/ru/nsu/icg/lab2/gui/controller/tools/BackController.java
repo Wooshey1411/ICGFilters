@@ -16,7 +16,6 @@ public class BackController extends ToolController {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        // TODO: Hip-Hop icon
 
         final Context context = getContext();
         final BufferedImageImpl processedImage = context.getProcessedImage();
