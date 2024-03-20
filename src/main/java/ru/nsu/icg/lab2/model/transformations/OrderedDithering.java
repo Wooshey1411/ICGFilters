@@ -4,20 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
-import ru.nsu.icg.lab2.model.Transformation;
 
 import java.util.Arrays;
 
 @Getter
 @Setter
-public class OrderedDithering extends Transformation {
-
-    private int redK = 8;
-
-    private int greenK = 8;
-
-    private int blueK = 4;
-
+public class OrderedDithering extends AbstractDithering {
 
     private static final double[][] MATRIX2 = {
             {0, 2},
@@ -92,13 +84,21 @@ public class OrderedDithering extends Transformation {
 
     public OrderedDithering(ImageFactory imageFactory) {
         super(imageFactory);
+        redK = 2;
+        blueK = 2;
+        greenK = 2;
+        creator = FilterCreator.SIROTKIN;
     }
 
 
     @Override
     public ImageInterface apply(ImageInterface oldImage) {
-
-        return applySirotkin(oldImage);
+        switch (creator){
+            case SIROTKIN -> {return applySirotkin(oldImage);}
+            case VOROBEV -> {return null;}
+            case KONDRENKO -> {return null;}
+            default -> throw new IllegalArgumentException("No such creator in Ordered dithering");
+        }
     }
 
 
