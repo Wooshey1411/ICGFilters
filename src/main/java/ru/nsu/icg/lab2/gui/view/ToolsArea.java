@@ -4,6 +4,7 @@ import ru.nsu.icg.lab2.gui.common.DrawingAreaAction;
 import ru.nsu.icg.lab2.gui.common.ViewMode;
 import ru.nsu.icg.lab2.gui.common.context.Context;
 import ru.nsu.icg.lab2.gui.common.context.ContextDrawingAreaActionListener;
+import ru.nsu.icg.lab2.gui.common.context.ContextImageListener;
 import ru.nsu.icg.lab2.gui.common.context.ContextViewModeListener;
 import ru.nsu.icg.lab2.gui.controller.ToolController;
 import ru.nsu.icg.lab2.model.dto.Tool;
@@ -16,14 +17,20 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
-public class ToolsArea extends JPanel implements ContextViewModeListener, ContextDrawingAreaActionListener {
+public class ToolsArea extends JPanel implements ContextViewModeListener, ContextDrawingAreaActionListener, ContextImageListener {
     private class ToolButton {
         private final Tool tool;
         private final AbstractButton button;
+        private final Icon defaultIcon;
+        private final Icon selectedIcon;
 
         private ToolButton(Tool tool, AbstractButton button) {
             this.tool = tool;
             this.button = button;
+            this.defaultIcon = button.getIcon();
+
+            final String selectedIconPath = tool.selectedIconPath();
+            this.selectedIcon = selectedIconPath != null ? loadIcon(selectedIconPath) : null;
         }
 
         public void setSelected(boolean b) {
@@ -31,6 +38,14 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
             if (b) {
                 lastSelectedButtons.put(tool.group(), button);
             }
+        }
+
+        public void setDefaultIcon() {
+            button.setIcon(defaultIcon);
+        }
+
+        public void setSelectedIcon() {
+            button.setIcon(selectedIcon);
         }
     }
 
@@ -40,6 +55,7 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
     private static final int TOOL_SIZE = 32;
 
     private ToolButton handButton;
+    private ToolButton backButton;
     private ToolButton onWindowSizeButton;
     private ToolButton oneToOneButton;
 
@@ -87,6 +103,9 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
             if (tool.isHand()) {
                 handButton = new ToolButton(tool, abstractButton);
             }
+            if (tool.isBack()) {
+                backButton = new ToolButton(tool, abstractButton);
+            }
             if (tool.isOneToOne()) {
                 oneToOneButton = new ToolButton(tool, abstractButton);
             }
@@ -115,6 +134,15 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
 
         if (onWindowSizeButton != null) {
             onWindowSizeButton.setSelected(viewMode == ViewMode.ON_WINDOW_SIZE);
+        }
+    }
+
+    @Override
+    public void onImageChange(Context context) {
+        if (context.getProcessedImage() == null || context.getImage() != context.getOriginalImage()) {
+            backButton.setDefaultIcon();
+        } else {
+            backButton.setSelectedIcon();
         }
     }
 

@@ -12,6 +12,9 @@ public class JSONTool {
     @SerializedName("icon")
     private String iconPath;
 
+    @SerializedName("selectedIcon")
+    private String selectedIconPath;
+
     @SerializedName("controller")
     private String controllerClassPath;
 
@@ -22,6 +25,9 @@ public class JSONTool {
 
     @SerializedName("hand")
     private boolean isHand;
+
+    @SerializedName("back")
+    private boolean isBack;
 
     @SerializedName("1:1")
     private boolean isOneToOne;
