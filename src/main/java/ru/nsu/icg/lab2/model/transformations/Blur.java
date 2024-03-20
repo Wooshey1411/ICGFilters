@@ -28,16 +28,21 @@ public class Blur extends Transformation {
         final int borderStep = (windowSize - 1) / 2;
         final double squared_doubled_sigma = 2 * sigma * sigma;
         final double k = 1.0 / (Math.PI * squared_doubled_sigma);
-
+        double elemSum = 0.0;
         for (int y = 0; y < windowSize; y++){
             for (int x = 0; x < windowSize; x++){
                 final int xMoved = x - borderStep;
                 final int yMoved = y - borderStep;
                 final double numerator = xMoved * xMoved + yMoved * yMoved;
                 matrix[y][x] = k * Math.exp(-numerator / squared_doubled_sigma);
+                elemSum += matrix[y][x];
             }
         }
-
+        for (int y = 0; y < windowSize; y++){
+            for (int x = 0; x < windowSize; x++){
+                matrix[y][x] = matrix[y][x] / elemSum;
+            }
+        }
         filterApplicator.setMatrix(matrix);
         filterApplicator.setWindowSize(windowSize);
     }
