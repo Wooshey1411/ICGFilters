@@ -1,7 +1,7 @@
 package ru.nsu.icg.lab2.gui.controller.tools;
 
 import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
-import ru.nsu.icg.lab2.gui.controller.ToolController;
+import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.gui.common.context.Context;
 import ru.nsu.icg.lab2.gui.common.Utils;
 import ru.nsu.icg.lab2.gui.common.View;
