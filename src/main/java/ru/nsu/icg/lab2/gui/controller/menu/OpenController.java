@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class OpenController implements ActionListener {
     private final Context context;
@@ -45,10 +46,13 @@ public class OpenController implements ActionListener {
             final int imageFactoryType = imageType == BufferedImage.TYPE_CUSTOM
                     ? BufferedImage.TYPE_INT_ARGB
                     : imageType;
+
+            context.setWorkingDirectory(file.getParentFile());
+            context.setCurrentFile(file);
             context.getBufferedImageFactory().setType(imageFactoryType);
             context.setOriginalImage(image);
             context.setProcessedImage(null);
-            context.setImage(context.getOriginalImage());
+            context.setImage(image);
         } catch (IOException exception) {
             view.showError(exception.getLocalizedMessage());
         }

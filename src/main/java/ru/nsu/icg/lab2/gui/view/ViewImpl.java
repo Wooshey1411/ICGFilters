@@ -3,6 +3,7 @@ package ru.nsu.icg.lab2.gui.view;
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
 import ru.nsu.icg.lab2.gui.common.context.*;
 import ru.nsu.icg.lab2.gui.controller.DrawingAreaController;
+import ru.nsu.icg.lab2.gui.controller.KeyController;
 import ru.nsu.icg.lab2.gui.controller.TransformationsController;
 import ru.nsu.icg.lab2.gui.controller.WindowResizeController;
 import ru.nsu.icg.lab2.gui.controller.menu.*;
@@ -10,6 +11,8 @@ import ru.nsu.icg.lab2.gui.common.*;
 import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.dto.ViewConfig;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +29,8 @@ public class ViewImpl extends ContextAdapter implements View {
         this.context = context;
         context.addImageListener(this);
         context.addViewModeListener(this);
+
+        final KeyController keyListener = new KeyController(context, this, imageReader.getSupportedFormats());
 
         final TransformationsController transformationsController = new TransformationsController(this);
         context.addTransformationListener(transformationsController);
@@ -72,6 +77,10 @@ public class ViewImpl extends ContextAdapter implements View {
                 context,
                 windowResizeController
         );
+
+        mainWindow.getContentPane().addKeyListener(keyListener);
+
+        drawingArea.addKeyListener(keyListener);
 
         context.addViewModeListener(menuArea);
         context.addViewModeListener(toolsArea);

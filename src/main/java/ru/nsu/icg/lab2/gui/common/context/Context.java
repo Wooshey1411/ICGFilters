@@ -5,6 +5,7 @@ import lombok.Setter;
 import ru.nsu.icg.lab2.gui.common.*;
 import ru.nsu.icg.lab2.model.Transformation;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +49,14 @@ public class Context {
     @Getter
     @Setter
     private int drawingAreaHeight;
+
+    @Getter
+    @Setter
+    private File workingDirectory;
+
+    @Getter
+    @Setter
+    private File currentFile;
 
     public Context(BufferedImageFactory bufferedImageFactory) {
         this.drawingAreaAction = DrawingAreaAction.SWAP_IMAGE;
@@ -120,14 +129,8 @@ public class Context {
 
     public void swapImage(){
         if(image == originalImage){
-            if(processedImage == null){
-                return;
-            }
             setImage(processedImage);
         } else{
-            if(originalImage == null){
-                return;
-            }
             setImage(originalImage);
         }
     }

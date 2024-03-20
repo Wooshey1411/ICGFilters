@@ -23,9 +23,9 @@ public class DrawingAreaController extends MouseAdapter {
     private int prevX,prevY;
     @Override
     public void mouseClicked(MouseEvent e) {
-        super.mouseClicked(e);
-        if(context.getDrawingAreaAction() == DrawingAreaAction.SWAP_IMAGE){
-            System.out.println("SWAP");
+        final boolean hasImagesToSwap = context.getProcessedImage() != null && context.getOriginalImage() != null;
+
+        if(context.getDrawingAreaAction() == DrawingAreaAction.SWAP_IMAGE && hasImagesToSwap){
             context.swapImage();
         }
     }
