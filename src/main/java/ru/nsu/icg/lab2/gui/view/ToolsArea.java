@@ -2,7 +2,7 @@ package ru.nsu.icg.lab2.gui.view;
 
 import ru.nsu.icg.lab2.gui.common.DrawingAreaAction;
 import ru.nsu.icg.lab2.gui.common.ViewMode;
-import ru.nsu.icg.lab2.gui.common.context.Context;
+import ru.nsu.icg.lab2.gui.common.Context;
 import ru.nsu.icg.lab2.gui.common.context.ContextDrawingAreaActionListener;
 import ru.nsu.icg.lab2.gui.common.context.ContextImageListener;
 import ru.nsu.icg.lab2.gui.common.context.ContextViewModeListener;

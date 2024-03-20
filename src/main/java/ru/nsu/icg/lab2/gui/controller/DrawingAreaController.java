@@ -1,6 +1,6 @@
 package ru.nsu.icg.lab2.gui.controller;
 
-import ru.nsu.icg.lab2.gui.common.context.Context;
+import ru.nsu.icg.lab2.gui.common.Context;
 import ru.nsu.icg.lab2.gui.common.DrawingAreaAction;
 import ru.nsu.icg.lab2.gui.common.View;
 

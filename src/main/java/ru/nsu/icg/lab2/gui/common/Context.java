@@ -1,8 +1,11 @@
-package ru.nsu.icg.lab2.gui.common.context;
+package ru.nsu.icg.lab2.gui.common;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.nsu.icg.lab2.gui.common.*;
+import ru.nsu.icg.lab2.gui.common.context.ContextDrawingAreaActionListener;
+import ru.nsu.icg.lab2.gui.common.context.ContextImageListener;
+import ru.nsu.icg.lab2.gui.common.context.ContextTransformationListener;
+import ru.nsu.icg.lab2.gui.common.context.ContextViewModeListener;
 import ru.nsu.icg.lab2.model.Transformation;
 
 import java.io.File;

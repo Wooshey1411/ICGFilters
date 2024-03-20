@@ -2,8 +2,9 @@ package ru.nsu.icg.lab2.gui.view;
 
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
 import ru.nsu.icg.lab2.gui.common.context.*;
+import ru.nsu.icg.lab2.gui.common.ViewMode;
 import ru.nsu.icg.lab2.gui.controller.DrawingAreaController;
-import ru.nsu.icg.lab2.gui.controller.KeyController;
+import ru.nsu.icg.lab2.gui.controller.FolderImagesScrollingController;
 import ru.nsu.icg.lab2.gui.controller.TransformationsController;
 import ru.nsu.icg.lab2.gui.controller.WindowResizeController;
 import ru.nsu.icg.lab2.gui.controller.menu.*;
@@ -11,8 +12,6 @@ import ru.nsu.icg.lab2.gui.common.*;
 import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.dto.ViewConfig;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
@@ -23,19 +22,19 @@ public class ViewImpl extends ContextAdapter implements View {
     private final DrawingArea drawingArea;
     private final MainWindow mainWindow;
 
-    public ViewImpl(ViewConfig viewConfig, List<Tool> tools, Context context, ImageReader imageReader, ImageWriter imageWriter) {
+    public ViewImpl(ViewConfig viewConfig, List<Tool> tools, Context context, ContextImageReader imageReader, ImageWriter imageWriter) {
         FlatArcDarkOrangeIJTheme.setup();
 
         this.context = context;
         context.addImageListener(this);
         context.addViewModeListener(this);
 
-        final KeyController keyListener = new KeyController(context, this, imageReader.getSupportedFormats());
+        final FolderImagesScrollingController keyListener = new FolderImagesScrollingController(context, this, imageReader);
 
         final TransformationsController transformationsController = new TransformationsController(this);
         context.addTransformationListener(transformationsController);
 
-        final OpenController openController = new OpenController(context, this, imageReader);
+        final OpenController openController = new OpenController(this, imageReader);
         final SaveController saveController = new SaveController(context, this, imageWriter);
         final ExitController exitController = new ExitController(this);
 

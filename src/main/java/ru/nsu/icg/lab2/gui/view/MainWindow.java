@@ -1,7 +1,7 @@
 package ru.nsu.icg.lab2.gui.view;
 
 import lombok.Getter;
-import ru.nsu.icg.lab2.gui.common.context.Context;
+import ru.nsu.icg.lab2.gui.common.Context;
 import ru.nsu.icg.lab2.gui.common.ViewMode;
 import ru.nsu.icg.lab2.gui.common.WindowResizeListener;
 

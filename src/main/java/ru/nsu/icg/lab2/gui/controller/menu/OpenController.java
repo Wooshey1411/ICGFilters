@@ -1,25 +1,19 @@
 package ru.nsu.icg.lab2.gui.controller.menu;
 
-import ru.nsu.icg.lab2.gui.common.context.Context;
+import ru.nsu.icg.lab2.gui.common.context.ContextImageReader;
 import ru.nsu.icg.lab2.gui.controller.files.ImageOpeningChooser;
 import ru.nsu.icg.lab2.gui.common.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
 
 public class OpenController implements ActionListener {
-    private final Context context;
     private final View view;
-    private final ImageReader imageReader;
+    private final ContextImageReader imageReader;
     private final JFileChooser fileChooser;
 
-    public OpenController(Context context, View view, ImageReader imageReader) {
-        this.context = context;
+    public OpenController(View view, ContextImageReader imageReader) {
         this.view = view;
         this.imageReader = imageReader;
         this.fileChooser = new ImageOpeningChooser(imageReader.getSupportedFormats());
@@ -38,23 +32,6 @@ public class OpenController implements ActionListener {
             return;
         }
 
-        final File file = fileChooser.getSelectedFile();
-
-        try {
-            final BufferedImageImpl image = new BufferedImageImpl(imageReader.read(file));
-            final int imageType = image.bufferedImage().getType();
-            final int imageFactoryType = imageType == BufferedImage.TYPE_CUSTOM
-                    ? BufferedImage.TYPE_INT_ARGB
-                    : imageType;
-
-            context.setWorkingDirectory(file.getParentFile());
-            context.setCurrentFile(file);
-            context.getBufferedImageFactory().setType(imageFactoryType);
-            context.setOriginalImage(image);
-            context.setProcessedImage(null);
-            context.setImage(image);
-        } catch (IOException exception) {
-            view.showError(exception.getLocalizedMessage());
-        }
+        imageReader.read(fileChooser.getSelectedFile());
     }
 }

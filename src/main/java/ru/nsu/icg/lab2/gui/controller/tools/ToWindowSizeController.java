@@ -1,8 +1,9 @@
 package ru.nsu.icg.lab2.gui.controller.tools;
 
-import ru.nsu.icg.lab2.gui.common.context.Context;
+import ru.nsu.icg.lab2.gui.common.Context;
 import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.gui.common.*;
+import ru.nsu.icg.lab2.gui.common.ViewMode;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.dto.Tool;
 

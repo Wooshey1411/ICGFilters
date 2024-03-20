@@ -1,7 +1,9 @@
 package ru.nsu.icg.lab2.gui;
 
 import ru.nsu.icg.lab2.gui.common.*;
-import ru.nsu.icg.lab2.gui.common.context.Context;
+import ru.nsu.icg.lab2.gui.common.Context;
+import ru.nsu.icg.lab2.gui.common.context.ContextImageReader;
+import ru.nsu.icg.lab2.gui.common.ViewMode;
 import ru.nsu.icg.lab2.gui.view.ViewImpl;
 import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.ToolsConfigParser;
@@ -27,12 +29,14 @@ public class Main {
             final ToolsConfigParser toolsConfigParser = new JSONToolsConfigParser("tools_config.json");
             final List<Tool> tools = toolsConfigParser.parse();
 
-            final ImageReader imageReader = new ImageReader();
+            final ContextImageReader imageReader = new ContextImageReader();
             final ImageWriter imageWriter = new ImageWriter();
 
             final ViewImpl view = new ViewImpl(viewConfig, tools, context, imageReader, imageWriter);
             context.setViewMode(START_VIEW_MODE);
             context.setInterpolationMethod(START_INTERPOLATION_METHOD);
+            imageReader.setView(view);
+            imageReader.setContext(context);
 
             view.show();
         } catch (Exception exception) {

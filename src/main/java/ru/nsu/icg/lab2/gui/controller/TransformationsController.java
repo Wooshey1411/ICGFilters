@@ -2,7 +2,7 @@ package ru.nsu.icg.lab2.gui.controller;
 
 import ru.nsu.icg.lab2.gui.common.BufferedImageImpl;
 import ru.nsu.icg.lab2.gui.common.View;
-import ru.nsu.icg.lab2.gui.common.context.Context;
+import ru.nsu.icg.lab2.gui.common.Context;
 import ru.nsu.icg.lab2.gui.common.context.ContextTransformationListener;
 import ru.nsu.icg.lab2.model.Transformation;
 
