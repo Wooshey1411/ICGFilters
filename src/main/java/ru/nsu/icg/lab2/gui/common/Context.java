@@ -62,7 +62,7 @@ public class Context {
     private File currentFile;
 
     public Context(BufferedImageFactory bufferedImageFactory) {
-        this.drawingAreaAction = DrawingAreaAction.SWAP_IMAGE;
+        drawingAreaAction = DrawingAreaAction.SWAP_IMAGE;
         this.bufferedImageFactory = bufferedImageFactory;
     }
 

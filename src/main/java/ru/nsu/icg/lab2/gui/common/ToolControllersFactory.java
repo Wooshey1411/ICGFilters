@@ -7,11 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ToolControllersFactory {
-    private final List<ToolController> controllers;
+    private final List<ToolController> controllers = new ArrayList<>();
 
     public ToolControllersFactory(Context context, View view, ImageFactory imageFactory, List<Tool> tools) {
-        this.controllers = new ArrayList<>();
-
         final Class<?>[] parameters = new Class<?>[]{Context.class, View.class, ImageFactory.class, Tool.class};
 
         try {

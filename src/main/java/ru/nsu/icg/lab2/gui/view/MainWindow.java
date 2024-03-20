@@ -29,9 +29,9 @@ public class MainWindow extends JFrame {
                       JPanel toolsArea,
                       JPanel drawingArea,
                       Context context,
-                      WindowResizeListener windowResizeListener
-    ) {
+                      WindowResizeListener windowResizeListener) {
         super(name);
+
         addWindowListener(windowListener);
         setMinimumSize(new Dimension(minWidth, minHeight));
         setPreferredSize(new Dimension(prefWidth, prefHeight));
@@ -40,6 +40,7 @@ public class MainWindow extends JFrame {
         scrollPane.setDoubleBuffered(true);
         scrollPane.setAutoscrolls(false);
         scrollPane.setBounds(0, 0, 0, 0);
+
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -56,12 +57,14 @@ public class MainWindow extends JFrame {
                 }
             }
         });
+
         scrollPane.setBorder(BorderFactory.createEmptyBorder(
                 SCROLL_PANE_BORDER_THICKNESS,
                 SCROLL_PANE_BORDER_THICKNESS,
                 SCROLL_PANE_BORDER_THICKNESS,
                 SCROLL_PANE_BORDER_THICKNESS
         ));
+
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         add(scrollPane, BorderLayout.CENTER);
@@ -70,6 +73,7 @@ public class MainWindow extends JFrame {
         setLocationRelativeTo(null);
         pack();
     }
+
     public int getWindowedDrawingAreaWidth(){
         return scrollPane.getWidth() -
                 scrollPane.getInsets().left -
@@ -77,6 +81,7 @@ public class MainWindow extends JFrame {
                 drawingArea.getInsets().left -
                 drawingArea.getInsets().right;
     }
+
     public int getWindowedDrawingAreaHeight(){
         return scrollPane.getHeight() -
                 scrollPane.getInsets().top -
@@ -84,17 +89,21 @@ public class MainWindow extends JFrame {
                 drawingArea.getInsets().top -
                 drawingArea.getInsets().bottom;
     }
+
     public void disableScrolls(){
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     }
+
     public void enableScrolls(){
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
     }
+
     public void setWaitCursor(){
         setCursor(new Cursor(Cursor.WAIT_CURSOR));
     }
+
     public void setDefaultCursor(){
         setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }

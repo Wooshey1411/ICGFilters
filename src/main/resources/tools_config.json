@@ -8,7 +8,6 @@
     "hand": true
   },
   {
-    "name": "Back",
     "tip": "back",
     "back": true,
     "icon": "/icons/undo.png",

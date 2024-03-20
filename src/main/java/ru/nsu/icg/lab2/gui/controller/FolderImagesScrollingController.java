@@ -31,7 +31,7 @@ public class FolderImagesScrollingController implements KeyEventDispatcher {
             lowerCaseExtensions[i] = supportedFormats[i].toLowerCase();
         }
 
-        this.filenameFilter = (dir, name) -> {
+        filenameFilter = (dir, name) -> {
             if (!name.contains(".")) {
                 return false;
             }

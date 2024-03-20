@@ -16,7 +16,7 @@ public class OpenController implements ActionListener {
     public OpenController(View view, ContextImageReader imageReader) {
         this.view = view;
         this.imageReader = imageReader;
-        this.fileChooser = new ImageOpeningChooser(imageReader.getSupportedFormats());
+        fileChooser = new ImageOpeningChooser(imageReader.getSupportedFormats());
     }
 
     @Override

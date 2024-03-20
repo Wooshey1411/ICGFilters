@@ -52,7 +52,7 @@ public class TextFieldSliderController implements ChangeListener, DocumentListen
 
     public void reset(double value) {
         this.value = value;
-        this.hasError = false;
+        hasError = false;
         updateValueOfSlider();
         updateValueOfTextArea();
     }

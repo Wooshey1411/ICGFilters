@@ -5,6 +5,7 @@ import ru.nsu.icg.lab2.gui.common.DrawingAreaAction;
 import ru.nsu.icg.lab2.gui.common.ViewMode;
 import ru.nsu.icg.lab2.gui.common.Context;
 import ru.nsu.icg.lab2.gui.common.context.ContextDrawingAreaActionListener;
+import ru.nsu.icg.lab2.gui.common.context.ContextImageListener;
 import ru.nsu.icg.lab2.gui.common.context.ContextViewModeListener;
 import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.model.dto.Tool;
@@ -15,15 +16,18 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class MenuArea extends JPanel implements ContextViewModeListener, ContextDrawingAreaActionListener {
+public class MenuArea extends JPanel implements ContextViewModeListener, ContextDrawingAreaActionListener, ContextImageListener {
     // TODO: вынести это в конфигурационный файл
     private static final Font FONT = new Font("Go", Font.BOLD, 14);
     private static final Color MENU_BACKGROUND_COLOR = new Color(0.85f, 0.85f, 0.85f);
     private static final Color BUTTONS_FONT_COLOR = new Color(0.14f, 0.13f, 0.13f);
+    private static final String UNDO_LABEL = "Undo";
+    private static final String REDO_LABEL = "Redo";
 
-    private AbstractButton handButton;
-    private AbstractButton onWindowSizeButton;
-    private AbstractButton oneToOneButton;
+    private JMenuItem handButton;
+    private JMenuItem backButton;
+    private JMenuItem onWindowSizeButton;
+    private JMenuItem oneToOneButton;
 
     @Getter
     private final JMenuBar menuBar;
@@ -34,8 +38,7 @@ public class MenuArea extends JPanel implements ContextViewModeListener, Context
             ActionListener exitListener,
             ActionListener helpListener,
             ActionListener aboutListener,
-            List<ToolController> toolControllers
-    ) {
+            List<ToolController> toolControllers) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setBackground(MENU_BACKGROUND_COLOR);
 
@@ -54,11 +57,9 @@ public class MenuArea extends JPanel implements ContextViewModeListener, Context
         ));
     }
 
-    private static JMenu createFileMenu(
-            ActionListener openListener,
-            ActionListener saveListener,
-            ActionListener exitListener
-    ) {
+    private static JMenu createFileMenu(ActionListener openListener,
+                                        ActionListener saveListener,
+                                        ActionListener exitListener) {
         final JMenu result = createMenu("File");
         result.add(createItem("Open", openListener));
         result.add(createItem("Save", saveListener));
@@ -75,33 +76,36 @@ public class MenuArea extends JPanel implements ContextViewModeListener, Context
             final Tool tool = it.getTool();
             final String toolName = tool.name();
 
-            JMenuItem item;
+            JMenuItem newIMenuItem;
 
+            // Creating item of appropriate type
             if (tool.isToggle()) {
-                item = createCheckboxItem(toolName, it);
+                newIMenuItem = createCheckboxItem(toolName, it);
             } else if (tool.hasGroup()) {
-                item = createRadioItem(toolName, it);
+                newIMenuItem = createRadioItem(toolName, it);
                 final int group = tool.group();
-
                 if (!toolGroups.containsKey(group)) {
                     toolGroups.put(group, new ButtonGroup());
                 }
-
-                toolGroups.get(group).add(item);
+                toolGroups.get(group).add(newIMenuItem);
             } else {
-                item = createItem(toolName, it);
+                newIMenuItem = createItem(toolName, it);
             }
 
-            result.add(item);
+            result.add(newIMenuItem);
 
             if (tool.isHand()) {
-                handButton = item;
+                handButton = newIMenuItem;
+            }
+            if (tool.isBack()) {
+                backButton = newIMenuItem;
+                backButton.setText(UNDO_LABEL);
             }
             if (tool.isOneToOne()) {
-                oneToOneButton = item;
+                oneToOneButton = newIMenuItem;
             }
             if (tool.isOnWindowSize()) {
-                onWindowSizeButton = item;
+                onWindowSizeButton = newIMenuItem;
             }
         }
 
@@ -150,11 +154,9 @@ public class MenuArea extends JPanel implements ContextViewModeListener, Context
 
     @Override
     public void onDrawingAreaActionChange(Context context) {
-        if (handButton == null) {
-            return;
+        if (handButton != null) {
+            handButton.setSelected(context.getDrawingAreaAction() == DrawingAreaAction.MOVE_SCROLLS);
         }
-
-        handButton.setSelected(context.getDrawingAreaAction() == DrawingAreaAction.MOVE_SCROLLS);
     }
 
     @Override
@@ -167,6 +169,15 @@ public class MenuArea extends JPanel implements ContextViewModeListener, Context
 
         if (onWindowSizeButton != null) {
             onWindowSizeButton.setSelected(viewMode == ViewMode.ON_WINDOW_SIZE);
+        }
+    }
+
+    @Override
+    public void onImageChange(Context context) {
+        if (context.getProcessedImage() == null || context.getImage() != context.getOriginalImage()) {
+            backButton.setText(UNDO_LABEL);
+        } else {
+            backButton.setText(REDO_LABEL);
         }
     }
 }

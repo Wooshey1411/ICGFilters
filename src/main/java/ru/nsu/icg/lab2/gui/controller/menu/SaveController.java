@@ -21,7 +21,7 @@ public class SaveController implements ActionListener {
         this.context = context;
         this.view = view;
         this.imageWriter = imageWriter;
-        this.fileChooser = new ImageSavingChooser(imageWriter.getSupportedFormats());
+        fileChooser = new ImageSavingChooser(imageWriter.getSupportedFormats());
     }
 
     @Override

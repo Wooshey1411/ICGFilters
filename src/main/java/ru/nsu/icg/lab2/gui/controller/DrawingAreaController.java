@@ -11,28 +11,28 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class DrawingAreaController extends MouseAdapter {
-
     private final Context context;
     private final View view;
+
+    private int prevX,prevY;
 
     public DrawingAreaController(Context context, View view){
         this.context = context;
         this.view = view;
     }
 
-    private int prevX,prevY;
     @Override
     public void mouseClicked(MouseEvent e) {
+        final boolean swapMode = context.getDrawingAreaAction() == DrawingAreaAction.SWAP_IMAGE;
         final boolean hasImagesToSwap = context.getProcessedImage() != null && context.getOriginalImage() != null;
 
-        if(context.getDrawingAreaAction() == DrawingAreaAction.SWAP_IMAGE && hasImagesToSwap){
+        if(swapMode && hasImagesToSwap){
             context.swapImage();
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        super.mousePressed(e);
         if(context.getDrawingAreaAction() == DrawingAreaAction.MOVE_SCROLLS){
             prevX = e.getX();
             prevY = e.getY();
@@ -40,24 +40,20 @@ public class DrawingAreaController extends MouseAdapter {
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-        super.mouseReleased(e);
-    }
-
-    @Override
     public void mouseDragged(MouseEvent e) {
-        super.mouseDragged(e);
-        if(context.getDrawingAreaAction() == DrawingAreaAction.MOVE_SCROLLS){
-            if(e.getModifiersEx() == InputEvent.BUTTON3_DOWN_MASK){
-                return;
-            }
-            JScrollPane spIm = view.getMainScrollPane();
-            Point scroll = spIm.getViewport().getViewPosition();
-            scroll.x += (prevX - e.getX());
-            scroll.y += (prevY - e.getY());
-            spIm.getHorizontalScrollBar().setValue(scroll.x);
-            spIm.getVerticalScrollBar().setValue(scroll.y);
-            spIm.repaint();
+        final boolean isScrollMode = context.getDrawingAreaAction() == DrawingAreaAction.MOVE_SCROLLS;
+        final boolean invalidMagic =  e.getModifiersEx() == InputEvent.BUTTON3_DOWN_MASK;
+
+        if (!isScrollMode || invalidMagic) {
+            return;
         }
+
+        final JScrollPane spIm = view.getMainScrollPane();
+        final Point scroll = spIm.getViewport().getViewPosition();
+        scroll.x += (prevX - e.getX());
+        scroll.y += (prevY - e.getY());
+        spIm.getHorizontalScrollBar().setValue(scroll.x);
+        spIm.getVerticalScrollBar().setValue(scroll.y);
+        spIm.repaint();
     }
 }

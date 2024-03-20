@@ -27,10 +27,10 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
         private ToolButton(Tool tool, AbstractButton button) {
             this.tool = tool;
             this.button = button;
-            this.defaultIcon = button.getIcon();
+            defaultIcon = button.getIcon();
 
             final String selectedIconPath = tool.selectedIconPath();
-            this.selectedIcon = selectedIconPath != null ? loadIcon(selectedIconPath) : null;
+            selectedIcon = selectedIconPath != null ? loadIcon(selectedIconPath) : null;
         }
 
         public void setSelected(boolean b) {
@@ -54,12 +54,12 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
     private static final Color BUTTONS_BACKGROUND_COLOR = new Color(0.72f, 0.72f, 0.71f);
     private static final int TOOL_SIZE = 32;
 
+    private final Map<Integer, AbstractButton> lastSelectedButtons = new HashMap<>();
+
     private ToolButton handButton;
     private ToolButton backButton;
     private ToolButton onWindowSizeButton;
     private ToolButton oneToOneButton;
-
-    private final Map<Integer, AbstractButton> lastSelectedButtons = new HashMap<>();
 
     public ToolsArea(List<ToolController> toolControllers) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -70,58 +70,51 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
         for (final var it : toolControllers) {
             final Tool tool = it.getTool();
 
-            AbstractButton abstractButton;
+            AbstractButton newToolButton;
 
+            // Creating tool-button of appropriate type
             if (tool.isToggle()) {
-                abstractButton = createToolToggleButton(it);
+                newToolButton = createToolToggleButton(it);
             } else if (tool.hasGroup()) {
                 final int group = tool.group();
-                abstractButton = createToolToggleButton(it);
-
+                newToolButton = createToolToggleButton(it);
                 if (!toolGroups.containsKey(group)) {
                     toolGroups.put(group, new ButtonGroup());
                 }
-
-                toolGroups.get(group).add(abstractButton);
-
-                abstractButton.addActionListener(actionEvent -> {
+                toolGroups.get(group).add(newToolButton);
+                newToolButton.addActionListener(actionEvent -> {
                     final AbstractButton lastSelectedButton = lastSelectedButtons.get(group);
-
                     if (lastSelectedButton != null) {
                         lastSelectedButton.setSelected(true);
                     }
-
-                    lastSelectedButtons.put(group, abstractButton);
+                    lastSelectedButtons.put(group, newToolButton);
                 });
-
             } else {
-                abstractButton = createToolButton(it);
+                newToolButton = createToolButton(it);
             }
 
-            add(abstractButton);
+            add(newToolButton);
 
             if (tool.isHand()) {
-                handButton = new ToolButton(tool, abstractButton);
+                handButton = new ToolButton(tool, newToolButton);
             }
             if (tool.isBack()) {
-                backButton = new ToolButton(tool, abstractButton);
+                backButton = new ToolButton(tool, newToolButton);
             }
             if (tool.isOneToOne()) {
-                oneToOneButton = new ToolButton(tool, abstractButton);
+                oneToOneButton = new ToolButton(tool, newToolButton);
             }
             if (tool.isOnWindowSize()) {
-                onWindowSizeButton = new ToolButton(tool, abstractButton);
+                onWindowSizeButton = new ToolButton(tool, newToolButton);
             }
         }
     }
 
     @Override
     public void onDrawingAreaActionChange(Context context) {
-        if (handButton == null) {
-            return;
+        if (handButton != null) {
+            handButton.setSelected(context.getDrawingAreaAction() == DrawingAreaAction.MOVE_SCROLLS);
         }
-
-        handButton.setSelected(context.getDrawingAreaAction() == DrawingAreaAction.MOVE_SCROLLS);
     }
 
     @Override
