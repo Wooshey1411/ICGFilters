@@ -20,5 +20,7 @@ public class WatercoloringController extends ToolController {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         getContext().setTransformation(watercoloring);
+
+        // TODO: add dialog panel with window-size. Window size - in % or in pixels?
     }
 }

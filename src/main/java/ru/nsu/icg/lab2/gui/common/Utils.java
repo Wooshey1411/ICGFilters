@@ -2,9 +2,6 @@ package ru.nsu.icg.lab2.gui.common;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.WritableRaster;
 
 public final class Utils {
     private Utils() {
@@ -40,13 +37,5 @@ public final class Utils {
         result.add(new JLabel(" ".repeat(textShift) +name));
         result.add(comboBox);
         return result;
-    }
-
-    public static BufferedImageImpl deepCopy(BufferedImageImpl bufferedImageImpl) {
-        final BufferedImage bufferedImage = bufferedImageImpl.bufferedImage();
-        ColorModel cm = bufferedImage.getColorModel();
-        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
-        WritableRaster raster = bufferedImage.copyData(bufferedImage.getRaster().createCompatibleWritableRaster());
-        return new BufferedImageImpl(new BufferedImage(cm, raster, isAlphaPremultiplied, null));
     }
 }

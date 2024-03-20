@@ -19,6 +19,7 @@ public class FloydSteinbergDitheringController extends ToolController {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-
+        // TODO: implement
+        // TODO: add dialog window
     }
 }

@@ -14,15 +14,19 @@ public class Embossing extends Transformation {
 
     private final FilterApplicator filterApplicator;
 
+    private int brightness;
+
     public Embossing(ImageFactory imageFactory) {
         super(imageFactory);
+        brightness = 128;
+
         filterApplicator = new FilterApplicator(imageFactory);
         filterApplicator.setWindowSize(WINDOW_SIZE);
         filterApplicator.setMatrix(MATRIX);
         filterApplicator.setCounter((red, green, blue) -> {
-            red += 128;
-            green += 128;
-            blue += 128;
+            red += brightness;
+            green += brightness;
+            blue += brightness;
             red = Math.abs(red);
             green = Math.abs(green);
             blue = Math.abs(blue);

@@ -19,6 +19,8 @@ public class EmbossingController extends ToolController {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+        // TODO: add dialog panel for brightness-choice
+
         getContext().setTransformation(embossing);
     }
 }

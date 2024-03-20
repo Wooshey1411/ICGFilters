@@ -16,11 +16,11 @@ public class EdgeDetection extends Transformation {
     }
 
     private EdgeDetectionType type;
-    private int borderBrightness;
+    private int binarization;
 
     public EdgeDetection(ImageFactory imageFactory) {
         super(imageFactory);
-        this.borderBrightness = 256;
+        this.binarization = 256;
         this.type = EdgeDetectionType.ROBERTS;
     }
 
@@ -54,7 +54,7 @@ public class EdgeDetection extends Transformation {
                 int deltaGreen = (int) Math.sqrt(colorXGreen * colorXGreen + colorYGreen * colorYGreen);
                 int deltaBlue = (int) Math.sqrt(colorXBlue * colorXBlue + colorYBlue * colorYBlue);
 
-                if (deltaRed > borderBrightness || deltaGreen > borderBrightness || deltaBlue > borderBrightness){
+                if (deltaRed > binarization || deltaGreen > binarization || deltaBlue > binarization){
                     red = 255;
                     green = 255;
                     blue = 255;
@@ -123,7 +123,7 @@ public class EdgeDetection extends Transformation {
                 int green = 0;
                 int blue = 0;
 
-                if (deltaRed > borderBrightness || deltaGreen > borderBrightness || deltaBlue > borderBrightness){
+                if (deltaRed > binarization || deltaGreen > binarization || deltaBlue > binarization){
                     red = 255;
                     green = 255;
                     blue = 255;

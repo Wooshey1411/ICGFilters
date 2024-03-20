@@ -20,5 +20,6 @@ public class FisheyeEffectController extends ToolController {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         getContext().setTransformation(fisheyeEffect);
+        // TODO: add dialog panel
     }
 }

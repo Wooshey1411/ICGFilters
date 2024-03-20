@@ -16,6 +16,7 @@ public class TransformationsController implements ContextTransformationListener 
     @Override
     public void onTransformationChange(Context context) {
         if(context.getImage() == null){
+            view.showError("No image to process!");
             return;
         }
 
