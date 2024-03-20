@@ -29,7 +29,7 @@ public class ViewImpl extends ContextAdapter implements View {
         context.addImageListener(this);
         context.addViewModeListener(this);
 
-        final FolderImagesScrollingController keyListener = new FolderImagesScrollingController(context, this, imageReader);
+        final FolderImagesScrollingController folderImagesScrollingController = new FolderImagesScrollingController(context, this, imageReader);
 
         final TransformationsController transformationsController = new TransformationsController(this);
         context.addTransformationListener(transformationsController);
@@ -52,7 +52,7 @@ public class ViewImpl extends ContextAdapter implements View {
 
         drawingArea = new DrawingArea(drawingAreaController);
 
-        MenuArea menuArea = new MenuArea(
+        final MenuArea menuArea = new MenuArea(
                 openController,
                 saveController,
                 exitController,
@@ -77,9 +77,7 @@ public class ViewImpl extends ContextAdapter implements View {
                 windowResizeController
         );
 
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyListener);
-
-
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(folderImagesScrollingController);
 
         context.addViewModeListener(menuArea);
         context.addViewModeListener(toolsArea);
@@ -111,11 +109,13 @@ public class ViewImpl extends ContextAdapter implements View {
         if (image == null) {
             return;
         }
+
+
+        final double k = image.getWidth() * 1.0 / image.getHeight();
+
         int newHeight;
         int newWidth;
-
-        double k = image.getWidth()*1.0/image.getHeight();
-        if(context.getDrawingAreaWidth()*1.0 / context.getDrawingAreaHeight() >= k ) {
+        if(context.getDrawingAreaWidth() * 1.0 / context.getDrawingAreaHeight() >= k ) {
             newHeight = context.getDrawingAreaHeight();
             newWidth = (int) (newHeight * k);
         } else{
@@ -123,13 +123,13 @@ public class ViewImpl extends ContextAdapter implements View {
             newHeight = (int)(newWidth / k);
         }
 
-        BufferedImage resizedImage = new BufferedImage(
+        final BufferedImage resizedImage = new BufferedImage(
                 newWidth,
                 newHeight,
                 BufferedImage.TYPE_INT_ARGB
         );
 
-        Object hintValue;
+        final Object hintValue;
         switch (context.getInterpolationMethod()){
             case BICUBIC -> hintValue = RenderingHints.VALUE_INTERPOLATION_BICUBIC;
             case BILINEAR -> hintValue = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
@@ -137,19 +137,9 @@ public class ViewImpl extends ContextAdapter implements View {
             default -> throw new IllegalArgumentException("Unexpected interpolation method");
         }
 
-        Graphics2D graphics2D = resizedImage.createGraphics();
-        graphics2D.setRenderingHint(
-                RenderingHints.KEY_INTERPOLATION,
-                hintValue
-        );
-        graphics2D.drawImage(
-                image.bufferedImage(),
-                0,
-                0,
-                newWidth,
-                newHeight,
-                null
-        );
+        final Graphics2D graphics2D = resizedImage.createGraphics();
+        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, hintValue);
+        graphics2D.drawImage(image.bufferedImage(), 0, 0, newWidth, newHeight, null);
         graphics2D.dispose();
         drawingArea.resizeSoftly(newWidth, newHeight);
         drawingArea.setImage(resizedImage);
@@ -178,9 +168,7 @@ public class ViewImpl extends ContextAdapter implements View {
             drawingArea.setImage(image.bufferedImage());
             drawingArea.repaint();
             drawingArea.revalidate();
-            return;
-        }
-        if (context.getViewMode() == ViewMode.ON_WINDOW_SIZE){
+        } else {
             resize();
         }
     }
