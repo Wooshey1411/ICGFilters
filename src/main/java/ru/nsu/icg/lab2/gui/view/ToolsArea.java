@@ -23,10 +23,14 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
         private final AbstractButton button;
         private final Icon defaultIcon;
         private final Icon selectedIcon;
+        private final String defaultTip;
+        private final String selectedTip;
 
         private ToolButton(Tool tool, AbstractButton button) {
             this.tool = tool;
             this.button = button;
+            this.defaultTip = tool.tip();
+            this.selectedTip = tool.selectedTip();
             defaultIcon = button.getIcon();
 
             final String selectedIconPath = tool.selectedIconPath();
@@ -47,6 +51,10 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
         public void setSelectedIcon() {
             button.setIcon(selectedIcon);
         }
+
+        public void setDefaultTip() {button.setToolTipText(defaultTip);}
+
+        public void setSelectedTip() {button.setToolTipText(selectedTip);}
     }
 
     // TODO: вынести это в конфигурационный файл
@@ -134,8 +142,10 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
     public void onImageChange(Context context) {
         if (context.getProcessedImage() == null || context.getImage() != context.getOriginalImage()) {
             backButton.setDefaultIcon();
+            backButton.setDefaultTip();
         } else {
             backButton.setSelectedIcon();
+            backButton.setSelectedTip();
         }
     }
 

@@ -51,7 +51,8 @@ public class JSONToolsConfigParser implements ToolsConfigParser {
                 jsonTool.isHand(),
                 jsonTool.isBack(),
                 jsonTool.isOneToOne(),
-                jsonTool.isOnWindowSize()
+                jsonTool.isOnWindowSize(),
+                jsonTool.getSelectedTip()
         );
     }
 }

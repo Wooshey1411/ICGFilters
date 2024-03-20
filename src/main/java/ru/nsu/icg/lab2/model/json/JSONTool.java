@@ -34,4 +34,7 @@ public class JSONTool {
 
     @SerializedName("onWindowSize")
     private boolean isOnWindowSize;
+
+    @SerializedName("selectedTip")
+    private String selectedTip;
 }

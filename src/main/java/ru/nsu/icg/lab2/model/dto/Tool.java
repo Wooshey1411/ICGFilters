@@ -10,7 +10,8 @@ public record Tool(String name,
                    boolean isHand,
                    boolean isBack,
                    boolean isOneToOne,
-                   boolean isOnWindowSize) {
+                   boolean isOnWindowSize,
+                   String selectedTip) {
     public boolean hasGroup() {
         return group != 0;
     }

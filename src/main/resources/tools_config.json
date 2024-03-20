@@ -8,8 +8,9 @@
     "hand": true
   },
   {
-    "tip": "back",
+    "tip": "undo",
     "back": true,
+    "selectedTip": "redo",
     "icon": "/icons/undo.png",
     "selectedIcon": "/icons/redo.png",
     "controller": "ru.nsu.icg.lab2.gui.controller.tools.BackController"
