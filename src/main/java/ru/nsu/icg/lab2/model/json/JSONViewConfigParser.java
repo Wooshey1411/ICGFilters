@@ -1,8 +1,8 @@
 package ru.nsu.icg.lab2.model.json;
 
 import com.google.gson.Gson;
-import ru.nsu.icg.lab2.model.dto.view.ViewConfig;
 import ru.nsu.icg.lab2.model.ViewConfigParser;
+import ru.nsu.icg.lab2.model.dto.view.ViewConfig;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;

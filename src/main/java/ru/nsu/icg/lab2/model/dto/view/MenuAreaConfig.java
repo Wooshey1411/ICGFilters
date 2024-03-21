@@ -7,6 +7,5 @@ public record MenuAreaConfig(
         String buttonsFontColor,
         String fontType,
         String undoLabel,
-        String redoLabel
-)
-{}
+        String redoLabel) {
+}

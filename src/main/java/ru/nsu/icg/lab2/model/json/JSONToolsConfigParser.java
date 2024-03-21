@@ -43,6 +43,7 @@ public class JSONToolsConfigParser implements ToolsConfigParser {
         return new Tool(
                 jsonTool.getName(),
                 jsonTool.getTip(),
+                jsonTool.getSelectedTip(),
                 jsonTool.getIconPath(),
                 jsonTool.getSelectedIconPath(),
                 jsonTool.getControllerClassPath(),
@@ -51,8 +52,7 @@ public class JSONToolsConfigParser implements ToolsConfigParser {
                 jsonTool.isHand(),
                 jsonTool.isBack(),
                 jsonTool.isOneToOne(),
-                jsonTool.isOnWindowSize(),
-                jsonTool.getSelectedTip()
+                jsonTool.isOnWindowSize()
         );
     }
 }
