@@ -1,5 +1,7 @@
 package ru.nsu.icg.lab2.model.transformations;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
@@ -14,6 +16,8 @@ public class Embossing extends Transformation {
 
     private final FilterApplicator filterApplicator;
 
+    @Getter
+    @Setter
     private int brightness;
 
     public Embossing(ImageFactory imageFactory) {

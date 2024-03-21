@@ -27,7 +27,7 @@ public class GlassEffect extends Transformation {
         final int width = oldImage.getWidth();
         final int[] grid = oldImage.getGrid();
 
-        int trueSpread = (int)(Integer.min(height,width)*spreadInPercent*1.0/1000);
+        int trueSpread = (int)(Integer.min(height,width)*spreadInPercent*1.0/200);
 
         if (trueSpread == 0){
             return getImageFactory().createImage(oldImage,grid);

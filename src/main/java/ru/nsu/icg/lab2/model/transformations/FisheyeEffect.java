@@ -1,19 +1,23 @@
 package ru.nsu.icg.lab2.model.transformations;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.Transformation;
 
 import java.util.Arrays;
 
+@Getter
 public class FisheyeEffect extends Transformation {
 
-
-    private double mult = 4;
+    @Setter
+    private double amplitude;
 
 
     public FisheyeEffect(ImageFactory imageFactory) {
         super(imageFactory);
+        amplitude = 1;
     }
 
     @Override
@@ -26,7 +30,7 @@ public class FisheyeEffect extends Transformation {
         Arrays.fill(newGrid, 0xFFFFFFFF);
         int centerX = width / 2;
         int centerY = height / 2;
-        double center = mult * Math.min(centerX, centerY) ;
+        double center = amplitude * Math.min(centerX, centerY) ;
         int maxNewX = 0;
         int minNewX = width;
         int maxNewY = 0;
