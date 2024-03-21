@@ -2,7 +2,10 @@ package ru.nsu.icg.lab2.gui.common.context;
 
 import ru.nsu.icg.lab2.gui.common.Context;
 
-public abstract class ContextAdapter implements ContextImageListener, ContextDrawingAreaActionListener, ContextTransformationListener, ContextViewModeListener {
+public abstract class ContextAdapter implements ContextImageListener,
+        ContextDrawingAreaActionListener,
+        ContextTransformationListener,
+        ContextViewModeListener {
     @Override
     public void onImageChange(Context context) {
 

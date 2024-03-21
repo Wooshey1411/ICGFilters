@@ -1,11 +1,11 @@
 package ru.nsu.icg.lab2.gui.controller.tools;
 
 import org.decimal4j.util.DoubleRounder;
-import ru.nsu.icg.lab2.gui.common.Utils;
-import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
-import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.gui.common.Context;
+import ru.nsu.icg.lab2.gui.common.ToolController;
+import ru.nsu.icg.lab2.gui.common.Utils;
 import ru.nsu.icg.lab2.gui.common.View;
+import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.transformations.Blur;
@@ -29,24 +29,37 @@ public class BlurController extends ToolController {
     private final TextFieldSliderController sigmaController;
     private final DoubleRounder doubleRounder;
 
-    public BlurController(Context context, View view, ImageFactory imageFactory, Tool tool) {
+    public BlurController(Context context,
+                          View view,
+                          ImageFactory imageFactory,
+                          Tool tool) {
         super(context, view, imageFactory, tool);
-
         blur = new Blur(imageFactory);
         doubleRounder = new DoubleRounder(1);
-        JSlider matrixSlider = new JSlider(MATRIX_SLIDER_MIN_VALUE,MATRIX_SLIDER_MAX_VALUE);
-        JTextField matrixTextField = new JTextField();
-        optionsPanel = Utils.createSimpleSliderDialogInputPanel(matrixTextField,matrixSlider,"Matrix size:", 1);
-        JSlider sigmaSlider = new JSlider(SIGMA_SLIDER_MIN_VALUE,SIGMA_SLIDER_MAX_VALUE);
-        JTextField sigmaTextField = new JTextField();
-        Utils.addSyncSliderTo3ColsPanel(optionsPanel,sigmaTextField, sigmaSlider, "Sigma:", 1);
+        final JSlider matrixSlider = new JSlider(MATRIX_SLIDER_MIN_VALUE, MATRIX_SLIDER_MAX_VALUE);
+        final JTextField matrixTextField = new JTextField();
+        optionsPanel = Utils.createSimpleSliderDialogInputPanel(
+                matrixTextField,
+                matrixSlider,
+                "Matrix size:",
+                1
+        );
+        final JSlider sigmaSlider = new JSlider(SIGMA_SLIDER_MIN_VALUE, SIGMA_SLIDER_MAX_VALUE);
+        final JTextField sigmaTextField = new JTextField();
+        Utils.addSyncSliderTo3ColsPanel(
+                optionsPanel,
+                sigmaTextField,
+                sigmaSlider,
+                "Sigma:",
+                1
+        );
         matrixSizeController = new TextFieldSliderController(
                 matrixTextField,
                 matrixSlider,
                 MATRIX_MIN_VALUE,
                 MATRIX_MAX_VALUE,
-                integer -> (double)((integer/2)*2 + 1),
-                s -> (double)(Integer.parseInt(s)),
+                integer -> (double) ((integer / 2) * 2 + 1),
+                s -> (double) (Integer.parseInt(s)),
                 Double::intValue,
                 aDouble -> aDouble.intValue() + ""
         );
@@ -57,7 +70,7 @@ public class BlurController extends ToolController {
                 SIGMA_MAX_VALUE,
                 integer -> (integer * 1.0) / 10,
                 s -> doubleRounder.round(Double.parseDouble(s)),
-                aDouble -> (int)(doubleRounder.round(aDouble) * 10),
+                aDouble -> (int) (doubleRounder.round(aDouble) * 10),
                 aDouble -> doubleRounder.round(aDouble) + ""
         );
     }
@@ -90,7 +103,7 @@ public class BlurController extends ToolController {
                 ));
                 continue;
             }
-            blur.setParameters(sigmaController.getValue(),matrixSizeController.getIntValue());
+            blur.setParameters(sigmaController.getValue(), matrixSizeController.getIntValue());
             break;
         }
 

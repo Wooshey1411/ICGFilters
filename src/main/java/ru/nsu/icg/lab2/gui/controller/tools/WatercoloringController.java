@@ -1,7 +1,7 @@
 package ru.nsu.icg.lab2.gui.controller.tools;
 
-import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.gui.common.Context;
+import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.gui.common.Utils;
 import ru.nsu.icg.lab2.gui.common.View;
 import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
@@ -13,21 +13,27 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class WatercoloringController extends ToolController {
-    private final Watercoloring watercoloring;
+    private static final int WATERCOLORING_MIN_VALUE = 3;
+    private static final int WATERCOLORING_MAX_VALUE = 15;
 
-    private static final int SLIDER_MIN_VALUE = 1;
-    private static final int SLIDER_MAX_VALUE = 50;
-    private static final int WATERCOLORING_MIN_VALUE = 1;
-    private static final int WATERCOLORING_MAX_VALUE = 50;
+    private final Watercoloring watercoloring;
     private final JPanel optionsSetWindow;
     private final TextFieldSliderController textFieldSliderController;
 
-    public WatercoloringController(Context context, View view, ImageFactory imageFactory, Tool tool) {
+    public WatercoloringController(Context context,
+                                   View view,
+                                   ImageFactory imageFactory,
+                                   Tool tool) {
         super(context, view, imageFactory, tool);
         watercoloring = new Watercoloring(imageFactory);
-        JSlider slider = new JSlider(SLIDER_MIN_VALUE,SLIDER_MAX_VALUE);
-        JTextField textField = new JTextField();
-        this.optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(textField, slider, "Window size:", 1);
+        final JSlider slider = new JSlider(WATERCOLORING_MIN_VALUE, WATERCOLORING_MAX_VALUE);
+        final JTextField textField = new JTextField();
+        optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(
+                textField,
+                slider,
+                "Window size:",
+                1
+        );
         textFieldSliderController = new TextFieldSliderController(
                 textField,
                 slider,
@@ -41,7 +47,6 @@ public class WatercoloringController extends ToolController {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-
         final View view = getView();
 
         while (true) {
@@ -66,6 +71,5 @@ public class WatercoloringController extends ToolController {
         }
 
         getContext().setTransformation(watercoloring);
-
     }
 }

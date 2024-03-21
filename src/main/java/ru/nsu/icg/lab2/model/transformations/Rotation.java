@@ -15,6 +15,7 @@ public class Rotation extends Transformation {
 
     public Rotation(ImageFactory imageFactory) {
         super(imageFactory);
+        degrees = 0;
     }
 
     @Override

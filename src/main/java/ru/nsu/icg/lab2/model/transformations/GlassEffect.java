@@ -18,7 +18,7 @@ public class GlassEffect extends Transformation {
     public GlassEffect(ImageFactory imageFactory) {
         super(imageFactory);
         random = new Random(0);
-        spread = 1;
+        spread = 0;
     }
 
     @Override

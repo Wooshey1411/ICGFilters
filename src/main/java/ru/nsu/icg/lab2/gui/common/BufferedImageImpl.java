@@ -22,11 +22,27 @@ public record BufferedImageImpl(BufferedImage bufferedImage) implements ImageInt
 
     @Override
     public int[] getGrid() {
-        return bufferedImage.getRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), null, 0, bufferedImage.getWidth());
+        return bufferedImage.getRGB(
+                0,
+                0,
+                bufferedImage.getWidth(),
+                bufferedImage.getHeight(),
+                null,
+                0,
+                bufferedImage.getWidth()
+        );
     }
 
     @Override
     public void setGrid(int[] grid) {
-        bufferedImage.setRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), grid, 0, bufferedImage.getWidth());
+        bufferedImage.setRGB(
+                0,
+                0,
+                bufferedImage.getWidth(),
+                bufferedImage.getHeight(),
+                grid,
+                0,
+                bufferedImage.getWidth()
+        );
     }
 }

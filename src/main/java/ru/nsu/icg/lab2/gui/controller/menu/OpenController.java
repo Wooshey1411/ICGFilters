@@ -1,8 +1,8 @@
 package ru.nsu.icg.lab2.gui.controller.menu;
 
+import ru.nsu.icg.lab2.gui.common.View;
 import ru.nsu.icg.lab2.gui.common.context.ContextImageReader;
 import ru.nsu.icg.lab2.gui.controller.files.ImageOpeningChooser;
-import ru.nsu.icg.lab2.gui.common.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

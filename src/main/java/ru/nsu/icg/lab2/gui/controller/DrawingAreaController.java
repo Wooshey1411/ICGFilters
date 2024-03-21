@@ -14,9 +14,9 @@ public class DrawingAreaController extends MouseAdapter {
     private final Context context;
     private final View view;
 
-    private int prevX,prevY;
+    private int prevX, prevY;
 
-    public DrawingAreaController(Context context, View view){
+    public DrawingAreaController(Context context, View view) {
         this.context = context;
         this.view = view;
     }
@@ -26,14 +26,14 @@ public class DrawingAreaController extends MouseAdapter {
         final boolean swapMode = context.getDrawingAreaAction() == DrawingAreaAction.SWAP_IMAGE;
         final boolean hasImagesToSwap = context.getProcessedImage() != null && context.getOriginalImage() != null;
 
-        if(swapMode && hasImagesToSwap){
+        if (swapMode && hasImagesToSwap) {
             context.swapImage();
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(context.getDrawingAreaAction() == DrawingAreaAction.MOVE_SCROLLS){
+        if (context.getDrawingAreaAction() == DrawingAreaAction.MOVE_SCROLLS) {
             prevX = e.getX();
             prevY = e.getY();
         }
@@ -42,7 +42,7 @@ public class DrawingAreaController extends MouseAdapter {
     @Override
     public void mouseDragged(MouseEvent e) {
         final boolean isScrollMode = context.getDrawingAreaAction() == DrawingAreaAction.MOVE_SCROLLS;
-        final boolean invalidMagic =  e.getModifiersEx() == InputEvent.BUTTON3_DOWN_MASK;
+        final boolean invalidMagic = e.getModifiersEx() == InputEvent.BUTTON3_DOWN_MASK;
 
         if (!isScrollMode || invalidMagic) {
             return;

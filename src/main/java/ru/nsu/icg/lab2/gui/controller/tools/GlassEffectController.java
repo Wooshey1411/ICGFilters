@@ -1,7 +1,7 @@
 package ru.nsu.icg.lab2.gui.controller.tools;
 
-import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.gui.common.Context;
+import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.gui.common.Utils;
 import ru.nsu.icg.lab2.gui.common.View;
 import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
@@ -13,19 +13,27 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class GlassEffectController extends ToolController {
-    private final GlassEffect glassEffect;
-
     private static final int SPREAD_MIN_VALUE = 0;
     private static final int SPREAD_MAX_VALUE = 50;
+
+    private final GlassEffect glassEffect;
     private final JPanel optionsSetWindow;
     private final TextFieldSliderController textFieldSliderController;
 
-    public GlassEffectController(Context context, View view, ImageFactory imageFactory, Tool tool) {
+    public GlassEffectController(Context context,
+                                 View view,
+                                 ImageFactory imageFactory,
+                                 Tool tool) {
         super(context, view, imageFactory, tool);
         glassEffect = new GlassEffect(imageFactory);
-        JSlider slider = new JSlider(SPREAD_MIN_VALUE, SPREAD_MAX_VALUE);
-        JTextField textField = new JTextField();
-        this.optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(textField, slider, "Spread:", 1);
+        final JSlider slider = new JSlider(SPREAD_MIN_VALUE, SPREAD_MAX_VALUE);
+        final JTextField textField = new JTextField();
+        optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(
+                textField,
+                slider,
+                "Spread:",
+                1
+        );
         textFieldSliderController = new TextFieldSliderController(
                 textField,
                 slider,
@@ -39,7 +47,6 @@ public class GlassEffectController extends ToolController {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-
         final View view = getView();
 
         while (true) {

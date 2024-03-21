@@ -16,6 +16,8 @@ public class Blur extends Transformation {
 
     public Blur(ImageFactory imageFactory) {
         super(imageFactory);
+        windowSize = 5;
+        sigma = 1;
         filterApplicator = new FilterApplicator(imageFactory);
         filterApplicator.setCounter(((red, green, blue) -> (red << 16) | (green << 8) | blue));
     }

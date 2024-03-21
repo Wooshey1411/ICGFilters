@@ -1,10 +1,10 @@
 package ru.nsu.icg.lab2.gui.controller.tools;
 
-import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
-import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.gui.common.Context;
+import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.gui.common.Utils;
 import ru.nsu.icg.lab2.gui.common.View;
+import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.transformations.EdgeDetection;
@@ -29,7 +29,10 @@ public class EdgeDetectionController extends ToolController {
     private final JComboBox<String> algComboBox;
     private final HashMap<String, EdgeDetection.EdgeDetectionType> edgeDetectionTypeHashMap;
 
-    public EdgeDetectionController(Context context, View view, ImageFactory imageFactory, Tool tool) {
+    public EdgeDetectionController(Context context,
+                                   View view,
+                                   ImageFactory imageFactory,
+                                   Tool tool) {
         super(context, view, imageFactory, tool);
         edgeDetection = new EdgeDetection(imageFactory);
         edgeDetectionTypeHashMap = new HashMap<>(Map.of(
@@ -38,9 +41,19 @@ public class EdgeDetectionController extends ToolController {
         ));
         algComboBox = new JComboBox<>(edgeDetectionTypeHashMap.keySet().toArray(new String[0]));
         JTextField textField = new JTextField();
-        JSlider slider = new JSlider(SLIDER_MIN_VALUE,SLIDER_MAX_VALUE);
-        optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(textField,slider,"Binarization:",1);
-        Utils.addComboBoxTo3ColsPanel(optionsSetWindow, algComboBox,"Algorithm:", 1);
+        JSlider slider = new JSlider(SLIDER_MIN_VALUE, SLIDER_MAX_VALUE);
+        optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(
+                textField,
+                slider,
+                "Binarization:",
+                1
+        );
+        Utils.addComboBoxTo3ColsPanel(
+                optionsSetWindow,
+                algComboBox,
+                "Algorithm:",
+                1
+        );
         textFieldSliderController = new TextFieldSliderController(
                 textField,
                 slider,
@@ -59,13 +72,13 @@ public class EdgeDetectionController extends ToolController {
 
         while (true) {
             String edgeDetectionType = null;
-            for(Map.Entry<String, EdgeDetection.EdgeDetectionType> entry : edgeDetectionTypeHashMap.entrySet()){
-                if(entry.getValue() == edgeDetection.getType()){
+            for (Map.Entry<String, EdgeDetection.EdgeDetectionType> entry : edgeDetectionTypeHashMap.entrySet()) {
+                if (entry.getValue() == edgeDetection.getType()) {
                     edgeDetectionType = entry.getKey();
                 }
             }
 
-            if(edgeDetectionType == null){
+            if (edgeDetectionType == null) {
                 throw new IllegalArgumentException("No such edge detection type: " + edgeDetection.getType());
             }
 
@@ -81,7 +94,7 @@ public class EdgeDetectionController extends ToolController {
                 edgeDetection.setBinarization(textFieldSliderController.getIntValue());
             }
             if (!textFieldSliderController.hasError()) {
-                edgeDetection.setType(edgeDetectionTypeHashMap.get((String)algComboBox.getSelectedItem()));
+                edgeDetection.setType(edgeDetectionTypeHashMap.get((String) algComboBox.getSelectedItem()));
                 break;
             }
             view.showError(INCORRECT_VALUE_MESSAGE);
