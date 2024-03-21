@@ -4,6 +4,7 @@ import lombok.Getter;
 import ru.nsu.icg.lab2.gui.common.Context;
 import ru.nsu.icg.lab2.gui.common.ViewMode;
 import ru.nsu.icg.lab2.gui.common.WindowResizeListener;
+import ru.nsu.icg.lab2.model.dto.view.MainWindowConfig;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,29 +13,24 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.WindowListener;
 
 public class MainWindow extends JFrame {
-    // TODO: add to config
-    private static final int SCROLL_PANE_BORDER_THICKNESS = 10;
 
     @Getter
     private final JScrollPane scrollPane;
     private final JPanel drawingArea;
 
-    public MainWindow(String name,
-                      int minWidth,
-                      int minHeight,
-                      int prefWidth,
-                      int prefHeight,
+    public MainWindow(
+                      MainWindowConfig mainWindowConfig,
                       WindowListener windowListener,
                       JMenuBar menuBar,
                       JPanel toolsArea,
                       JPanel drawingArea,
                       Context context,
                       WindowResizeListener windowResizeListener) {
-        super(name);
+        super(mainWindowConfig.name());
 
         addWindowListener(windowListener);
-        setMinimumSize(new Dimension(minWidth, minHeight));
-        setPreferredSize(new Dimension(prefWidth, prefHeight));
+        setMinimumSize(new Dimension(mainWindowConfig.windowMinWidth(), mainWindowConfig.windowMinHeight()));
+        setPreferredSize(new Dimension(mainWindowConfig.windowPrefWidth(), mainWindowConfig.windowPrefHeight()));
         this.drawingArea = drawingArea;
         scrollPane = new JScrollPane(drawingArea);
         scrollPane.setDoubleBuffered(true);
@@ -59,10 +55,10 @@ public class MainWindow extends JFrame {
         });
 
         scrollPane.setBorder(BorderFactory.createEmptyBorder(
-                SCROLL_PANE_BORDER_THICKNESS,
-                SCROLL_PANE_BORDER_THICKNESS,
-                SCROLL_PANE_BORDER_THICKNESS,
-                SCROLL_PANE_BORDER_THICKNESS
+                mainWindowConfig.scrollPaneBorderThickness(),
+                mainWindowConfig.scrollPaneBorderThickness(),
+                mainWindowConfig.scrollPaneBorderThickness(),
+                mainWindowConfig.scrollPaneBorderThickness()
         ));
 
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);

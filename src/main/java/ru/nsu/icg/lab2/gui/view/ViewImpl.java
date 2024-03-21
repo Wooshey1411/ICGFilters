@@ -10,7 +10,7 @@ import ru.nsu.icg.lab2.gui.controller.WindowResizeController;
 import ru.nsu.icg.lab2.gui.controller.menu.*;
 import ru.nsu.icg.lab2.gui.common.*;
 import ru.nsu.icg.lab2.model.dto.Tool;
-import ru.nsu.icg.lab2.model.dto.ViewConfig;
+import ru.nsu.icg.lab2.model.dto.view.ViewConfig;
 
 import java.util.List;
 import javax.swing.*;
@@ -50,7 +50,7 @@ public class ViewImpl extends ContextAdapter implements View {
         final WindowResizeController windowResizeController = new WindowResizeController(context, this);
         final DrawingAreaController drawingAreaController = new DrawingAreaController(context,this);
 
-        drawingArea = new DrawingArea(drawingAreaController);
+        drawingArea = new DrawingArea(drawingAreaController, viewConfig.textAreaConfig());
 
         final MenuArea menuArea = new MenuArea(
                 openController,
@@ -58,17 +58,14 @@ public class ViewImpl extends ContextAdapter implements View {
                 exitController,
                 helpController,
                 aboutController,
-                toolControllersFactory.getToolControllers()
+                toolControllersFactory.getToolControllers(),
+                viewConfig.menuAreaConfig()
         );
 
-        final ToolsArea toolsArea = new ToolsArea(toolControllersFactory.getToolControllers());
+        final ToolsArea toolsArea = new ToolsArea(toolControllersFactory.getToolControllers(), viewConfig.toolsAreaConfig());
 
         mainWindow = new MainWindow(
-                viewConfig.windowName(),
-                viewConfig.windowMinWidth(),
-                viewConfig.windowMinHeight(),
-                viewConfig.windowPrefWidth(),
-                viewConfig.windowPrefHeight(),
+                viewConfig.mainWindowConfig(),
                 exitController,
                 menuArea.getMenuBar(),
                 toolsArea,
