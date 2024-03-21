@@ -5,6 +5,8 @@ import lombok.Setter;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 
+import java.util.Arrays;
+
 @Getter
 @Setter
 public class FloydSteinbergDithering extends AbstractDithering {
@@ -23,7 +25,7 @@ public class FloydSteinbergDithering extends AbstractDithering {
             case SIROTKIN -> {return null;}
             case VOROBEV -> {return VorobevVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());}
             case KONDRENKO -> {return null;}
-            default -> throw new IllegalArgumentException("No such creator in Ordered dithering");
+            default -> throw new IllegalArgumentException("No such creator in Floyd-Steinberg dithering");
         }
     }
 
@@ -45,14 +47,13 @@ public class FloydSteinbergDithering extends AbstractDithering {
             int[] redErrors = new int[(width+2) << 1];
             int[] greenErrors = new int[(width+2) << 1];
             int[] blueErrors = new int[(width+2) << 1];
-            for(int i = 0; i < (width + 2) << 1; i++){
-                redErrors[i] = 0;
-                greenErrors[i] = 0;
-                blueErrors[i] = 0;
-            }
+            Arrays.fill(redErrors, 0);
+            Arrays.fill(greenErrors, 0);
+            Arrays.fill(blueErrors, 0);
 
             int[] grid = oldImage.getGrid();
             int[] newGrid = new int[width*height];
+            Arrays.fill(newGrid, 0);
 
             int currErrorShift = 1;
             int nextErrorShift = width+1;
@@ -117,7 +118,7 @@ public class FloydSteinbergDithering extends AbstractDithering {
 
 
         private static void fillVariantArray(int[] array){
-            double step = 255f/(array.length-1);
+            double step = 255.0/(array.length-1);
             for (int i = 0; i < array.length-1; i++){
                 array[i] = (int)Math.round(i*step);
             }
