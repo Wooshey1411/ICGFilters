@@ -4,16 +4,14 @@ import ru.nsu.icg.lab2.gui.common.context.ContextImageReader;
 import ru.nsu.icg.lab2.gui.common.View;
 import ru.nsu.icg.lab2.gui.common.Context;
 
-import java.awt.*;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Arrays;
 import java.util.List;
 
-public class FolderImagesScrollingController implements KeyEventDispatcher {
-    private static final boolean RETURN_VALUE = false;
-
+public class FolderImagesScrollingController extends KeyAdapter {
     private final Context context;
     private final View view;
     private final ContextImageReader imageReader;
@@ -50,14 +48,13 @@ public class FolderImagesScrollingController implements KeyEventDispatcher {
     }
 
     @Override
-    public boolean dispatchKeyEvent(KeyEvent keyEvent) {
+    public void keyPressed(KeyEvent keyEvent) {
         final int keyCode = keyEvent.getKeyCode();
-        final boolean isKeyPressed = keyEvent.getID() == KeyEvent.KEY_PRESSED;
         final boolean openedFileEarly = context.getCurrentFile() != null && context.getWorkingDirectory() != null;
         final boolean pressedRightOrLeftArrow = keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_LEFT;
 
-        if (!isKeyPressed || !openedFileEarly || !pressedRightOrLeftArrow) {
-            return RETURN_VALUE;
+        if (!openedFileEarly || !pressedRightOrLeftArrow) {
+            return;
         }
 
         final File workingDirectory = context.getWorkingDirectory();
@@ -65,17 +62,15 @@ public class FolderImagesScrollingController implements KeyEventDispatcher {
 
         if (directoryFilesArray == null) {
             view.showError("Cannot read files in directory " + workingDirectory.getAbsolutePath());
-            return RETURN_VALUE;
+            return;
         }
 
         // User opened file in directory but later he deleted it, so directory is empty
         if (directoryFilesArray.length == 0) {
-            return RETURN_VALUE;
+            return;
         }
 
         imageReader.read(getNextFile(keyEvent, directoryFilesArray));
-
-        return RETURN_VALUE;
     }
 
     private File getNextFile(KeyEvent keyEvent, File[] filesArray) {

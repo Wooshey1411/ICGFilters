@@ -10,6 +10,7 @@ import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.dto.view.ToolsAreaConfig;
 
+import java.awt.event.KeyListener;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +66,7 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
     private ToolButton onWindowSizeButton;
     private ToolButton oneToOneButton;
 
-    public ToolsArea(List<ToolController> toolControllers, ToolsAreaConfig toolsAreaConfig) {
+    public ToolsArea(List<ToolController> toolControllers, ToolsAreaConfig toolsAreaConfig, KeyListener keyListener) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         Color areaBackgroundColor = Color.decode(toolsAreaConfig.areaBackgroundColor());
         Color buttonsBackgroundColor = Color.decode(toolsAreaConfig.buttonsBackgroundColor());
@@ -101,6 +102,7 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
             }
 
             add(newToolButton);
+            newToolButton.addKeyListener(keyListener);
 
             if (tool.isHand()) {
                 handButton = new ToolButton(tool, newToolButton);

@@ -12,6 +12,7 @@ import ru.nsu.icg.lab2.gui.common.*;
 import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.dto.view.ViewConfig;
 
+import java.awt.event.KeyListener;
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +30,7 @@ public class ViewImpl extends ContextAdapter implements View {
         context.addImageListener(this);
         context.addViewModeListener(this);
 
-        final FolderImagesScrollingController folderImagesScrollingController = new FolderImagesScrollingController(context, this, imageReader);
+        final KeyListener keyListener = new FolderImagesScrollingController(context, this, imageReader);
 
         final TransformationsController transformationsController = new TransformationsController(this);
         context.addTransformationListener(transformationsController);
@@ -62,7 +63,7 @@ public class ViewImpl extends ContextAdapter implements View {
                 viewConfig.menuAreaConfig()
         );
 
-        final ToolsArea toolsArea = new ToolsArea(toolControllersFactory.getToolControllers(), viewConfig.toolsAreaConfig());
+        final ToolsArea toolsArea = new ToolsArea(toolControllersFactory.getToolControllers(), viewConfig.toolsAreaConfig(), keyListener);
 
         mainWindow = new MainWindow(
                 viewConfig.mainWindowConfig(),
@@ -73,8 +74,6 @@ public class ViewImpl extends ContextAdapter implements View {
                 context,
                 windowResizeController
         );
-
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(folderImagesScrollingController);
 
         context.addViewModeListener(menuArea);
         context.addViewModeListener(toolsArea);
@@ -106,7 +105,6 @@ public class ViewImpl extends ContextAdapter implements View {
         if (image == null) {
             return;
         }
-
 
         final double k = image.getWidth() * 1.0 / image.getHeight();
 
