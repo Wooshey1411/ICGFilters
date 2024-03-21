@@ -9,8 +9,16 @@ import java.util.List;
 public class ToolControllersFactory {
     private final List<ToolController> controllers = new ArrayList<>();
 
-    public ToolControllersFactory(Context context, View view, ImageFactory imageFactory, List<Tool> tools) {
-        final Class<?>[] parameters = new Class<?>[]{Context.class, View.class, ImageFactory.class, Tool.class};
+    public ToolControllersFactory(Context context,
+                                  View view,
+                                  ImageFactory imageFactory,
+                                  List<Tool> tools) {
+        final Class<?>[] parameters = new Class<?>[]{
+                Context.class,
+                View.class,
+                ImageFactory.class,
+                Tool.class
+        };
 
         try {
             for (Tool tool : tools) {

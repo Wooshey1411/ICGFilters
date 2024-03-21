@@ -1,7 +1,7 @@
 package ru.nsu.icg.lab2.gui.controller.tools;
 
-import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.gui.common.Context;
+import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.gui.common.Utils;
 import ru.nsu.icg.lab2.gui.common.View;
 import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
@@ -13,7 +13,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class EmbossingController extends ToolController {
-
     private static final int SLIDER_MIN_VALUE = 0;
     private static final int SLIDER_MAX_VALUE = 255;
     private static final int BRIGHTNESS_MIN_VALUE = 0;
@@ -22,12 +21,20 @@ public class EmbossingController extends ToolController {
     private final TextFieldSliderController textFieldSliderController;
     private final Embossing embossing;
 
-    public EmbossingController(Context context, View view, ImageFactory imageFactory, Tool tool) {
+    public EmbossingController(Context context,
+                               View view,
+                               ImageFactory imageFactory,
+                               Tool tool) {
         super(context, view, imageFactory, tool);
         embossing = new Embossing(imageFactory);
-        JSlider slider = new JSlider(SLIDER_MIN_VALUE,SLIDER_MAX_VALUE);
+        JSlider slider = new JSlider(SLIDER_MIN_VALUE, SLIDER_MAX_VALUE);
         JTextField textField = new JTextField();
-        this.optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(textField, slider, "Brightness:", 1);
+        this.optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(
+                textField,
+                slider,
+                "Brightness:",
+                1
+        );
         textFieldSliderController = new TextFieldSliderController(
                 textField,
                 slider,

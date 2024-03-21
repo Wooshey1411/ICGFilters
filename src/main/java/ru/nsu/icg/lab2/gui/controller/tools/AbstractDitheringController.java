@@ -24,35 +24,60 @@ public abstract class AbstractDitheringController extends ToolController {
     private final TextFieldSliderController blueColorController;
     private final TextFieldSliderController greenColorController;
     private final JComboBox<String> creatorComboBox;
-    private final HashMap<String,AbstractDithering.FilterCreator> stringFilterCreatorHashMap;
+    private final HashMap<String, AbstractDithering.FilterCreator> stringFilterCreatorHashMap;
 
-    protected AbstractDitheringController(Context context, View view, ImageFactory imageFactory, Tool tool) {
+    protected AbstractDitheringController(Context context,
+                                          View view,
+                                          ImageFactory imageFactory,
+                                          Tool tool) {
         super(context, view, imageFactory, tool);
-
         stringFilterCreatorHashMap = new HashMap<>(Map.of(
                 "Sirotkin", AbstractDithering.FilterCreator.SIROTKIN,
                 "Vorobev", AbstractDithering.FilterCreator.VOROBEV,
                 "Kondrenko", AbstractDithering.FilterCreator.KONDRENKO
         ));
 
-        JSlider redSlider = new JSlider(SLIDER_COLOR_CHANNEL_MIN_VALUE, SLIDER_COLOR_CHANNEL_MAX_VALUE);
-        JSlider greenSlider = new JSlider(SLIDER_COLOR_CHANNEL_MIN_VALUE, SLIDER_COLOR_CHANNEL_MAX_VALUE);
-        JSlider blueSlider = new JSlider(SLIDER_COLOR_CHANNEL_MIN_VALUE, SLIDER_COLOR_CHANNEL_MAX_VALUE);
-        JTextField redTextField = new JTextField();
-        JTextField greenTextField = new JTextField();
-        JTextField blueTextField = new JTextField();
-        optionsPanel = Utils.createSimpleSliderDialogInputPanel(redTextField, redSlider, "Red quantization number:", 1);
-        Utils.addSyncSliderTo3ColsPanel(optionsPanel, greenTextField, greenSlider, "Green quantization number:", 1);
-        Utils.addSyncSliderTo3ColsPanel(optionsPanel, blueTextField, blueSlider, "Blue quantization number:", 1);
-        this.creatorComboBox = new JComboBox<>(stringFilterCreatorHashMap.keySet().toArray(new String[0]));
+        final JSlider redSlider = new JSlider(
+                SLIDER_COLOR_CHANNEL_MIN_VALUE,
+                SLIDER_COLOR_CHANNEL_MAX_VALUE
+        );
+        final JSlider greenSlider = new JSlider(
+                SLIDER_COLOR_CHANNEL_MIN_VALUE,
+                SLIDER_COLOR_CHANNEL_MAX_VALUE
+        );
+        final JSlider blueSlider = new JSlider(
+                SLIDER_COLOR_CHANNEL_MIN_VALUE,
+                SLIDER_COLOR_CHANNEL_MAX_VALUE
+        );
+        final JTextField redTextField = new JTextField();
+        final JTextField greenTextField = new JTextField();
+        final JTextField blueTextField = new JTextField();
+        optionsPanel = Utils.createSimpleSliderDialogInputPanel(
+                redTextField,
+                redSlider,
+                "Red quantization number:",
+                1
+        );
+        Utils.addSyncSliderTo3ColsPanel(
+                optionsPanel,
+                greenTextField,
+                greenSlider,
+                "Green quantization number:",
+                1
+        );
+        Utils.addSyncSliderTo3ColsPanel(
+                optionsPanel,
+                blueTextField,
+                blueSlider,
+                "Blue quantization number:",
+                1
+        );
+        creatorComboBox = new JComboBox<>(stringFilterCreatorHashMap.keySet().toArray(new String[0]));
         Utils.addComboBoxTo3ColsPanel(optionsPanel, creatorComboBox, "Algorithm creator:", 1);
-        redColorController = makeColorController(redTextField, redSlider);
-        greenColorController = makeColorController(greenTextField, greenSlider);
-        blueColorController = makeColorController(blueTextField, blueSlider);
+        redColorController = createColorController(redTextField, redSlider);
+        greenColorController = createColorController(greenTextField, greenSlider);
+        blueColorController = createColorController(blueTextField, blueSlider);
     }
-
-    protected abstract AbstractDithering getDithering();
-    protected abstract String getAlgName();
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -65,20 +90,20 @@ public abstract class AbstractDitheringController extends ToolController {
 
             String currentSelectedCreator = null;
 
-            for (Map.Entry<String,AbstractDithering.FilterCreator> entry : stringFilterCreatorHashMap.entrySet()){
-                if(entry.getValue() == getDithering().getCreator()){
+            for (Map.Entry<String, AbstractDithering.FilterCreator> entry : stringFilterCreatorHashMap.entrySet()) {
+                if (entry.getValue() == getDithering().getCreator()) {
                     currentSelectedCreator = entry.getKey();
                     break;
                 }
             }
 
-            if(currentSelectedCreator == null){
+            if (currentSelectedCreator == null) {
                 throw new IllegalArgumentException("No such creator");
             }
 
             creatorComboBox.setSelectedItem(currentSelectedCreator);
 
-            final boolean ok = view.showConfirmationDialog(getAlgName(), optionsPanel);
+            final boolean ok = view.showConfirmationDialog(getDitheringName(), optionsPanel);
             if (!ok) {
                 return;
             }
@@ -115,12 +140,16 @@ public abstract class AbstractDitheringController extends ToolController {
             break;
         }
 
-        getDithering().setCreator(stringFilterCreatorHashMap.get((String)creatorComboBox.getSelectedItem()));
+        getDithering().setCreator(stringFilterCreatorHashMap.get((String) creatorComboBox.getSelectedItem()));
 
         getContext().setTransformation(getDithering());
     }
 
-    private TextFieldSliderController makeColorController(JTextField textField, JSlider slider) {
+    protected abstract AbstractDithering getDithering();
+
+    protected abstract String getDitheringName();
+
+    private TextFieldSliderController createColorController(JTextField textField, JSlider slider) {
         return new TextFieldSliderController(
                 textField,
                 slider,

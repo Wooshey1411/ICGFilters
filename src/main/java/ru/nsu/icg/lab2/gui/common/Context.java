@@ -114,7 +114,7 @@ public class Context {
         }
     }
 
-    public void setViewMode(ViewMode viewMode){
+    public void setViewMode(ViewMode viewMode) {
         this.viewMode = viewMode;
 
         for (final var it : viewModeListeners) {
@@ -130,10 +130,10 @@ public class Context {
         }
     }
 
-    public void swapImage(){
-        if(image == originalImage){
+    public void swapImage() {
+        if (image == originalImage) {
             setImage(processedImage);
-        } else{
+        } else {
             setImage(originalImage);
         }
     }

@@ -1,9 +1,9 @@
 package ru.nsu.icg.lab2.gui.controller.menu;
 
-import ru.nsu.icg.lab2.gui.controller.files.ImageSavingChooser;
 import ru.nsu.icg.lab2.gui.common.Context;
 import ru.nsu.icg.lab2.gui.common.ImageWriter;
 import ru.nsu.icg.lab2.gui.common.View;
+import ru.nsu.icg.lab2.gui.controller.files.ImageSavingChooser;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -27,7 +27,7 @@ public class SaveController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 
-        if(context.getProcessedImage() == null){
+        if (context.getProcessedImage() == null) {
             view.showError("No processed image to save");
             return;
         }

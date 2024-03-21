@@ -19,6 +19,7 @@ public class Watercoloring extends Transformation {
     public Watercoloring(ImageFactory imageFactory) {
         super(imageFactory);
         medianFilter = new MedianFilter(imageFactory);
+        medianFilter.setWindowSize(5);
         sharpening = new Sharpening(imageFactory);
     }
 

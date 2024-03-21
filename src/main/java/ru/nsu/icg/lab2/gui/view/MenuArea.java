@@ -1,23 +1,26 @@
 package ru.nsu.icg.lab2.gui.view;
 
 import lombok.Getter;
-import ru.nsu.icg.lab2.gui.common.DrawingAreaAction;
-import ru.nsu.icg.lab2.gui.common.ViewMode;
 import ru.nsu.icg.lab2.gui.common.Context;
+import ru.nsu.icg.lab2.gui.common.DrawingAreaAction;
+import ru.nsu.icg.lab2.gui.common.ToolController;
+import ru.nsu.icg.lab2.gui.common.ViewMode;
 import ru.nsu.icg.lab2.gui.common.context.ContextDrawingAreaActionListener;
 import ru.nsu.icg.lab2.gui.common.context.ContextImageListener;
 import ru.nsu.icg.lab2.gui.common.context.ContextViewModeListener;
-import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.dto.view.MenuAreaConfig;
 
-import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class MenuArea extends JPanel implements ContextViewModeListener, ContextDrawingAreaActionListener, ContextImageListener {
+public class MenuArea extends JPanel implements ContextViewModeListener,
+        ContextDrawingAreaActionListener,
+        ContextImageListener {
     private JMenuItem handButton;
     private JMenuItem backButton;
     private JMenuItem onWindowSizeButton;
@@ -33,31 +36,30 @@ public class MenuArea extends JPanel implements ContextViewModeListener, Context
     @Getter
     private final JMenuBar menuBar;
 
-    public MenuArea(
-            ActionListener openListener,
-            ActionListener saveListener,
-            ActionListener exitListener,
-            ActionListener helpListener,
-            ActionListener aboutListener,
-            List<ToolController> toolControllers,
-            MenuAreaConfig menuAreaConfig) {
+    public MenuArea(ActionListener openListener,
+                    ActionListener saveListener,
+                    ActionListener exitListener,
+                    ActionListener helpListener,
+                    ActionListener aboutListener,
+                    List<ToolController> toolControllers,
+                    MenuAreaConfig menuAreaConfig) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
-        this.menuBackgroundColor = Color.decode(menuAreaConfig.menuBackgroundColor());
+        menuBackgroundColor = Color.decode(menuAreaConfig.menuBackgroundColor());
         setBackground(menuBackgroundColor);
 
-        this.redoLabel = menuAreaConfig.redoLabel();
-        this.undoLabel = menuAreaConfig.undoLabel();
+        redoLabel = menuAreaConfig.redoLabel();
+        undoLabel = menuAreaConfig.undoLabel();
 
         int fontType;
-        switch (menuAreaConfig.fontType()){
+        switch (menuAreaConfig.fontType()) {
             case "Bold" -> fontType = Font.BOLD;
             case "Italic" -> fontType = Font.ITALIC;
             case "Plain" -> fontType = Font.PLAIN;
             default -> throw new IllegalArgumentException("No such font type");
         }
 
-        this.font = new Font(menuAreaConfig.fontName(), fontType, menuAreaConfig.fontSize());
-        this.buttonsFontColor = Color.decode(menuAreaConfig.buttonsFontColor());
+        font = new Font(menuAreaConfig.fontName(), fontType, menuAreaConfig.fontSize());
+        buttonsFontColor = Color.decode(menuAreaConfig.buttonsFontColor());
 
         menuBar = new JMenuBar();
         menuBar.setBackground(menuBackgroundColor);
@@ -85,8 +87,7 @@ public class MenuArea extends JPanel implements ContextViewModeListener, Context
                                         ActionListener exitListener,
                                         Color menuBackgroundColor,
                                         Color buttonsFontColor,
-                                        Font font
-                                        ) {
+                                        Font font) {
         final JMenu result = createMenu("File", menuBackgroundColor, buttonsFontColor, font);
         result.add(createItem("Open", openListener, font, menuBackgroundColor));
         result.add(createItem("Save", saveListener, font, menuBackgroundColor));

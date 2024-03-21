@@ -1,10 +1,10 @@
 package ru.nsu.icg.lab2.gui.controller.tools;
 
-import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
-import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.gui.common.Context;
+import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.gui.common.Utils;
 import ru.nsu.icg.lab2.gui.common.View;
+import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.transformations.Rotation;
@@ -25,13 +25,21 @@ public class RotationController extends ToolController {
     private final TextFieldSliderController dialogWindowController;
     private final JPanel panel;
 
-    public RotationController(Context context, View view, ImageFactory imageFactory, Tool tool) {
+    public RotationController(Context context,
+                              View view,
+                              ImageFactory imageFactory,
+                              Tool tool) {
         super(context, view, imageFactory, tool);
 
         rotation = new Rotation(imageFactory);
         final JTextField textField = new JTextField();
         final JSlider slider = new JSlider(SLIDER_MIN_VALUE, SLIDER_MAX_VALUE);
-        panel = Utils.createSimpleSliderDialogInputPanel(textField, slider,"Angle:",1);
+        panel = Utils.createSimpleSliderDialogInputPanel(
+                textField,
+                slider,
+                "Angle:",
+                1
+        );
         dialogWindowController = new TextFieldSliderController(
                 textField,
                 slider,

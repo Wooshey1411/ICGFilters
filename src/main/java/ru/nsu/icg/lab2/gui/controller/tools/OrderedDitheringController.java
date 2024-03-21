@@ -10,7 +10,10 @@ import ru.nsu.icg.lab2.model.transformations.OrderedDithering;
 public class OrderedDitheringController extends AbstractDitheringController {
     private final OrderedDithering orderedDithering;
 
-    public OrderedDitheringController(Context context, View view, ImageFactory imageFactory, Tool tool) {
+    public OrderedDitheringController(Context context,
+                                      View view,
+                                      ImageFactory imageFactory,
+                                      Tool tool) {
         super(context, view, imageFactory, tool);
         orderedDithering = new OrderedDithering(imageFactory);
     }
@@ -21,8 +24,7 @@ public class OrderedDitheringController extends AbstractDitheringController {
     }
 
     @Override
-    protected String getAlgName() {
+    protected String getDitheringName() {
         return "Ordered dithering";
     }
-
 }

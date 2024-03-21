@@ -10,7 +10,10 @@ import ru.nsu.icg.lab2.model.transformations.FloydSteinbergDithering;
 public class FloydSteinbergDitheringController extends AbstractDitheringController {
     private final FloydSteinbergDithering floydSteinbergDithering;
 
-    public FloydSteinbergDitheringController(Context context, View view, ImageFactory imageFactory, Tool tool) {
+    public FloydSteinbergDitheringController(Context context,
+                                             View view,
+                                             ImageFactory imageFactory,
+                                             Tool tool) {
         super(context, view, imageFactory, tool);
         floydSteinbergDithering = new FloydSteinbergDithering(imageFactory);
     }
@@ -21,7 +24,7 @@ public class FloydSteinbergDitheringController extends AbstractDitheringControll
     }
 
     @Override
-    protected String getAlgName() {
+    protected String getDitheringName() {
         return "Floyd-Steinberg dithering";
     }
 }

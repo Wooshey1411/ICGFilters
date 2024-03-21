@@ -20,7 +20,7 @@ public class ExitController extends WindowAdapter implements ActionListener {
     }
 
     @Override
-    public void windowClosing(WindowEvent e) {
+    public void windowClosing(WindowEvent windowEvent) {
         doReaction();
     }
 

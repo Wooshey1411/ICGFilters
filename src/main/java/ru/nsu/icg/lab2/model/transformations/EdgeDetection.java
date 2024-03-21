@@ -20,7 +20,7 @@ public class EdgeDetection extends Transformation {
 
     public EdgeDetection(ImageFactory imageFactory) {
         super(imageFactory);
-        this.binarization = 256;
+        this.binarization = 128;
         this.type = EdgeDetectionType.ROBERTS;
     }
 

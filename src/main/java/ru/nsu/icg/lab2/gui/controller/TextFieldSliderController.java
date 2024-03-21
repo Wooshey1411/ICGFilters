@@ -28,16 +28,14 @@ public class TextFieldSliderController implements ChangeListener, DocumentListen
     @Getter
     private double value;
 
-    public TextFieldSliderController(
-            JTextField textField,
-            JSlider slider,
-            double minValue,
-            double maxValue,
-            Function<Integer, Double> fromSliderValue,
-            Function<String, Double> fromTextField,
-            Function<Double, Integer> toSliderValue,
-            Function<Double, String> toTextFieldValue
-    ) {
+    public TextFieldSliderController(JTextField textField,
+                                     JSlider slider,
+                                     double minValue,
+                                     double maxValue,
+                                     Function<Integer, Double> fromSliderValue,
+                                     Function<String, Double> fromTextField,
+                                     Function<Double, Integer> toSliderValue,
+                                     Function<Double, String> toTextFieldValue) {
         this.textField = textField;
         this.slider = slider;
         this.minValue = minValue;

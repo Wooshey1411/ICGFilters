@@ -1,11 +1,11 @@
 package ru.nsu.icg.lab2.gui.controller.tools;
 
 import org.decimal4j.util.DoubleRounder;
-import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
-import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.gui.common.Context;
+import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.gui.common.Utils;
 import ru.nsu.icg.lab2.gui.common.View;
+import ru.nsu.icg.lab2.gui.controller.TextFieldSliderController;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.transformations.WaveFilter;
@@ -19,16 +19,12 @@ public class WaveFilterController extends ToolController {
     private static final int AMP_SLIDER_MIN_VALUE = 0;
     private static final int AMP_SLIDER_MAX_VALUE = 100;
     private static final int FREQ_MIN_VALUE = 0;
-
     private static final int FREQ_BOUND_VALUE = 1;
     private static final int FREQ_MAX_VALUE = 10;
-
     private static final int FREQ_SLIDER_MIN_VALUE = 0;
-
     private static final int FREQ_SLIDER_BOUND_VALUE = 1000;
     private static final int FREQ_SLIDER_MAX_VALUE = 1900;
-
-    private static final double step = (FREQ_MAX_VALUE-FREQ_BOUND_VALUE)*1.0/(FREQ_SLIDER_MAX_VALUE-FREQ_SLIDER_BOUND_VALUE);
+    private static final double step = (FREQ_MAX_VALUE - FREQ_BOUND_VALUE) * 1.0 / (FREQ_SLIDER_MAX_VALUE - FREQ_SLIDER_BOUND_VALUE);
 
     private final WaveFilter waveFilter;
     private final JPanel optionsSetWindow;
@@ -41,9 +37,12 @@ public class WaveFilterController extends ToolController {
     private final DoubleRounder doubleRounder3;
     private final DoubleRounder doubleRounder2;
 
-    private final HashMap<String,WaveFilter.WaveFilterOrder> waveFilterOrderHashMap;
+    private final HashMap<String, WaveFilter.WaveFilterOrder> waveFilterOrderHashMap;
 
-    public WaveFilterController(Context context, View view, ImageFactory imageFactory, Tool tool) {
+    public WaveFilterController(Context context,
+                                View view,
+                                ImageFactory imageFactory,
+                                Tool tool) {
         super(context, view, imageFactory, tool);
 
         waveFilter = new WaveFilter(imageFactory);
@@ -52,19 +51,47 @@ public class WaveFilterController extends ToolController {
                 "From Y to X", WaveFilter.WaveFilterOrder.FROM_Y_TO_X
         ));
         orderComboBox = new JComboBox<>(waveFilterOrderHashMap.keySet().toArray(new String[0]));
-        JSlider ampXSlider = new JSlider(AMP_SLIDER_MIN_VALUE,AMP_SLIDER_MAX_VALUE);
-        JSlider ampYSlider = new JSlider(AMP_SLIDER_MIN_VALUE,AMP_SLIDER_MAX_VALUE);
-        JSlider freqXSlider = new JSlider(FREQ_SLIDER_MIN_VALUE,FREQ_SLIDER_MAX_VALUE);
-        JSlider freqYSlider = new JSlider(FREQ_SLIDER_MIN_VALUE,FREQ_SLIDER_MAX_VALUE);
-        JTextField ampXTextField = new JTextField();
-        JTextField ampYTextField = new JTextField();
-        JTextField freqXTextField = new JTextField();
-        JTextField freqYTextField = new JTextField();
-        optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(ampXTextField,ampXSlider,"X amplitude:",1);
-        Utils.addSyncSliderTo3ColsPanel(optionsSetWindow,freqXTextField,freqXSlider,"X frequency:",1);
-        Utils.addSyncSliderTo3ColsPanel(optionsSetWindow,ampYTextField,ampYSlider,"Y amplitude:",1);
-        Utils.addSyncSliderTo3ColsPanel(optionsSetWindow,freqYTextField,freqYSlider,"Y frequency:",1);
-        Utils.addComboBoxTo3ColsPanel(optionsSetWindow,orderComboBox,"Order:",1);
+        final JSlider ampXSlider = new JSlider(AMP_SLIDER_MIN_VALUE, AMP_SLIDER_MAX_VALUE);
+        final JSlider ampYSlider = new JSlider(AMP_SLIDER_MIN_VALUE, AMP_SLIDER_MAX_VALUE);
+        final JSlider freqXSlider = new JSlider(FREQ_SLIDER_MIN_VALUE, FREQ_SLIDER_MAX_VALUE);
+        final JSlider freqYSlider = new JSlider(FREQ_SLIDER_MIN_VALUE, FREQ_SLIDER_MAX_VALUE);
+        final JTextField ampXTextField = new JTextField();
+        final JTextField ampYTextField = new JTextField();
+        final JTextField freqXTextField = new JTextField();
+        final JTextField freqYTextField = new JTextField();
+        optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(
+                ampXTextField,
+                ampXSlider,
+                "X amplitude:",
+                1
+        );
+        Utils.addSyncSliderTo3ColsPanel(
+                optionsSetWindow,
+                freqXTextField,
+                freqXSlider,
+                "X frequency:",
+                1
+        );
+        Utils.addSyncSliderTo3ColsPanel(
+                optionsSetWindow,
+                ampYTextField,
+                ampYSlider,
+                "Y amplitude:",
+                1
+        );
+        Utils.addSyncSliderTo3ColsPanel(
+                optionsSetWindow,
+                freqYTextField,
+                freqYSlider,
+                "Y frequency:",
+                1
+        );
+        Utils.addComboBoxTo3ColsPanel(
+                optionsSetWindow,
+                orderComboBox,
+                "Order:",
+                1
+        );
         ampXTextFieldSliderController = new TextFieldSliderController(
                 ampXTextField,
                 ampXSlider,
@@ -115,13 +142,13 @@ public class WaveFilterController extends ToolController {
 
         while (true) {
             String order = null;
-            for(Map.Entry<String, WaveFilter.WaveFilterOrder> entry : waveFilterOrderHashMap.entrySet()){
-                if(entry.getValue() == waveFilter.getOrder()){
+            for (Map.Entry<String, WaveFilter.WaveFilterOrder> entry : waveFilterOrderHashMap.entrySet()) {
+                if (entry.getValue() == waveFilter.getOrder()) {
                     order = entry.getKey();
                 }
             }
 
-            if(order == null){
+            if (order == null) {
                 throw new IllegalArgumentException("No such waveFilter order type: " + waveFilter.getOrder());
             }
             orderComboBox.setSelectedItem(order);
@@ -180,7 +207,7 @@ public class WaveFilterController extends ToolController {
 
             break;
         }
-        waveFilter.setOrder(waveFilterOrderHashMap.get((String)orderComboBox.getSelectedItem()));
+        waveFilter.setOrder(waveFilterOrderHashMap.get((String) orderComboBox.getSelectedItem()));
         getContext().setTransformation(waveFilter);
     }
 
@@ -211,11 +238,12 @@ public class WaveFilterController extends ToolController {
             return doubleRounder2.round(val);
         }
     }
-    private String toTextFieldValue(double aDouble){
-            if(aDouble < 1){
-                return doubleRounder3.round(aDouble) + "";
-            } else {
-                return doubleRounder2.round(aDouble) + "";
-            }
+
+    private String toTextFieldValue(double aDouble) {
+        if (aDouble < 1) {
+            return doubleRounder3.round(aDouble) + "";
+        } else {
+            return doubleRounder2.round(aDouble) + "";
+        }
     }
 }
