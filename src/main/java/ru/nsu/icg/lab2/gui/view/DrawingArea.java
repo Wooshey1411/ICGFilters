@@ -21,9 +21,9 @@ public class DrawingArea extends JPanel {
                 false
         ));
         setBackground(Color.DARK_GRAY);
-        this.setDoubleBuffered(true);
-        this.addMouseListener(mouseAdapter);
-        this.addMouseMotionListener(mouseAdapter);
+        setDoubleBuffered(true);
+        addMouseListener(mouseAdapter);
+        addMouseMotionListener(mouseAdapter);
     }
 
     public void resizeSoftly(int width, int height) {

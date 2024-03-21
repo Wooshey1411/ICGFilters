@@ -1,25 +1,27 @@
 package ru.nsu.icg.lab2.gui.view;
 
-import ru.nsu.icg.lab2.gui.common.DrawingAreaAction;
-import ru.nsu.icg.lab2.gui.common.ViewMode;
 import ru.nsu.icg.lab2.gui.common.Context;
+import ru.nsu.icg.lab2.gui.common.DrawingAreaAction;
+import ru.nsu.icg.lab2.gui.common.ToolController;
+import ru.nsu.icg.lab2.gui.common.ViewMode;
 import ru.nsu.icg.lab2.gui.common.context.ContextDrawingAreaActionListener;
 import ru.nsu.icg.lab2.gui.common.context.ContextImageListener;
 import ru.nsu.icg.lab2.gui.common.context.ContextViewModeListener;
-import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.dto.view.ToolsAreaConfig;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.Map;
 
-public class ToolsArea extends JPanel implements ContextViewModeListener, ContextDrawingAreaActionListener, ContextImageListener {
+public class ToolsArea extends JPanel implements ContextViewModeListener,
+        ContextDrawingAreaActionListener,
+        ContextImageListener {
     private class ToolButton {
         private final Tool tool;
         private final AbstractButton button;
@@ -31,8 +33,8 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
         private ToolButton(Tool tool, AbstractButton button) {
             this.tool = tool;
             this.button = button;
-            this.defaultTip = tool.tip();
-            this.selectedTip = tool.selectedTip();
+            defaultTip = tool.tip();
+            selectedTip = tool.selectedTip();
             defaultIcon = button.getIcon();
 
             final String selectedIconPath = tool.selectedIconPath();
@@ -54,9 +56,13 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
             button.setIcon(selectedIcon);
         }
 
-        public void setDefaultTip() {button.setToolTipText(defaultTip);}
+        public void setDefaultTip() {
+            button.setToolTipText(defaultTip);
+        }
 
-        public void setSelectedTip() {button.setToolTipText(selectedTip);}
+        public void setSelectedTip() {
+            button.setToolTipText(selectedTip);
+        }
     }
 
     private final Map<Integer, AbstractButton> lastSelectedButtons = new HashMap<>();
@@ -66,7 +72,9 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
     private ToolButton onWindowSizeButton;
     private ToolButton oneToOneButton;
 
-    public ToolsArea(List<ToolController> toolControllers, ToolsAreaConfig toolsAreaConfig, KeyListener keyListener) {
+    public ToolsArea(List<ToolController> toolControllers,
+                     ToolsAreaConfig toolsAreaConfig,
+                     KeyListener keyListener) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         Color areaBackgroundColor = Color.decode(toolsAreaConfig.areaBackgroundColor());
         Color buttonsBackgroundColor = Color.decode(toolsAreaConfig.buttonsBackgroundColor());
@@ -150,21 +158,29 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
         }
     }
 
-    private static JButton createToolButton(ToolController toolController, int toolSize, Color backgroundColor) {
+    private static JButton createToolButton(ToolController toolController,
+                                            int toolSize,
+                                            Color backgroundColor) {
         final Tool tool = toolController.getTool();
         final JButton result = new JButton(loadIcon(tool.iconPath()));
         initButton(result, tool.tip(), toolController, toolSize, backgroundColor);
         return result;
     }
 
-    private static JToggleButton createToolToggleButton(ToolController toolController, int toolSize, Color backgroundColor) {
+    private static JToggleButton createToolToggleButton(ToolController toolController,
+                                                        int toolSize,
+                                                        Color backgroundColor) {
         final Tool tool = toolController.getTool();
         final JToggleButton result = new JToggleButton(loadIcon(tool.iconPath()));
         initButton(result, tool.tip(), toolController, toolSize, backgroundColor);
         return result;
     }
 
-    private static void initButton(AbstractButton button, String tip, ActionListener actionListener, int toolSize, Color backgroundColor) {
+    private static void initButton(AbstractButton button,
+                                   String tip,
+                                   ActionListener actionListener,
+                                   int toolSize,
+                                   Color backgroundColor) {
         button.setFocusPainted(false);
         button.setToolTipText(tip);
         button.addActionListener(actionListener);

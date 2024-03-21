@@ -13,13 +13,11 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.WindowListener;
 
 public class MainWindow extends JFrame {
-
     @Getter
     private final JScrollPane scrollPane;
     private final JPanel drawingArea;
 
-    public MainWindow(
-                      MainWindowConfig mainWindowConfig,
+    public MainWindow(MainWindowConfig mainWindowConfig,
                       WindowListener windowListener,
                       JMenuBar menuBar,
                       JPanel toolsArea,
@@ -70,7 +68,7 @@ public class MainWindow extends JFrame {
         pack();
     }
 
-    public int getWindowedDrawingAreaWidth(){
+    public int getWindowedDrawingAreaWidth() {
         return scrollPane.getWidth() -
                 scrollPane.getInsets().left -
                 scrollPane.getInsets().right -
@@ -78,7 +76,7 @@ public class MainWindow extends JFrame {
                 drawingArea.getInsets().right;
     }
 
-    public int getWindowedDrawingAreaHeight(){
+    public int getWindowedDrawingAreaHeight() {
         return scrollPane.getHeight() -
                 scrollPane.getInsets().top -
                 scrollPane.getInsets().bottom -
@@ -86,21 +84,21 @@ public class MainWindow extends JFrame {
                 drawingArea.getInsets().bottom;
     }
 
-    public void disableScrolls(){
+    public void disableScrolls() {
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     }
 
-    public void enableScrolls(){
+    public void enableScrolls() {
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
     }
 
-    public void setWaitCursor(){
+    public void setWaitCursor() {
         setCursor(new Cursor(Cursor.WAIT_CURSOR));
     }
 
-    public void setDefaultCursor(){
+    public void setDefaultCursor() {
         setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 }

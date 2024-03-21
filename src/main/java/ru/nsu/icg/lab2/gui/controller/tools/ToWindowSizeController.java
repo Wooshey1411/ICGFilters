@@ -1,9 +1,6 @@
 package ru.nsu.icg.lab2.gui.controller.tools;
 
-import ru.nsu.icg.lab2.gui.common.Context;
-import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.gui.common.*;
-import ru.nsu.icg.lab2.gui.common.ViewMode;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.dto.Tool;
 
@@ -19,13 +16,13 @@ public class ToWindowSizeController extends ToolController {
 
     public ToWindowSizeController(Context context, View view, ImageFactory imageFactory, Tool tool) {
         super(context, view, imageFactory, tool);
-
         methodHashMap = new HashMap<>(Map.of(
-                "Bilinear",InterpolationMethod.BILINEAR,
-                "Bicubic",InterpolationMethod.BICUBIC,
-                "Nearest neighbor",InterpolationMethod.NEAREST_NEIGHBOR));
+                "Bilinear", InterpolationMethod.BILINEAR,
+                "Bicubic", InterpolationMethod.BICUBIC,
+                "Nearest neighbor", InterpolationMethod.NEAREST_NEIGHBOR
+        ));
         comboBox = new JComboBox<>(methodHashMap.keySet().toArray(new String[0]));
-        optionsPanel = Utils.createSimpleComboDialogInputPanel(comboBox,"Interpolation method:",1);
+        optionsPanel = Utils.createSimpleComboDialogInputPanel(comboBox, "Interpolation method:", 1);
     }
 
     @Override
@@ -36,14 +33,15 @@ public class ToWindowSizeController extends ToolController {
             return;
         }
 
-        comboBox.setSelectedItem("Bilinear");
+        comboBox.setSelectedItem(context.getInterpolationMethod());
+
         final boolean ok = getView().showConfirmationDialog("Interpolation method", optionsPanel);
-        if(!ok){
+        if (!ok) {
             context.setViewMode(ViewMode.ONE_TO_ONE);
             return;
         }
 
-        context.setInterpolationMethod(methodHashMap.get((String)comboBox.getSelectedItem()));
+        context.setInterpolationMethod(methodHashMap.get((String) comboBox.getSelectedItem()));
         context.setViewMode(ViewMode.ON_WINDOW_SIZE);
     }
 }

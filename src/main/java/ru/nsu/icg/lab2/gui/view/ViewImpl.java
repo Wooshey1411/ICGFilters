@@ -1,29 +1,33 @@
 package ru.nsu.icg.lab2.gui.view;
 
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkOrangeIJTheme;
-import ru.nsu.icg.lab2.gui.common.context.*;
-import ru.nsu.icg.lab2.gui.common.ViewMode;
+import ru.nsu.icg.lab2.gui.common.*;
+import ru.nsu.icg.lab2.gui.common.context.ContextAdapter;
+import ru.nsu.icg.lab2.gui.common.context.ContextImageReader;
 import ru.nsu.icg.lab2.gui.controller.DrawingAreaController;
 import ru.nsu.icg.lab2.gui.controller.FolderImagesScrollingController;
 import ru.nsu.icg.lab2.gui.controller.TransformationsController;
 import ru.nsu.icg.lab2.gui.controller.WindowResizeController;
 import ru.nsu.icg.lab2.gui.controller.menu.*;
-import ru.nsu.icg.lab2.gui.common.*;
 import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.dto.view.ViewConfig;
 
-import java.awt.event.KeyListener;
-import java.util.List;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 public class ViewImpl extends ContextAdapter implements View {
     private final Context context;
     private final DrawingArea drawingArea;
     private final MainWindow mainWindow;
 
-    public ViewImpl(ViewConfig viewConfig, List<Tool> tools, Context context, ContextImageReader imageReader, ImageWriter imageWriter) {
+    public ViewImpl(ViewConfig viewConfig,
+                    List<Tool> tools,
+                    Context context,
+                    ContextImageReader imageReader,
+                    ImageWriter imageWriter) {
         FlatArcDarkOrangeIJTheme.setup();
 
         this.context = context;
@@ -49,7 +53,7 @@ public class ViewImpl extends ContextAdapter implements View {
         final HelpController helpController = new HelpController(this);
         final AboutController aboutController = new AboutController(this);
         final WindowResizeController windowResizeController = new WindowResizeController(context, this);
-        final DrawingAreaController drawingAreaController = new DrawingAreaController(context,this);
+        final DrawingAreaController drawingAreaController = new DrawingAreaController(context, this);
 
         drawingArea = new DrawingArea(drawingAreaController, viewConfig.textAreaConfig());
 
@@ -63,7 +67,11 @@ public class ViewImpl extends ContextAdapter implements View {
                 viewConfig.menuAreaConfig()
         );
 
-        final ToolsArea toolsArea = new ToolsArea(toolControllersFactory.getToolControllers(), viewConfig.toolsAreaConfig(), keyListener);
+        final ToolsArea toolsArea = new ToolsArea(
+                toolControllersFactory.getToolControllers(),
+                viewConfig.toolsAreaConfig(),
+                keyListener
+        );
 
         mainWindow = new MainWindow(
                 viewConfig.mainWindowConfig(),
@@ -110,12 +118,12 @@ public class ViewImpl extends ContextAdapter implements View {
 
         int newHeight;
         int newWidth;
-        if(context.getDrawingAreaWidth() * 1.0 / context.getDrawingAreaHeight() >= k ) {
+        if (context.getDrawingAreaWidth() * 1.0 / context.getDrawingAreaHeight() >= k) {
             newHeight = context.getDrawingAreaHeight();
             newWidth = (int) (newHeight * k);
-        } else{
+        } else {
             newWidth = context.getDrawingAreaWidth();
-            newHeight = (int)(newWidth / k);
+            newHeight = (int) (newWidth / k);
         }
 
         final BufferedImage resizedImage = new BufferedImage(
@@ -125,7 +133,7 @@ public class ViewImpl extends ContextAdapter implements View {
         );
 
         final Object hintValue;
-        switch (context.getInterpolationMethod()){
+        switch (context.getInterpolationMethod()) {
             case BICUBIC -> hintValue = RenderingHints.VALUE_INTERPOLATION_BICUBIC;
             case BILINEAR -> hintValue = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
             case NEAREST_NEIGHBOR -> hintValue = RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR;
@@ -155,7 +163,7 @@ public class ViewImpl extends ContextAdapter implements View {
     @Override
     public void repaint() {
         final BufferedImageImpl image = context.getImage();
-        if(image == null){
+        if (image == null) {
             return;
         }
         if (context.getViewMode() == ViewMode.ONE_TO_ONE) {
@@ -190,12 +198,12 @@ public class ViewImpl extends ContextAdapter implements View {
 
     @Override
     public boolean showConfirmationDialog(String title, JPanel content) {
-        return JOptionPane.showConfirmDialog(mainWindow,
+        return JOptionPane.showConfirmDialog(
+                mainWindow,
                 content,
                 title,
                 JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE
-        ) == JOptionPane.OK_OPTION;
+                JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION;
     }
 
     @Override
@@ -225,7 +233,7 @@ public class ViewImpl extends ContextAdapter implements View {
 
     @Override
     public void onChangeViewMode(Context context) {
-        if(context.getViewMode() == ViewMode.ON_WINDOW_SIZE){
+        if (context.getViewMode() == ViewMode.ON_WINDOW_SIZE) {
             context.setDrawingAreaHeight(mainWindow.getWindowedDrawingAreaHeight());
             context.setDrawingAreaWidth(mainWindow.getWindowedDrawingAreaWidth());
             resize();
