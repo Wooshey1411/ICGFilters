@@ -20,4 +20,23 @@ public class TransformationUtils {
     public static int getARGB(int alpha, int red, int green, int blue) {
         return (alpha << 24) | (red << 16) | (green << 8) | blue;
     }
+
+    public static void copyBorderPixels(int[] src, int[] dest, int width, int height, int offset) {
+        for (int y = 0; y < offset; y++) {
+            System.arraycopy(src, y * width, dest, y * width, width);
+        }
+        for (int y = height - offset; y < height; y++) {
+            System.arraycopy(src, y * width, dest, y * width, width);
+        }
+        for (int x = 0; x < offset; x++) {
+            for (int y = offset; y < height - offset; y++) {
+                dest[y * width + x] = src[y * width + x];
+            }
+        }
+        for (int x = width - offset; x < width; x++) {
+            for (int y = offset; y < height - offset; y++) {
+                dest[y * width + x] = src[y * width + x];
+            }
+        }
+    }
 }
