@@ -22,6 +22,8 @@ public class ViewImpl extends ContextAdapter implements View {
     private final Context context;
     private final DrawingArea drawingArea;
     private final MainWindow mainWindow;
+    private final JTextPane helpTextPane;
+    private final JTextPane aboutTextPane;
 
     public ViewImpl(ViewConfig viewConfig,
                     List<Tool> tools,
@@ -89,6 +91,8 @@ public class ViewImpl extends ContextAdapter implements View {
         context.addDrawingAreaActionListener(toolsArea);
         context.addImageListener(toolsArea);
         context.addImageListener(menuArea);
+        helpTextPane = createHelpTextPane();
+        aboutTextPane = createAboutTextArea();
     }
 
     @Override
@@ -179,8 +183,8 @@ public class ViewImpl extends ContextAdapter implements View {
     @Override
     public void showHelp() {
         JOptionPane.showMessageDialog(
-                mainWindow,
-                "It's help",
+                null,
+                helpTextPane,
                 "Help",
                 JOptionPane.INFORMATION_MESSAGE
         );
@@ -189,8 +193,8 @@ public class ViewImpl extends ContextAdapter implements View {
     @Override
     public void showAbout() {
         JOptionPane.showMessageDialog(
-                mainWindow,
-                "It's about",
+                null,
+                aboutTextPane,
                 "About",
                 JOptionPane.INFORMATION_MESSAGE
         );
@@ -242,5 +246,86 @@ public class ViewImpl extends ContextAdapter implements View {
             mainWindow.enableScrolls();
             repaint();
         }
+    }
+
+    private static JTextPane createHelpTextPane() {
+        final JTextPane result = createHelpAboutTextPane();
+        result.setText(getHelpText());
+        return result;
+    }
+
+    private static JTextPane createAboutTextArea() {
+        final JTextPane result = createHelpAboutTextPane();
+        result.setText(getAboutText());
+        return result;
+    }
+
+    private static String getAboutText() {
+        return """
+               This program was created by Vorobyov Andrey, Kondrenko Kirill and Sirotkin Michael,
+               students of group 21203 in Novosibirsk State University in March 2024 as task for the course
+               "engineering and computer graphics"
+               """;
+    }
+
+    private static JTextPane createHelpAboutTextPane() {
+        final JTextPane result = new JTextPane();
+        result.setEditable(false);
+        result.setBackground(null);
+        result.setContentType("text/html");
+        return result;
+    }
+
+    private static String getHelpText() {
+        // TODO: implement (it was taken from paint)
+        return """
+                 <html>
+                     <p><b><i>Simple Paint</i></b> represents a simple program for drawing simple shapes and filling, it has 3 areas</p>
+                     <ul>
+                     <li><b>Canvas</b> — is a working area where all drawings and fillings are visible</li>
+                     <li><b>Menu</b> contains main functionality and consists of</li>
+                     <ul>
+                         <li>
+                             <i>File</i>
+                             <ul>
+                                 <li><u>Open</u> — opens file, supported formats are: PNG, JPEG, BMP, GIF</li>
+                                 <li><u>Save</u> — saves file as PNG-image</li>
+                                 <li><u>Exit</u> — exits program without any saving</li>
+                             </ul>
+                         </li>
+                         <li>
+                             <i>Edit</i>
+                             <ul>
+                                 <li><u>Line</u> — draws line between 2 points of mouse-pressing</li>
+                                 <li><u>Polygon</u> — draws polygon where mouse is pressed</li>
+                                 <li><u>Star</u> — draws star where mouse is pressed, inner radius is equal to outer radius divided by 2</li>
+                                 <li><u>Fill</u> — fills 4-connected area that contains point of mouse-pressing</li>
+                                 <li><u>Clear</u> — clears <b>Canvas</b></li>
+                                 <li><u>Select color</u> — opens dialog window to select current color</li>
+                                 <li><u>Select thickness</u> — opens dialog window to select current thickness</li>
+                                 <li><u>Select number of vertices</u> — opens dialog window to select current number of vertices</li>
+                                 <li><u>Select rotation</u> — opens dialog window to select current rotation</li>
+                                 <li><u>Select radius</u> — opens dialog window to select current radius</li>
+                             </ul>
+                         </li>
+                         <li>
+                             <i>Info</i>
+                             <ul>
+                                 <li><u>Help</u> — shows help</li>
+                                 <li><u>About</u> — shows about</li>
+                             </ul>
+                         </li>
+                     </ul>
+                     <li><b>Tools</b> contains all functionality of <b>Menu</b> and adds additional tools (such as <i>change color to red</i>)</li>
+                     </ul>
+                     <p>There are <b>parameters</b> that are defined while the program is running</p>
+                     <ul>
+                         <li><i>color</i> — which color to use during drawing shapes and filling</li>
+                         <li><i>thickness</i> — thickness of shapes</li>
+                         <li><i>number of vertices</i> — number of vertices for shapes (such as polygons and stars)</li>
+                         <li><i>rotation</i> — how many degrees will the figure be rotated clockwise</li>
+                         <li><i>radius</i> — determines radius of shapes, for polygons and stars it means radius of the circumcircle</li>
+                     </ul>
+                </html>""";
     }
 }
