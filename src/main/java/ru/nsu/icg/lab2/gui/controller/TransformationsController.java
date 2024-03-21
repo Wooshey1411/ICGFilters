@@ -21,7 +21,6 @@ public class TransformationsController implements ContextTransformationListener 
         }
 
         view.setWaitCursor();
-        System.out.println("!");
 
         final Transformation transformation = context.getTransformation();
 
