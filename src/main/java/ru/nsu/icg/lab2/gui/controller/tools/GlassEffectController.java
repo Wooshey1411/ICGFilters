@@ -15,19 +15,17 @@ import java.awt.event.ActionEvent;
 public class GlassEffectController extends ToolController {
     private final GlassEffect glassEffect;
 
-    private static final int SLIDER_MIN_VALUE = 1;
-    private static final int SLIDER_MAX_VALUE = 100;
-    private static final int SPREAD_MIN_VALUE = 1;
-    private static final int SPREAD_MAX_VALUE = 100;
+    private static final int SPREAD_MIN_VALUE = 0;
+    private static final int SPREAD_MAX_VALUE = 50;
     private final JPanel optionsSetWindow;
     private final TextFieldSliderController textFieldSliderController;
 
     public GlassEffectController(Context context, View view, ImageFactory imageFactory, Tool tool) {
         super(context, view, imageFactory, tool);
         glassEffect = new GlassEffect(imageFactory);
-        JSlider slider = new JSlider(SLIDER_MIN_VALUE,SLIDER_MAX_VALUE);
+        JSlider slider = new JSlider(SPREAD_MIN_VALUE, SPREAD_MAX_VALUE);
         JTextField textField = new JTextField();
-        this.optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(textField, slider, "Spread %:", 1);
+        this.optionsSetWindow = Utils.createSimpleSliderDialogInputPanel(textField, slider, "Spread:", 1);
         textFieldSliderController = new TextFieldSliderController(
                 textField,
                 slider,
@@ -45,7 +43,7 @@ public class GlassEffectController extends ToolController {
         final View view = getView();
 
         while (true) {
-            textFieldSliderController.reset(glassEffect.getSpreadInPercent());
+            textFieldSliderController.reset(glassEffect.getSpread());
 
             final boolean ok = view.showConfirmationDialog("Glass effect", optionsSetWindow);
             if (!ok) {
@@ -53,7 +51,7 @@ public class GlassEffectController extends ToolController {
             }
 
             if (textFieldSliderController.hasValue()) {
-                glassEffect.setSpreadInPercent(textFieldSliderController.getIntValue());
+                glassEffect.setSpread(textFieldSliderController.getIntValue());
             }
             if (!textFieldSliderController.hasError()) {
                 break;

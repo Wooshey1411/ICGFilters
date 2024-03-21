@@ -13,12 +13,12 @@ public class GlassEffect extends Transformation {
 
     @Getter
     @Setter
-    private int spreadInPercent;
+    private int spread;
 
     public GlassEffect(ImageFactory imageFactory) {
         super(imageFactory);
         random = new Random(0);
-        spreadInPercent = 1;
+        spread = 1;
     }
 
     @Override
@@ -27,15 +27,13 @@ public class GlassEffect extends Transformation {
         final int width = oldImage.getWidth();
         final int[] grid = oldImage.getGrid();
 
-        int trueSpread = (int)(Integer.min(height,width)*spreadInPercent*1.0/200);
-
-        if (trueSpread == 0){
+        if (spread == 0){
             return getImageFactory().createImage(oldImage,grid);
         }
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                final int offset = random.nextInt(0, trueSpread);
+                final int offset = random.nextInt(0, spread);
                 final int x1 = Integer.min(x + offset, width - 1);
                 final int y1 = Integer.min(y + offset, height - 1);
                 final int i = x + y * width;
