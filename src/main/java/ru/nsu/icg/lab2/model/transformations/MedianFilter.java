@@ -19,75 +19,168 @@ public class MedianFilter extends Transformation {
 
     @Override
     public ImageInterface apply(ImageInterface oldImage) {
-        final int windowVolume = windowSize * windowSize;
-        final int radius = (windowSize - 1) / 2;
-        final int middle = (windowVolume + 1) / 2 ;
         final int width = oldImage.getWidth();
         final int height = oldImage.getHeight();
         final int[] oldGrid = oldImage.getGrid();
-        final int[] newGrid = new int[oldGrid.length];
-        final int[] red = new int[windowVolume];
-        final int[] green = new int[windowVolume];
-        final int[] blue = new int[windowVolume];
+        final int[] newGrid = new int[oldImage.getGridSize()];
 
-        // Process center of image
-        for (int y = radius; y < height - radius; y++){
-            for (int x = radius; x < width - radius; x++){
-                final int index = y * width + x;
-                final int oldAlpha = TransformationUtils.getAlpha(oldGrid[index]);
-
-                getSortedNeighbours(
-                        radius,
-                        index,
-                        width,
-                        oldGrid,
-                        red,
-                        green,
-                        blue
-                );
-
-                newGrid[index] = TransformationUtils.getARGB(
-                        oldAlpha,
-                        red[middle],
-                        green[middle],
-                        blue[middle]
-                );
-            }
-        }
-
-        // Process borders
-        for (int y = 0; y < radius; y++) {
-            System.arraycopy(oldGrid, y * width, newGrid, y * width, width);
-        }
-        for (int y = height - radius; y < height; y++) {
-            System.arraycopy(oldGrid, y * width, newGrid, y * width, width);
-        }
-        for (int x = 0; x < radius; x++) {
-            for (int y = radius; y < height - radius; y++) {
-                newGrid[y * width + x] = oldGrid[y * width + x];
-            }
-        }
-        for (int x = width - radius; x < width; x++) {
-            for (int y = radius; y < height - radius; y++) {
-                newGrid[y * width + x] = oldGrid[y * width + x];
-            }
-        }
+        processCenter(windowSize, width, height, oldGrid, newGrid);
+        processBorders(windowSize, width, height, oldGrid, newGrid);
 
         return getImageFactory().createImage(oldImage, newGrid);
     }
 
-    private static void getSortedNeighbours(
-            int radius,
-            int offset,
-            int width,
-            int[] grid,
-            int[] red,
-            int[] green,
-            int[] blue
-    ) {
+    private static void processCenter(int windowSize, int width, int height, int[] grid, int[] output) {
+        final int radius = (windowSize - 1) / 2;
+
+        for (int y = radius; y < height - radius; y++) {
+            for (int x = radius; x < width - radius; x++) {
+                final int index = y * width + x;
+                final int oldAlpha = TransformationUtils.getAlpha(grid[index]);
+
+                output[index] = processPixel(
+                        radius,
+                        oldAlpha,
+                        index,
+                        width,
+                        grid
+                );
+            }
+        }
+    }
+
+    private static void processBorders(int windowSize, int width, int height, int[] grid, int[] output) {
+        final int maxRadius = (windowSize - 1) / 2;
+
+        for (int y = 0; y < maxRadius; y++) {
+            for (int x = 0; x < width; x++) {
+                final int index = y * width + x;
+                final int oldAlpha = TransformationUtils.getAlpha(grid[index]);
+                final int currentRadius = Integer.min(
+                        Integer.min(x, width - x - 1),
+                        y
+                );
+
+                if (currentRadius == 0) {
+                    output[index] = grid[index];
+                } else {
+                    output[index] = processPixel(
+                            currentRadius,
+                            oldAlpha,
+                            index,
+                            width,
+                            grid
+                    );
+                }
+            }
+        }
+
+        for (int y = height - maxRadius; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                final int index = y * width + x;
+                final int oldAlpha = TransformationUtils.getAlpha(grid[index]);
+                final int currentRadius = Integer.min(
+                        Integer.min(x, width - x - 1),
+                        height - y - 1
+                );
+
+                if (currentRadius == 0) {
+                    output[index] = grid[index];
+                } else {
+                    output[index] = processPixel(
+                            currentRadius,
+                            oldAlpha,
+                            index,
+                            width,
+                            grid
+                    );
+                }
+            }
+        }
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < maxRadius; x++) {
+                final int index = y * width + x;
+                final int oldAlpha = TransformationUtils.getAlpha(grid[index]);
+                final int currentRadius = Integer.min(
+                        Integer.min(y, height - y - 1),
+                        x
+                );
+
+                if (currentRadius == 0) {
+                    output[index] = grid[index];
+                } else {
+                    output[index] = processPixel(
+                            currentRadius,
+                            oldAlpha,
+                            index,
+                            width,
+                            grid
+                    );
+                }
+            }
+        }
+
+        for (int y = 0; y < height; y++) {
+            for (int x = width - maxRadius; x < width; x++) {
+                final int index = y * width + x;
+                final int oldAlpha = TransformationUtils.getAlpha(grid[index]);
+                final int currentRadius = Integer.min(
+                        Integer.min(y, height - y - 1),
+                        width - x - 1
+                );
+
+                if (currentRadius == 0) {
+                    output[index] = grid[index];
+                } else {
+                    output[index] = processPixel(
+                            currentRadius,
+                            oldAlpha,
+                            index,
+                            width,
+                            grid
+                    );
+                }
+            }
+        }
+    }
+
+    private static int processPixel(int radius, int alpha, int index, int width, int[] grid) {
+        final int windowSize = radius * 2 + 1;
+        final int windowVolume = windowSize * windowSize;
+        final int middle = (windowVolume + 1) / 2;
+        final int[] red = new int[windowVolume];
+        final int[] green = new int[windowVolume];
+        final int[] blue = new int[windowVolume];
+
+        getSortedNeighbours(
+                radius,
+                index,
+                width,
+                grid,
+                red,
+                green,
+                blue
+        );
+
+        return TransformationUtils.getARGB(
+                alpha,
+                red[middle],
+                green[middle],
+                blue[middle]
+        );
+    }
+
+    private static void getSortedNeighbours(int radius,
+                                            int offset,
+                                            int width,
+                                            int[] grid,
+                                            int[] red,
+                                            int[] green,
+                                            int[] blue) {
         int componentIndex = 0;
-        for (int inX = - radius; inX <= radius; inX++){
-            for (int inY = -radius; inY <= radius; inY++){
+        for (int inX = -radius; inX <= radius; inX++) {
+            for (int inY = -radius; inY <= radius; inY++) {
                 final int gridIndex = offset + inY * width + inX;
                 final int pixelColor = grid[gridIndex];
                 red[componentIndex] = TransformationUtils.getRed(pixelColor);

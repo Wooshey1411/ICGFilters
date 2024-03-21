@@ -21,23 +21,13 @@ public class Sharpening extends Transformation {
         filterApplicator.setWindowSize(WINDOW_SIZE);
         filterApplicator.setMatrix(MATRIX);
         filterApplicator.setCounter((red, green, blue) -> {
-            red = Math.abs(red);
-            green = Math.abs(green);
-            blue = Math.abs(blue);
-            if (red > 255){
-                red = 255;
-            }
-            if (blue > 255){
-                blue = 255;
-            }
-            if (green > 255){
-                green = 255;
-            }
+            red = Integer.min(255, Integer.max(red, 0));
+            green = Integer.min(255, Integer.max(green, 0));
+            blue = Integer.min(255, Integer.max(blue, 0));
             return (red << 16) | (green << 8) | blue;
         });
     }
 
-    @Override
     public ImageInterface apply(ImageInterface oldImage) {
         return filterApplicator.apply(oldImage);
     }
