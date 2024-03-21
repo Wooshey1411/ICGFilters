@@ -7,7 +7,7 @@ import ru.nsu.icg.lab2.gui.common.ViewMode;
 import ru.nsu.icg.lab2.gui.view.ViewImpl;
 import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.ToolsConfigParser;
-import ru.nsu.icg.lab2.model.dto.ViewConfig;
+import ru.nsu.icg.lab2.model.dto.view.ViewConfig;
 import ru.nsu.icg.lab2.model.ViewConfigParser;
 import ru.nsu.icg.lab2.model.json.JSONToolsConfigParser;
 import ru.nsu.icg.lab2.model.json.JSONViewConfigParser;

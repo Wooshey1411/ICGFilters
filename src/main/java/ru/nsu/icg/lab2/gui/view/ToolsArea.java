@@ -8,6 +8,7 @@ import ru.nsu.icg.lab2.gui.common.context.ContextImageListener;
 import ru.nsu.icg.lab2.gui.common.context.ContextViewModeListener;
 import ru.nsu.icg.lab2.gui.common.ToolController;
 import ru.nsu.icg.lab2.model.dto.Tool;
+import ru.nsu.icg.lab2.model.dto.view.ToolsAreaConfig;
 
 import java.awt.event.KeyListener;
 import java.net.URL;
@@ -58,11 +59,6 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
         public void setSelectedTip() {button.setToolTipText(selectedTip);}
     }
 
-    // TODO: вынести это в конфигурационный файл
-    private static final Color AREA_BACKGROUND_COLOR = new Color(0.85f, 0.85f, 0.85f);
-    private static final Color BUTTONS_BACKGROUND_COLOR = new Color(0.72f, 0.72f, 0.71f);
-    private static final int TOOL_SIZE = 32;
-
     private final Map<Integer, AbstractButton> lastSelectedButtons = new HashMap<>();
 
     private ToolButton handButton;
@@ -70,9 +66,12 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
     private ToolButton onWindowSizeButton;
     private ToolButton oneToOneButton;
 
-    public ToolsArea(List<ToolController> toolControllers, KeyListener keyListener) {
+    public ToolsArea(List<ToolController> toolControllers, ToolsAreaConfig toolsAreaConfig, KeyListener keyListener) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
-        setBackground(AREA_BACKGROUND_COLOR);
+        Color areaBackgroundColor = Color.decode(toolsAreaConfig.areaBackgroundColor());
+        Color buttonsBackgroundColor = Color.decode(toolsAreaConfig.buttonsBackgroundColor());
+        int toolSize = toolsAreaConfig.toolSize();
+        setBackground(areaBackgroundColor);
 
         final Map<Integer, ButtonGroup> toolGroups = new HashMap<>();
 
@@ -83,10 +82,10 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
 
             // Creating tool-button of appropriate type
             if (tool.isToggle()) {
-                newToolButton = createToolToggleButton(it);
+                newToolButton = createToolToggleButton(it, toolSize, buttonsBackgroundColor);
             } else if (tool.hasGroup()) {
                 final int group = tool.group();
-                newToolButton = createToolToggleButton(it);
+                newToolButton = createToolToggleButton(it, toolSize, buttonsBackgroundColor);
                 if (!toolGroups.containsKey(group)) {
                     toolGroups.put(group, new ButtonGroup());
                 }
@@ -99,7 +98,7 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
                     lastSelectedButtons.put(group, newToolButton);
                 });
             } else {
-                newToolButton = createToolButton(it);
+                newToolButton = createToolButton(it, toolSize, buttonsBackgroundColor);
             }
 
             add(newToolButton);
@@ -151,27 +150,27 @@ public class ToolsArea extends JPanel implements ContextViewModeListener, Contex
         }
     }
 
-    private static JButton createToolButton(ToolController toolController) {
+    private static JButton createToolButton(ToolController toolController, int toolSize, Color backgroundColor) {
         final Tool tool = toolController.getTool();
         final JButton result = new JButton(loadIcon(tool.iconPath()));
-        initButton(result, tool.tip(), toolController);
+        initButton(result, tool.tip(), toolController, toolSize, backgroundColor);
         return result;
     }
 
-    private static JToggleButton createToolToggleButton(ToolController toolController) {
+    private static JToggleButton createToolToggleButton(ToolController toolController, int toolSize, Color backgroundColor) {
         final Tool tool = toolController.getTool();
         final JToggleButton result = new JToggleButton(loadIcon(tool.iconPath()));
-        initButton(result, tool.tip(), toolController);
+        initButton(result, tool.tip(), toolController, toolSize, backgroundColor);
         return result;
     }
 
-    private static void initButton(AbstractButton button, String tip, ActionListener actionListener) {
+    private static void initButton(AbstractButton button, String tip, ActionListener actionListener, int toolSize, Color backgroundColor) {
         button.setFocusPainted(false);
         button.setToolTipText(tip);
         button.addActionListener(actionListener);
-        button.setPreferredSize(new Dimension(TOOL_SIZE, TOOL_SIZE));
-        button.setMinimumSize(new Dimension(TOOL_SIZE, TOOL_SIZE));
-        button.setBackground(BUTTONS_BACKGROUND_COLOR);
+        button.setPreferredSize(new Dimension(toolSize, toolSize));
+        button.setMinimumSize(new Dimension(toolSize, toolSize));
+        button.setBackground(backgroundColor);
         button.setBorderPainted(false);
     }
 

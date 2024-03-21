@@ -1,6 +1,7 @@
 package ru.nsu.icg.lab2.gui.view;
 
 import lombok.Setter;
+import ru.nsu.icg.lab2.model.dto.view.DrawingAreaConfig;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,19 +10,14 @@ import java.awt.image.BufferedImage;
 
 @Setter
 public class DrawingArea extends JPanel {
-    // TODO: read from config
-    private static final int BORDER_THICKNESS = 3;
-    private static final int BORDER_LENGTH = 3;
-    private static final int BORDER_SPACING = 3;
-
     private BufferedImage image;
 
-    public DrawingArea(MouseAdapter mouseAdapter) {
+    public DrawingArea(MouseAdapter mouseAdapter, DrawingAreaConfig drawingAreaConfig) {
         setBorder(BorderFactory.createDashedBorder(
                 Color.GREEN,
-                BORDER_THICKNESS,
-                BORDER_LENGTH,
-                BORDER_SPACING,
+                drawingAreaConfig.borderThickness(),
+                drawingAreaConfig.borderLength(),
+                drawingAreaConfig.borderSpacing(),
                 false
         ));
         setBackground(Color.DARK_GRAY);
