@@ -5,7 +5,6 @@ import lombok.Setter;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 
-import java.util.Arrays;
 
 @Getter
 @Setter
@@ -111,36 +110,18 @@ public class OrderedDithering extends AbstractDithering {
     //Sirotkin version
 
 
-    private int roundColorRed(double red){
-        if (red >= 1.0){
+    private static int getClosedPalletColor(int color, int palletSize){
+        if (color >= 255){
             return 255;
         }
-        else if (red <= 0.0){
+        else if (color < 0){
             return 0;
         }
-        return (int) ((255.0 / (redK - 1)) * (int)(red * redK));
-    }
+        double palletStep = 255.0 / (palletSize - 1);
+
+        return (int) ((color * palletSize / 255) * palletStep);
 
 
-    private int roundColorGreen(double green){
-        if (green >= 1.0){
-            return 255;
-        }
-        else if (green <= 0.0){
-            return 0;
-        }
-        return (int) ((255.0 / (greenK - 1)) * (int)(green * greenK));
-    }
-
-
-    private int roundColorBlue(double blue){
-        if (blue >= 1.0){
-            return 255;
-        }
-        else if (blue <= 0.0){
-            return 0;
-        }
-        return (int) ((255.0 / (blueK - 1)) * (int)(blue * blueK));
     }
 
 
@@ -159,9 +140,9 @@ public class OrderedDithering extends AbstractDithering {
 
 
     private ImageInterface applySirotkin(ImageInterface oldImage){
-        double colorRedDiv = 1.0 / (redK - 1);
-        double colorGreenDiv = 1.0 / (greenK - 1);
-        double colorBlueDiv = 1.0 / (blueK - 1);
+        double colorRedDiv = 255.0 / (redK - 1);
+        double colorGreenDiv = 255.0 / (greenK - 1);
+        double colorBlueDiv = 255.0 / (blueK - 1);
         double[][] matrixRed = chooseMatrix(redK);
         double[][] matrixGreen = chooseMatrix(greenK);
         double[][] matrixBlue = chooseMatrix(blueK);
@@ -173,7 +154,6 @@ public class OrderedDithering extends AbstractDithering {
         int gridSize = height * width;
         int[] grid = oldImage.getGrid();
         int[] newGrid = new int[gridSize];
-        Arrays.fill(newGrid, 0xFF000000);
         for (int y = 0; y < height; y++){
             for (int x = 0 ; x < width; x++){
                 int index = y * width + x;
@@ -184,10 +164,13 @@ public class OrderedDithering extends AbstractDithering {
                 int matrixBlueIndexX = (x % matrixBlueSize);
                 int matrixBlueIndexY = (y % matrixBlueSize);
                 int pixelColor = grid[index];
-                int red = roundColorRed((((pixelColor & 0x00FF0000) >> 16) / 255.0) + colorRedDiv * matrixRed[matrixRedIndexY][matrixRedIndexX]);
-                int green = roundColorGreen((((pixelColor & 0x0000FF00) >> 8) / 255.0) + colorGreenDiv * matrixGreen[matrixGreenIndexY][matrixGreenIndexX]);
-                int blue = roundColorBlue(((pixelColor & 0x000000FF) / 255.0) + colorBlueDiv * matrixBlue[matrixBlueIndexY][matrixBlueIndexX]);
-                newGrid[index] |= (red << 16) | (green << 8) | blue;
+                int red = (int) ((((pixelColor & 0x00FF0000) >> 16) ) + colorRedDiv * matrixRed[matrixRedIndexY][matrixRedIndexX]);
+                red = getClosedPalletColor(red, redK);
+                int green = (int) ((((pixelColor & 0x0000FF00) >> 8)) + colorGreenDiv * matrixGreen[matrixGreenIndexY][matrixGreenIndexX]);
+                green = getClosedPalletColor(green, greenK);
+                int blue = (int) (((pixelColor & 0x000000FF)) + colorBlueDiv * matrixBlue[matrixBlueIndexY][matrixBlueIndexX]);
+                blue = getClosedPalletColor(blue, blueK);
+                newGrid[index] = (pixelColor & 0xFF000000) |(red << 16) | (green << 8) | blue;
             }
         }
 
