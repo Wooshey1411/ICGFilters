@@ -6,6 +6,7 @@ import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
 
 import java.util.Arrays;
+import java.util.function.BiFunction;
 
 @Getter
 @Setter
@@ -101,20 +102,12 @@ public class FloydSteinbergDithering extends AbstractDithering {
     }
 
 
-    // ACHTUNG !!!!!!!!!!!!!!!!! Не ПИЗДИТЬ и НЕ РЕФАКТОРИТЬ. Забудьте про этот код навсегда! У кого увижу такое - ВЫЕБУ
+    // НЕ РЕФАКТОРИТЬ
     private static class VorobevVariant{
         public static ImageInterface apply(ImageInterface oldImage, int redK, int blueK, int greenK, ImageFactory imageFactory){
 
             int width = oldImage.getWidth();
             int height = oldImage.getHeight();
-
-            int[] redVariants = new int[redK];
-            int[] blueVariants = new int[blueK];
-            int[] greenVariants = new int[greenK];
-            fillVariantArray(redVariants);
-            fillVariantArray(blueVariants);
-            fillVariantArray(greenVariants);
-
             int[] redErrors = new int[(width+2) << 1];
             int[] greenErrors = new int[(width+2) << 1];
             int[] blueErrors = new int[(width+2) << 1];
@@ -126,8 +119,19 @@ public class FloydSteinbergDithering extends AbstractDithering {
             int[] newGrid = new int[width*height];
             Arrays.fill(newGrid, 0);
 
+            BiFunction<Integer, Integer, Integer> findNearestNeighbor = (color, paletteSize) -> {
+                if (color < 0){
+                    return 0;
+                }
+                if(color >= 255){
+                    return 255;
+                }
+                return (int) ((color * paletteSize / 255) * (255f / (paletteSize - 1)));
+            };
+
             int currErrorShift = 1;
             int nextErrorShift = width + 3;
+
             for (int y = 0; y < height; y++){
                 int dimYShift = y*width;
                 int leftRedError = 0;
@@ -147,7 +151,7 @@ public class FloydSteinbergDithering extends AbstractDithering {
 
                     currPixel = TransformationUtils.getRed(grid[currPixelPos]) + (int) Math.round( (redErrors[currErrorShift + x] + leftRedError) / 16.0);
                     redErrors[currErrorShift + x] = 0;
-                    newPixel = findNearest(redVariants,currPixel);
+                    newPixel = findNearestNeighbor.apply(currPixel, redK);
                     newGrid[currPixelPos] |= (newPixel << 16);
                     quantError = currPixel - newPixel;
                     leftRedError = quantError * 7;
@@ -159,7 +163,7 @@ public class FloydSteinbergDithering extends AbstractDithering {
 
                     currPixel = TransformationUtils.getGreen(grid[currPixelPos]) + (int) Math.round((greenErrors[currErrorShift + x] + leftGreenError) / 16.0);
                     greenErrors[currErrorShift + x] = 0;
-                    newPixel = findNearest(greenVariants,currPixel);
+                    newPixel = findNearestNeighbor.apply(currPixel, greenK);
                     newGrid[currPixelPos] |= (newPixel << 8);
                     quantError = currPixel - newPixel;
                     leftGreenError = quantError * 7;
@@ -171,7 +175,7 @@ public class FloydSteinbergDithering extends AbstractDithering {
 
                     currPixel = TransformationUtils.getBlue(grid[currPixelPos]) + (int) Math.round((blueErrors[currErrorShift + x] + leftBlueError) / 16.0);
                     blueErrors[currErrorShift + x] = 0;
-                    newPixel = findNearest(blueVariants,currPixel);
+                    newPixel = findNearestNeighbor.apply(currPixel, blueK);
                     quantError = currPixel - newPixel;
                     newGrid[currPixelPos] |= (newPixel);
                     leftBlueError = quantError * 7;
@@ -186,29 +190,6 @@ public class FloydSteinbergDithering extends AbstractDithering {
                 currErrorShift ^= nextErrorShift;
             }
             return imageFactory.createImage(oldImage,newGrid);
-        }
-
-
-        private static void fillVariantArray(int[] array){
-            double step = 255.0/(array.length-1);
-            for (int i = 0; i < array.length-1; i++){
-                array[i] = (int)Math.round(i*step);
-            }
-            array[array.length-1] = 255;
-        }
-
-        private static int findNearest(int[] array, int value){
-            int error = Math.abs(array[0] - value);
-            int index = 0;
-            for (int i = 1; i < array.length; i++){
-                    int internalError = Math.abs(array[i] - value);
-                    if(internalError > error){
-                        break;
-                    }
-                    error = internalError;
-                    index = i;
-            }
-            return array[index];
         }
     }
 }
