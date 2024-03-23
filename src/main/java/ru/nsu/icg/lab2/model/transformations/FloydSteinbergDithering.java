@@ -127,7 +127,7 @@ public class FloydSteinbergDithering extends AbstractDithering {
             Arrays.fill(newGrid, 0);
 
             int currErrorShift = 1;
-            int nextErrorShift = width+1;
+            int nextErrorShift = width + 3;
             for (int y = 0; y < height; y++){
                 int dimYShift = y*width;
                 int leftRedError = 0;
@@ -138,13 +138,14 @@ public class FloydSteinbergDithering extends AbstractDithering {
                     int newPixel;
                     int quantError;
                     int currPixelPos = dimYShift + x;
+
                     //**********Alpha**********\\
 
                     newGrid[currPixelPos] |= (TransformationUtils.getAlpha(grid[currPixelPos]) << 24);
 
                     //**********RED**********\\
 
-                    currPixel = TransformationUtils.getRed(grid[currPixelPos]) + (int) Math.round(( (redErrors[currErrorShift + x] + leftRedError) / 16.0));
+                    currPixel = TransformationUtils.getRed(grid[currPixelPos]) + (int) Math.round( (redErrors[currErrorShift + x] + leftRedError) / 16.0);
                     redErrors[currErrorShift + x] = 0;
                     newPixel = findNearest(redVariants,currPixel);
                     newGrid[currPixelPos] |= (newPixel << 16);
@@ -156,7 +157,7 @@ public class FloydSteinbergDithering extends AbstractDithering {
 
                     //**********GREEN**********\\
 
-                    currPixel = TransformationUtils.getGreen(grid[currPixelPos]) + (int) Math.round(( (greenErrors[currErrorShift + x] + leftGreenError) / 16.0));
+                    currPixel = TransformationUtils.getGreen(grid[currPixelPos]) + (int) Math.round((greenErrors[currErrorShift + x] + leftGreenError) / 16.0);
                     greenErrors[currErrorShift + x] = 0;
                     newPixel = findNearest(greenVariants,currPixel);
                     newGrid[currPixelPos] |= (newPixel << 8);
@@ -168,7 +169,7 @@ public class FloydSteinbergDithering extends AbstractDithering {
 
                     //**********BLUE**********\\
 
-                    currPixel = TransformationUtils.getBlue(grid[currPixelPos]) + (int) Math.round(( (blueErrors[currErrorShift + x] + leftBlueError) / 16.0));
+                    currPixel = TransformationUtils.getBlue(grid[currPixelPos]) + (int) Math.round((blueErrors[currErrorShift + x] + leftBlueError) / 16.0);
                     blueErrors[currErrorShift + x] = 0;
                     newPixel = findNearest(blueVariants,currPixel);
                     quantError = currPixel - newPixel;
@@ -179,10 +180,10 @@ public class FloydSteinbergDithering extends AbstractDithering {
                     blueErrors[nextErrorShift + x + 1] += quantError;
 
 
-                    currErrorShift ^= nextErrorShift;
-                    nextErrorShift ^= currErrorShift;
-                    currErrorShift ^= nextErrorShift;
                 }
+                currErrorShift ^= nextErrorShift;
+                nextErrorShift ^= currErrorShift;
+                currErrorShift ^= nextErrorShift;
             }
             return imageFactory.createImage(oldImage,newGrid);
         }
