@@ -71,7 +71,7 @@ public class OrderedDithering extends AbstractDithering {
 
         for (int i = 0; i < 8; i++ ){
             for (int j = 0; j < 8; j++){
-                MATRIX8[i][j] = (MATRIX8[i][j] / 128.0) - 0.5;
+                MATRIX8[i][j] = (MATRIX8[i][j] / 64.0) - 0.5;
             }
         }
 
@@ -110,47 +110,48 @@ public class OrderedDithering extends AbstractDithering {
 
     //Sirotkin version
 
-    private static double colorRedDiv;
-
-
-    private static double colorGreenDiv;
-
-
-    private static double colorBlueDiv;
-
 
     private int roundColorRed(double red){
-        if (red > 1.0){
+        if (red >= 1.0){
             return 255;
         }
-        return (int) ((255 / (redK - 1)) * Math.round(red / colorRedDiv));
+        else if (red <= 0.0){
+            return 0;
+        }
+        return (int) ((255.0 / (redK - 1)) * (int)(red * redK));
     }
 
 
     private int roundColorGreen(double green){
-        if (green > 1.0){
+        if (green >= 1.0){
             return 255;
         }
-        return (int) ((255 / (greenK - 1)) * Math.round(green / colorGreenDiv));
+        else if (green <= 0.0){
+            return 0;
+        }
+        return (int) ((255.0 / (greenK - 1)) * (int)(green * greenK));
     }
 
 
     private int roundColorBlue(double blue){
-        if (blue > 1.0){
+        if (blue >= 1.0){
             return 255;
         }
-        return (int) ((255 / (blueK - 1)) * Math.round(blue / colorBlueDiv));
+        else if (blue <= 0.0){
+            return 0;
+        }
+        return (int) ((255.0 / (blueK - 1)) * (int)(blue * blueK));
     }
 
 
     private double[][] chooseMatrix(int k){
-        if (k <= 4){
+        if (k == 2){
             return MATRIX2;
         }
         else if (k <= 16){
             return MATRIX4;
         }
-        else if (k <= 64){
+        else if (k <= 32){
             return MATRIX8;
         }
         return MATRIX16;
@@ -158,9 +159,9 @@ public class OrderedDithering extends AbstractDithering {
 
 
     private ImageInterface applySirotkin(ImageInterface oldImage){
-        colorRedDiv = 1.0 / (redK - 1);
-        colorGreenDiv = 1.0 / (greenK - 1);
-        colorBlueDiv = 1.0 / (blueK - 1);
+        double colorRedDiv = 1.0 / (redK - 1);
+        double colorGreenDiv = 1.0 / (greenK - 1);
+        double colorBlueDiv = 1.0 / (blueK - 1);
         double[][] matrixRed = chooseMatrix(redK);
         double[][] matrixGreen = chooseMatrix(greenK);
         double[][] matrixBlue = chooseMatrix(blueK);
