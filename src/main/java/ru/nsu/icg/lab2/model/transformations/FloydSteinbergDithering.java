@@ -22,11 +22,82 @@ public class FloydSteinbergDithering extends AbstractDithering {
     @Override
     public ImageInterface apply(ImageInterface oldImage) {
         switch (creator){
-            case SIROTKIN -> {return null;}
+            case SIROTKIN -> {return SirotkinVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());}
             case VOROBEV -> {return VorobevVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());}
             case KONDRENKO -> {return null;}
             default -> throw new IllegalArgumentException("No such creator in Floyd-Steinberg dithering");
         }
+    }
+
+
+    private static class SirotkinVariant{
+        public static ImageInterface apply(ImageInterface oldImage, int redK, int blueK, int greenK, ImageFactory imageFactory){
+            int width = oldImage.getWidth();
+            int height = oldImage.getHeight();
+            int gridSize = height * width;
+            int errorGridSize = (height + 1) * (width + 2);
+            int[] grid = oldImage.getGrid();
+            int[] newGrid = new int[gridSize];
+            int[] errorRed = new int[errorGridSize];
+            int[] errorGreen = new int[errorGridSize];
+            int[] errorBlue = new int[errorGridSize];
+            Arrays.fill(errorRed, 0);
+            Arrays.fill(errorGreen, 0);
+            Arrays.fill(errorBlue, 0);
+            for (int y = 0; y < height; y++){
+                for (int x = 0; x < width; x++){
+                    int index = y * width + x;
+                    int errorIndex = y * (width + 2) + x + 1;
+
+                    //red
+                    int oldRedColor = ((grid[index] & 0x00FF0000) >> 16) + (int) Math.round(errorRed[errorIndex] / 16.0);
+                    int redColor = getClosedPalletColor(oldRedColor, redK);
+                    int error = oldRedColor - redColor;
+                    errorRed[errorIndex + 1] += error * 7;
+                    errorRed[errorIndex + (width + 2) - 1] += error * 3;
+                    errorRed[errorIndex + (width + 2)] += error * 5 ;
+                    errorRed[errorIndex + (width + 2) + 1] += error ;
+
+                    //green
+                    int oldGreenColor = ((grid[index] & 0x0000FF00) >> 8) +  (int) Math.round(errorGreen[errorIndex] / 16.0);
+                    int greenColor = getClosedPalletColor(oldGreenColor, greenK);
+                    error = oldGreenColor - greenColor;
+                    errorGreen[errorIndex + 1] += error * 7;
+                    errorGreen[errorIndex + (width + 2) - 1] += error * 3;
+                    errorGreen[errorIndex + (width + 2)] += error * 5;
+                    errorGreen[errorIndex + (width + 2) + 1] += error;
+
+                    //blue
+                    int oldBlueColor = (grid[index] & 0x000000FF) + (int) Math.round(errorBlue[errorIndex] / 16.0);
+                    int blueColor = getClosedPalletColor(oldBlueColor, blueK);
+                    error = oldBlueColor - blueColor;
+                    errorBlue[errorIndex + 1] += error * 7;
+                    errorBlue[errorIndex + (width + 2) - 1] += error * 3;
+                    errorBlue[errorIndex + (width + 2)] += error * 5;
+                    errorBlue[errorIndex + (width + 2) + 1] += error;
+
+                    newGrid[index] = (grid[index] & 0xFF000000) | (redColor << 16) | (greenColor << 8) | blueColor;
+                }
+            }
+            return imageFactory.createImage(oldImage,newGrid);
+        }
+
+
+        private static int getClosedPalletColor(int color, int palletSize){
+            if (color >= 255){
+                return 255;
+            }
+            else if (color < 0){
+                return 0;
+            }
+            double palletStep = 255.0 / (palletSize - 1);
+
+            return (int) ((color * palletSize / 255) * palletStep);
+
+
+        }
+
+
     }
 
 
