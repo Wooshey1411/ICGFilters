@@ -8,6 +8,7 @@
     "hand": true
   },
   {
+    "name": "Undo/Redo",
     "tip": "undo",
     "back": true,
     "selectedTip": "redo",

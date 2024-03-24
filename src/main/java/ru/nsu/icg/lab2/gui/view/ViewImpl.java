@@ -25,13 +25,15 @@ public class ViewImpl extends ContextAdapter implements View {
     private final JTextPane helpTextPane;
     private final JTextPane aboutTextPane;
 
+    private final List<Tool> tools;
+
     public ViewImpl(ViewConfig viewConfig,
                     List<Tool> tools,
                     Context context,
                     ContextImageReader imageReader,
                     ImageWriter imageWriter) {
         FlatArcDarkOrangeIJTheme.setup();
-
+        this.tools = tools;
         this.context = context;
         context.addImageListener(this);
         context.addViewModeListener(this);
@@ -182,12 +184,7 @@ public class ViewImpl extends ContextAdapter implements View {
 
     @Override
     public void showHelp() {
-        JOptionPane.showMessageDialog(
-                null,
-                helpTextPane,
-                "Help",
-                JOptionPane.INFORMATION_MESSAGE
-        );
+        new HelpWindow(mainWindow, "help", tools);
     }
 
     @Override
