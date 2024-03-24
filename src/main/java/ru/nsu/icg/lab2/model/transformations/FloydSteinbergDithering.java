@@ -231,9 +231,9 @@ public class FloydSteinbergDithering extends AbstractDithering {
                         final double accumulatedGreenError = greenErrors[0][x + currentElementMatrixXPosition];
                         final double accumulatedBlueError = blueErrors[0][x + currentElementMatrixXPosition];
 
-                        final int oldRedWithError = oldRed + (int) accumulatedRedError;
-                        final int oldGreenWithError = oldGreen + (int) accumulatedGreenError;
-                        final int oldBlueWithError = oldBlue + (int) accumulatedBlueError;
+                        final int oldRedWithError = oldRed + (int) Math.round(accumulatedRedError);
+                        final int oldGreenWithError = oldGreen + (int) Math.round(accumulatedGreenError);
+                        final int oldBlueWithError = oldBlue + (int) Math.round(accumulatedBlueError);
 
                         final int newRed = findNearestColor(oldRedWithError, redDelta);
                         final int newGreen = findNearestColor(oldGreenWithError, greenDelta);
