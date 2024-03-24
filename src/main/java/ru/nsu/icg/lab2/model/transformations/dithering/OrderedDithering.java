@@ -5,6 +5,8 @@ import ru.nsu.icg.lab2.model.ImageInterface;
 import ru.nsu.icg.lab2.model.transformations.AbstractDithering;
 import ru.nsu.icg.lab2.model.transformations.TransformationUtils;
 
+import java.util.function.BiFunction;
+
 public class OrderedDithering extends AbstractDithering {
     private static final double[][] MATRIX2 = {
             {0, 2},
@@ -79,17 +81,6 @@ public class OrderedDithering extends AbstractDithering {
         super(imageFactory);
     }
 
-    private static double[][] chooseMatrix(int k) {
-        if (k == 2) {
-            return MATRIX2;
-        } else if (k <= 16) {
-            return MATRIX4;
-        } else if (k <= 32) {
-            return MATRIX8;
-        }
-        return MATRIX16;
-    }
-
     @Override
     public ImageInterface apply(ImageInterface oldImage) {
         final FilterCreator creator = getCreator();
@@ -102,7 +93,7 @@ public class OrderedDithering extends AbstractDithering {
                 return SirotkinVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());
             }
             case VOROBEV -> {
-                return null;
+                return VorobevVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());
             }
             case KONDRENKO -> {
                 return KondrenkoVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());
@@ -162,6 +153,17 @@ public class OrderedDithering extends AbstractDithering {
 
 
         }
+
+        private static double[][] chooseMatrix(int k) {
+            if (k == 2) {
+                return MATRIX2;
+            } else if (k <= 16) {
+                return MATRIX4;
+            } else if (k <= 32) {
+                return MATRIX8;
+            }
+            return MATRIX16;
+        }
     }
 
     private static class KondrenkoVariant {
@@ -177,9 +179,9 @@ public class OrderedDithering extends AbstractDithering {
                 final double greenDelta = KondrenkoUtils.calculateDelta(greenK);
                 final double blueDelta = KondrenkoUtils.calculateDelta(blueK);
 
-                final double[][] redMatrix = chooseMatrix(redK);
-                final double[][] greenMatrix = chooseMatrix(greenK);
-                final double[][] blueMatrix = chooseMatrix(blueK);
+                final double[][] redMatrix = MATRIX16;
+                final double[][] greenMatrix = MATRIX16;
+                final double[][] blueMatrix = MATRIX16;
 
                 final int redMatrixSize = redMatrix.length;
                 final int greenMatrixSize = greenMatrix.length;
@@ -226,7 +228,11 @@ public class OrderedDithering extends AbstractDithering {
             }
         }
 
-        private static ImageInterface apply(ImageInterface oldImage, int redK, int blueK, int greenK, ImageFactory imageFactory) {
+        private static ImageInterface apply(ImageInterface oldImage,
+                                            int redK,
+                                            int blueK,
+                                            int greenK,
+                                            ImageFactory imageFactory) {
             final int[] oldGrid = oldImage.getGrid();
             final int[] newGrid = new int[oldGrid.length];
 
@@ -240,6 +246,61 @@ public class OrderedDithering extends AbstractDithering {
                     newGrid
             );
 
+            return imageFactory.createImage(oldImage, newGrid);
+        }
+    }
+
+    private static class VorobevVariant {
+        private static ImageInterface apply(ImageInterface oldImage, int redK, int blueK, int greenK, ImageFactory imageFactory) {
+            double colorRedDiv = 255.0 / (redK - 1);
+            double colorGreenDiv = 255.0 / (greenK - 1);
+            double colorBlueDiv = 255.0 / (blueK - 1);
+            int matrixSize = Math.min(4, (int) (Math.log10(Math.min(oldImage.getWidth(), oldImage.getHeight()))));
+            double[][] defaultMatrix;
+            BiFunction<Integer, Integer, Integer> findNearestNeighbor = (color, paletteSize) -> {
+                if (color < 0) {
+                    return 0;
+                }
+                if (color >= 255) {
+                    return 255;
+                }
+                return (int) ((color * paletteSize / 255) * (255f / (paletteSize - 1)));
+            };
+            switch (matrixSize) {
+                case 1 -> defaultMatrix = MATRIX2;
+                case 2 -> defaultMatrix = MATRIX4;
+                case 3 -> defaultMatrix = MATRIX8;
+                case 4 -> defaultMatrix = MATRIX16;
+                default -> throw new IllegalArgumentException("Matrix size cannot be greater than 4");
+            }
+            double[][] matrixRed = defaultMatrix;
+            double[][] matrixGreen = defaultMatrix;
+            double[][] matrixBlue = defaultMatrix;
+            int matrixRedSize = matrixRed.length;
+            int matrixGreenSize = matrixGreen.length;
+            int matrixBlueSize = matrixBlue.length;
+            int width = oldImage.getWidth();
+            int height = oldImage.getHeight();
+            int gridSize = height * width;
+            int[] grid = oldImage.getGrid();
+            int[] newGrid = new int[gridSize];
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    int index = y * width + x;
+                    newGrid[index] |= (TransformationUtils.getAlpha(grid[index]) << 24);
+                    int matrixRedIndexX = (x % matrixRedSize);
+                    int matrixRedIndexY = (y % matrixRedSize);
+                    int matrixGreenIndexX = (x % matrixGreenSize);
+                    int matrixGreenIndexY = (y % matrixGreenSize);
+                    int matrixBlueIndexX = (x % matrixBlueSize);
+                    int matrixBlueIndexY = (y % matrixBlueSize);
+                    int pixelColor = grid[index];
+                    int red = findNearestNeighbor.apply((int) ((((pixelColor & 0x00FF0000) >> 16)) + colorRedDiv * matrixRed[matrixRedIndexY][matrixRedIndexX]), redK);
+                    int green = findNearestNeighbor.apply((int) ((((pixelColor & 0x0000FF00) >> 8)) + colorGreenDiv * matrixGreen[matrixGreenIndexY][matrixGreenIndexX]), greenK);
+                    int blue = findNearestNeighbor.apply((int) (((pixelColor & 0x000000FF)) + colorBlueDiv * matrixBlue[matrixBlueIndexY][matrixBlueIndexX]), blueK);
+                    newGrid[index] |= ((red << 16) | (green << 8) | blue);
+                }
+            }
             return imageFactory.createImage(oldImage, newGrid);
         }
     }
