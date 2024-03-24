@@ -286,7 +286,11 @@ public class FloydSteinbergDithering extends AbstractDithering {
                 {3.0 / 16.0, 5.0 / 16.0, 1.0 / 16.0},
         };
 
-        public static ImageInterface apply(ImageInterface oldImage, int redK, int blueK, int greenK, ImageFactory imageFactory) {
+        public static ImageInterface apply(ImageInterface oldImage,
+                                           int redK,
+                                           int blueK,
+                                           int greenK,
+                                           ImageFactory imageFactory) {
             final int[] oldGrid = oldImage.getGrid();
             final int[] newGrid = new int[oldGrid.length];
 
