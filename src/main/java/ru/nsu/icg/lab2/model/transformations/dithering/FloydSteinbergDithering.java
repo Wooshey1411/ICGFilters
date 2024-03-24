@@ -24,16 +24,22 @@ public class FloydSteinbergDithering extends AbstractDithering {
         final int greenK = getGreenK();
         final int blueK = getBlueK();
 
-        switch (creator){
-            case SIROTKIN -> {return SirotkinVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());}
-            case VOROBEV -> {return VorobevVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());}
-            case KONDRENKO -> {return KondrenkoVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());}
+        switch (creator) {
+            case SIROTKIN -> {
+                return SirotkinVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());
+            }
+            case VOROBEV -> {
+                return VorobevVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());
+            }
+            case KONDRENKO -> {
+                return KondrenkoVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());
+            }
             default -> throw new IllegalArgumentException("No such creator of Floyd-Steinberg dithering");
         }
     }
 
-    private static class SirotkinVariant{
-        public static ImageInterface apply(ImageInterface oldImage, int redK, int blueK, int greenK, ImageFactory imageFactory){
+    private static class SirotkinVariant {
+        public static ImageInterface apply(ImageInterface oldImage, int redK, int blueK, int greenK, ImageFactory imageFactory) {
             int width = oldImage.getWidth();
             int height = oldImage.getHeight();
             int gridSize = height * width;
@@ -46,8 +52,8 @@ public class FloydSteinbergDithering extends AbstractDithering {
             Arrays.fill(errorRed, 0);
             Arrays.fill(errorGreen, 0);
             Arrays.fill(errorBlue, 0);
-            for (int y = 0; y < height; y++){
-                for (int x = 0; x < width; x++){
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
                     int index = y * width + x;
                     int errorIndex = y * (width + 2) + x + 1;
 
@@ -57,11 +63,11 @@ public class FloydSteinbergDithering extends AbstractDithering {
                     int error = oldRedColor - redColor;
                     errorRed[errorIndex + 1] += error * 7;
                     errorRed[errorIndex + (width + 2) - 1] += error * 3;
-                    errorRed[errorIndex + (width + 2)] += error * 5 ;
-                    errorRed[errorIndex + (width + 2) + 1] += error ;
+                    errorRed[errorIndex + (width + 2)] += error * 5;
+                    errorRed[errorIndex + (width + 2) + 1] += error;
 
                     //green
-                    int oldGreenColor = ((grid[index] & 0x0000FF00) >> 8) +  (int) Math.round(errorGreen[errorIndex] / 16.0);
+                    int oldGreenColor = ((grid[index] & 0x0000FF00) >> 8) + (int) Math.round(errorGreen[errorIndex] / 16.0);
                     int greenColor = getClosedPalletColor(oldGreenColor, greenK);
                     error = oldGreenColor - greenColor;
                     errorGreen[errorIndex + 1] += error * 7;
@@ -81,14 +87,13 @@ public class FloydSteinbergDithering extends AbstractDithering {
                     newGrid[index] = (grid[index] & 0xFF000000) | (redColor << 16) | (greenColor << 8) | blueColor;
                 }
             }
-            return imageFactory.createImage(oldImage,newGrid);
+            return imageFactory.createImage(oldImage, newGrid);
         }
 
-        private static int getClosedPalletColor(int color, int palletSize){
-            if (color >= 255){
+        private static int getClosedPalletColor(int color, int palletSize) {
+            if (color >= 255) {
                 return 255;
-            }
-            else if (color < 0){
+            } else if (color < 0) {
                 return 0;
             }
             double palletStep = 255.0 / (palletSize - 1);
@@ -102,27 +107,27 @@ public class FloydSteinbergDithering extends AbstractDithering {
     }
 
     // НЕ РЕФАКТОРИТЬ
-    private static class VorobevVariant{
-        public static ImageInterface apply(ImageInterface oldImage, int redK, int blueK, int greenK, ImageFactory imageFactory){
+    private static class VorobevVariant {
+        public static ImageInterface apply(ImageInterface oldImage, int redK, int blueK, int greenK, ImageFactory imageFactory) {
 
             int width = oldImage.getWidth();
             int height = oldImage.getHeight();
-            int[] redErrors = new int[(width+2) << 1];
-            int[] greenErrors = new int[(width+2) << 1];
-            int[] blueErrors = new int[(width+2) << 1];
+            int[] redErrors = new int[(width + 2) << 1];
+            int[] greenErrors = new int[(width + 2) << 1];
+            int[] blueErrors = new int[(width + 2) << 1];
             Arrays.fill(redErrors, 0);
             Arrays.fill(greenErrors, 0);
             Arrays.fill(blueErrors, 0);
 
             int[] grid = oldImage.getGrid();
-            int[] newGrid = new int[width*height];
+            int[] newGrid = new int[width * height];
             Arrays.fill(newGrid, 0);
 
             BiFunction<Integer, Integer, Integer> findNearestNeighbor = (color, paletteSize) -> {
-                if (color < 0){
+                if (color < 0) {
                     return 0;
                 }
-                if(color >= 255){
+                if (color >= 255) {
                     return 255;
                 }
                 return (int) ((color * paletteSize / 255) * (255f / (paletteSize - 1)));
@@ -131,12 +136,12 @@ public class FloydSteinbergDithering extends AbstractDithering {
             int currErrorShift = 1;
             int nextErrorShift = width + 3;
 
-            for (int y = 0; y < height; y++){
-                int dimYShift = y*width;
+            for (int y = 0; y < height; y++) {
+                int dimYShift = y * width;
                 int leftRedError = 0;
                 int leftGreenError = 0;
                 int leftBlueError = 0;
-                for (int x = 0; x < width; x++){
+                for (int x = 0; x < width; x++) {
                     int currPixel;
                     int newPixel;
                     int quantError;
@@ -148,7 +153,7 @@ public class FloydSteinbergDithering extends AbstractDithering {
 
                     //**********RED**********\\
 
-                    currPixel = TransformationUtils.getRed(grid[currPixelPos]) + (int) Math.round( (redErrors[currErrorShift + x] + leftRedError) / 16.0);
+                    currPixel = TransformationUtils.getRed(grid[currPixelPos]) + (int) Math.round((redErrors[currErrorShift + x] + leftRedError) / 16.0);
                     redErrors[currErrorShift + x] = 0;
                     newPixel = findNearestNeighbor.apply(currPixel, redK);
                     newGrid[currPixelPos] |= (newPixel << 16);
@@ -188,7 +193,7 @@ public class FloydSteinbergDithering extends AbstractDithering {
                 nextErrorShift ^= currErrorShift;
                 currErrorShift ^= nextErrorShift;
             }
-            return imageFactory.createImage(oldImage,newGrid);
+            return imageFactory.createImage(oldImage, newGrid);
         }
     }
 
@@ -205,9 +210,9 @@ public class FloydSteinbergDithering extends AbstractDithering {
                                      int matrixHeight,
                                      int currentElementMatrixXPosition,
                                      int[] output) {
-                final int redDelta = KondrenkoUtils.calculateDelta(redK);
-                final int greenDelta = KondrenkoUtils.calculateDelta(greenK);
-                final int blueDelta = KondrenkoUtils.calculateDelta(blueK);
+                final double redDelta = KondrenkoUtils.calculateDelta(redK);
+                final double greenDelta = KondrenkoUtils.calculateDelta(greenK);
+                final double blueDelta = KondrenkoUtils.calculateDelta(blueK);
 
                 // + (matrixWidth - 1) - to avoid invalid index error while processing border pixels naively
                 final double[][] redErrors = new double[matrixHeight][imageWidth + matrixWidth - 1];
@@ -277,8 +282,8 @@ public class FloydSteinbergDithering extends AbstractDithering {
         }
 
         private static final double[][] FLOYD_MATRIX = {
-                {0.0,           0.0,           7.0 / 16.0},
-                {3.0 / 16.0,    5.0 / 16.0,    1.0 / 16.0},
+                {0.0, 0.0, 7.0 / 16.0},
+                {3.0 / 16.0, 5.0 / 16.0, 1.0 / 16.0},
         };
 
         public static ImageInterface apply(ImageInterface oldImage, int redK, int blueK, int greenK, ImageFactory imageFactory) {
