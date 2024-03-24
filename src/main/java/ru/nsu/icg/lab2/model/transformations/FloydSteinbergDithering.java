@@ -11,7 +11,6 @@ import java.util.function.BiFunction;
 @Getter
 @Setter
 public class FloydSteinbergDithering extends AbstractDithering {
-
     public FloydSteinbergDithering(ImageFactory imageFactory) {
         super(imageFactory);
         redK = 2;
@@ -25,11 +24,10 @@ public class FloydSteinbergDithering extends AbstractDithering {
         switch (creator){
             case SIROTKIN -> {return SirotkinVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());}
             case VOROBEV -> {return VorobevVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());}
-            case KONDRENKO -> {return null;}
+            case KONDRENKO -> {return KondrenkoVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());}
             default -> throw new IllegalArgumentException("No such creator in Floyd-Steinberg dithering");
         }
     }
-
 
     private static class SirotkinVariant{
         public static ImageInterface apply(ImageInterface oldImage, int redK, int blueK, int greenK, ImageFactory imageFactory){
@@ -83,7 +81,6 @@ public class FloydSteinbergDithering extends AbstractDithering {
             return imageFactory.createImage(oldImage,newGrid);
         }
 
-
         private static int getClosedPalletColor(int color, int palletSize){
             if (color >= 255){
                 return 255;
@@ -100,7 +97,6 @@ public class FloydSteinbergDithering extends AbstractDithering {
 
 
     }
-
 
     // НЕ РЕФАКТОРИТЬ
     private static class VorobevVariant{
@@ -190,6 +186,131 @@ public class FloydSteinbergDithering extends AbstractDithering {
                 currErrorShift ^= nextErrorShift;
             }
             return imageFactory.createImage(oldImage,newGrid);
+        }
+    }
+
+    private static class KondrenkoVariant {
+        public static class ErrorDiffusionDithering {
+            public static void apply(int[] input,
+                                     int redK,
+                                     int greenK,
+                                     int blueK,
+                                     int imageWidth,
+                                     int imageHeight,
+                                     double[][] matrix,
+                                     int matrixWidth,
+                                     int matrixHeight,
+                                     int currentElementMatrixXPosition,
+                                     int[] output) {
+                final int redDelta = calculateDelta(redK);
+                final int greenDelta = calculateDelta(greenK);
+                final int blueDelta = calculateDelta(blueK);
+
+                // + (matrixWidth - 1) - to avoid invalid index error while processing border pixels naively
+                final double[][] redErrors = new double[matrixHeight][imageWidth + matrixWidth - 1];
+                final double[][] greenErrors = new double[matrixHeight][imageWidth + matrixWidth - 1];
+                final double[][] blueErrors = new double[matrixHeight][imageWidth + matrixWidth - 1];
+
+                for (int i = 0; i < matrixHeight; i++) {
+                    Arrays.fill(redErrors[i], 0);
+                    Arrays.fill(greenErrors[i], 0);
+                    Arrays.fill(blueErrors[i], 0);
+                }
+
+                for (int y = 0; y < imageHeight; y++) {
+                    for (int x = 0; x < imageWidth; x++) {
+                        final int index = x + y * imageWidth;
+
+                        final int oldPixel = input[index];
+                        final int oldAlpha = TransformationUtils.getAlpha(oldPixel);
+                        final int oldRed = TransformationUtils.getRed(oldPixel);
+                        final int oldGreen = TransformationUtils.getGreen(oldPixel);
+                        final int oldBlue = TransformationUtils.getBlue(oldPixel);
+
+                        final double accumulatedRedError = redErrors[0][x + currentElementMatrixXPosition];
+                        final double accumulatedGreenError = greenErrors[0][x + currentElementMatrixXPosition];
+                        final double accumulatedBlueError = blueErrors[0][x + currentElementMatrixXPosition];
+
+                        final int oldRedWithError = oldRed + (int) accumulatedRedError;
+                        final int oldGreenWithError = oldGreen + (int) accumulatedGreenError;
+                        final int oldBlueWithError = oldBlue + (int) accumulatedBlueError;
+
+                        final int newRed = findNearestColor(oldRedWithError, redDelta);
+                        final int newGreen = findNearestColor(oldGreenWithError, greenDelta);
+                        final int newBlue = findNearestColor(oldBlueWithError, blueDelta);
+
+                        final int redError = oldRedWithError - newRed;
+                        final int greenError = oldGreenWithError - newGreen;
+                        final int blueError = oldBlueWithError - newBlue;
+
+                        for (int xx = 0; xx < matrixWidth; xx++) {
+                            for (int yy = 0; yy < matrixHeight; yy++) {
+                                redErrors[yy][x - currentElementMatrixXPosition + xx + 1] += redError * matrix[yy][xx];
+                                greenErrors[yy][x - currentElementMatrixXPosition + xx + 1] += greenError * matrix[yy][xx];
+                                blueErrors[yy][x - currentElementMatrixXPosition + xx + 1] += blueError * matrix[yy][xx];
+                            }
+                        }
+
+                        output[index] = TransformationUtils.getARGB(
+                                oldAlpha,
+                                newRed,
+                                newGreen,
+                                newBlue
+                        );
+                    }
+
+                    shiftErrorsArray(redErrors);
+                    shiftErrorsArray(greenErrors);
+                    shiftErrorsArray(blueErrors);
+                }
+            }
+
+            private static int findNearestColor(int value, int delta) {
+                if (value >= 255) {
+                    return 255;
+                } else if (value < 0) {
+                    return 0;
+                } else {
+                    return Math.round((float) value / delta) * delta;
+                }
+            }
+
+            private static int calculateDelta(int paletteSize) {
+                return 255 / (paletteSize - 1);
+            }
+
+            private static void shiftErrorsArray(double[][] errors) {
+                for (int y = 0; y < errors.length - 1; y++) {
+                    errors[y] = errors[y + 1].clone();
+                }
+                Arrays.fill(errors[errors.length - 1], 0);
+            }
+        }
+
+        private static final double[][] FLOYD_MATRIX = {
+                {0.0,           0.0,           7.0 / 16.0},
+                {3.0 / 16.0,    5.0 / 16.0,    1.0 / 16.0},
+        };
+
+        public static ImageInterface apply(ImageInterface oldImage, int redK, int blueK, int greenK, ImageFactory imageFactory) {
+            final int[] oldGrid = oldImage.getGrid();
+            final int[] newGrid = new int[oldGrid.length];
+
+            ErrorDiffusionDithering.apply(
+                    oldGrid,
+                    redK,
+                    greenK,
+                    blueK,
+                    oldImage.getWidth(),
+                    oldImage.getHeight(),
+                    FLOYD_MATRIX,
+                    3,
+                    2,
+                    1,
+                    newGrid
+            );
+
+            return imageFactory.createImage(oldImage, newGrid);
         }
     }
 }
