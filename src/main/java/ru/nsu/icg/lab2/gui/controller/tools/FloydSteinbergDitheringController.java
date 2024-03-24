@@ -5,7 +5,7 @@ import ru.nsu.icg.lab2.gui.common.View;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.transformations.AbstractDithering;
-import ru.nsu.icg.lab2.model.transformations.FloydSteinbergDithering;
+import ru.nsu.icg.lab2.model.transformations.dithering.FloydSteinbergDithering;
 
 public class FloydSteinbergDitheringController extends AbstractDitheringController {
     private final FloydSteinbergDithering floydSteinbergDithering;

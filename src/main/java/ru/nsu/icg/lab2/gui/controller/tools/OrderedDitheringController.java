@@ -5,7 +5,7 @@ import ru.nsu.icg.lab2.gui.common.View;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.dto.Tool;
 import ru.nsu.icg.lab2.model.transformations.AbstractDithering;
-import ru.nsu.icg.lab2.model.transformations.OrderedDithering;
+import ru.nsu.icg.lab2.model.transformations.dithering.OrderedDithering;
 
 public class OrderedDitheringController extends AbstractDitheringController {
     private final OrderedDithering orderedDithering;

@@ -1,9 +1,11 @@
-package ru.nsu.icg.lab2.model.transformations;
+package ru.nsu.icg.lab2.model.transformations.dithering;
 
 import lombok.Getter;
 import lombok.Setter;
 import ru.nsu.icg.lab2.model.ImageFactory;
 import ru.nsu.icg.lab2.model.ImageInterface;
+import ru.nsu.icg.lab2.model.transformations.AbstractDithering;
+import ru.nsu.icg.lab2.model.transformations.TransformationUtils;
 
 import java.util.Arrays;
 import java.util.function.BiFunction;
@@ -13,19 +15,20 @@ import java.util.function.BiFunction;
 public class FloydSteinbergDithering extends AbstractDithering {
     public FloydSteinbergDithering(ImageFactory imageFactory) {
         super(imageFactory);
-        redK = 2;
-        blueK = 2;
-        greenK = 2;
-        creator = FilterCreator.VOROBEV;
     }
 
     @Override
     public ImageInterface apply(ImageInterface oldImage) {
+        final FilterCreator creator = getCreator();
+        final int redK = getRedK();
+        final int greenK = getGreenK();
+        final int blueK = getBlueK();
+
         switch (creator){
             case SIROTKIN -> {return SirotkinVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());}
             case VOROBEV -> {return VorobevVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());}
             case KONDRENKO -> {return KondrenkoVariant.apply(oldImage, redK, blueK, greenK, getImageFactory());}
-            default -> throw new IllegalArgumentException("No such creator in Floyd-Steinberg dithering");
+            default -> throw new IllegalArgumentException("No such creator of Floyd-Steinberg dithering");
         }
     }
 
@@ -202,9 +205,9 @@ public class FloydSteinbergDithering extends AbstractDithering {
                                      int matrixHeight,
                                      int currentElementMatrixXPosition,
                                      int[] output) {
-                final int redDelta = calculateDelta(redK);
-                final int greenDelta = calculateDelta(greenK);
-                final int blueDelta = calculateDelta(blueK);
+                final int redDelta = KondrenkoUtils.calculateDelta(redK);
+                final int greenDelta = KondrenkoUtils.calculateDelta(greenK);
+                final int blueDelta = KondrenkoUtils.calculateDelta(blueK);
 
                 // + (matrixWidth - 1) - to avoid invalid index error while processing border pixels naively
                 final double[][] redErrors = new double[matrixHeight][imageWidth + matrixWidth - 1];
@@ -235,9 +238,9 @@ public class FloydSteinbergDithering extends AbstractDithering {
                         final int oldGreenWithError = oldGreen + (int) Math.round(accumulatedGreenError);
                         final int oldBlueWithError = oldBlue + (int) Math.round(accumulatedBlueError);
 
-                        final int newRed = findNearestColor(oldRedWithError, redDelta);
-                        final int newGreen = findNearestColor(oldGreenWithError, greenDelta);
-                        final int newBlue = findNearestColor(oldBlueWithError, blueDelta);
+                        final int newRed = KondrenkoUtils.findNearestColor(oldRedWithError, redDelta);
+                        final int newGreen = KondrenkoUtils.findNearestColor(oldGreenWithError, greenDelta);
+                        final int newBlue = KondrenkoUtils.findNearestColor(oldBlueWithError, blueDelta);
 
                         final int redError = oldRedWithError - newRed;
                         final int greenError = oldGreenWithError - newGreen;
@@ -263,20 +266,6 @@ public class FloydSteinbergDithering extends AbstractDithering {
                     shiftErrorsArray(greenErrors);
                     shiftErrorsArray(blueErrors);
                 }
-            }
-
-            private static int findNearestColor(int value, int delta) {
-                if (value >= 255) {
-                    return 255;
-                } else if (value < 0) {
-                    return 0;
-                } else {
-                    return Math.round((float) value / delta) * delta;
-                }
-            }
-
-            private static int calculateDelta(int paletteSize) {
-                return 255 / (paletteSize - 1);
             }
 
             private static void shiftErrorsArray(double[][] errors) {
