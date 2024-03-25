@@ -104,17 +104,17 @@ public class OrderedDithering extends AbstractDithering {
 
     private static class SirotkinVariant {
         private static ImageInterface apply(ImageInterface oldImage, int redK, int blueK, int greenK, ImageFactory imageFactory) {
+            int width = oldImage.getWidth();
+            int height = oldImage.getHeight();
             double colorRedDiv = 255.0 / (redK - 1);
             double colorGreenDiv = 255.0 / (greenK - 1);
             double colorBlueDiv = 255.0 / (blueK - 1);
-            double[][] matrixRed = chooseMatrix(redK);
-            double[][] matrixGreen = chooseMatrix(greenK);
-            double[][] matrixBlue = chooseMatrix(blueK);
+            double[][] matrixRed = chooseMatrix(redK, width, height);
+            double[][] matrixGreen = chooseMatrix(greenK, width, height);
+            double[][] matrixBlue = chooseMatrix(blueK, width, height);
             int matrixRedSize = matrixRed.length;
             int matrixGreenSize = matrixGreen.length;
             int matrixBlueSize = matrixBlue.length;
-            int width = oldImage.getWidth();
-            int height = oldImage.getHeight();
             int gridSize = height * width;
             int[] grid = oldImage.getGrid();
             int[] newGrid = new int[gridSize];
@@ -154,12 +154,14 @@ public class OrderedDithering extends AbstractDithering {
 
         }
 
-        private static double[][] chooseMatrix(int k) {
-            if (k == 2) {
+        private static double[][] chooseMatrix(int k, int width, int height) {
+            int imageMatrix = Math.min(2, (int) (Math.log10(Math.min(width, height)))) + 1;
+            int matrixSize = (int) Math.max(Math.log(k), imageMatrix);
+            if (matrixSize == 2) {
                 return MATRIX2;
-            } else if (k <= 16) {
+            } else if (matrixSize <= 16) {
                 return MATRIX4;
-            } else if (k <= 32) {
+            } else if (matrixSize <= 32) {
                 return MATRIX8;
             }
             return MATRIX16;

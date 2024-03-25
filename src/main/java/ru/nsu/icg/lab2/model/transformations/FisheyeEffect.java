@@ -27,7 +27,7 @@ public class FisheyeEffect extends Transformation {
         int gridSize = height * width;
         int[] grid = oldImage.getGrid();
         int[] newGrid = new int[gridSize];
-        Arrays.fill(newGrid, 0xFFFFFFFF);
+        Arrays.fill(newGrid, 0xFF000000);
         int centerX = width / 2;
         int centerY = height / 2;
         double center = amplitude * Math.min(centerX, centerY) ;
@@ -45,7 +45,7 @@ public class FisheyeEffect extends Transformation {
 
                 double r = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-                double rNew = (center / (Math.PI * r)) * Math.atan((Math.PI * r) / center);
+                double rNew = (center / (Math.PI * r)) * Math.atan((Math.PI * r ) / center);
 
                 int newX = (int) (centerX + rNew * deltaX);
                 int newY = (int) (centerY + rNew * deltaY);
