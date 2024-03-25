@@ -2,6 +2,8 @@ package ru.nsu.icg.lab2.model.dto;
 
 public record Tool(
         String name,
+
+        String description,
         String tip,
         String selectedTip,
         String iconPath,

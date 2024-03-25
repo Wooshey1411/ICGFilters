@@ -42,6 +42,7 @@ public class JSONToolsConfigParser implements ToolsConfigParser {
     private static Tool convertJSONTool(JSONTool jsonTool) {
         return new Tool(
                 jsonTool.getName(),
+                jsonTool.getDescription(),
                 jsonTool.getTip(),
                 jsonTool.getSelectedTip(),
                 jsonTool.getIconPath(),

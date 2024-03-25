@@ -37,4 +37,7 @@ public class JSONTool {
 
     @SerializedName("selectedTip")
     private String selectedTip;
+
+    @SerializedName("description")
+    private String description;
 }

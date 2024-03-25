@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class HelpWindow extends JDialog {
-    private static Dimension prefSize = new Dimension(1000,800);
+    private static final Dimension prefSize = new Dimension(1000,800);
 
     private final JPanel mainPanel;
 
@@ -47,7 +47,7 @@ public class HelpWindow extends JDialog {
     private void setToolDescription(Tool tool){
 
         JTextArea desc = new JTextArea();
-        desc.setText(tool.name());
+        desc.setText(tool.name() + " - " + tool.description());
         desc.setEditable(false);
         desc.setLineWrap(true);
         desc.setWrapStyleWord(true);
