@@ -259,7 +259,7 @@ public class ViewImpl extends ContextAdapter implements View {
                         <li>Kondrenko Kirill</li>
                         <li>Sirotkin Michail</li>
                     </ul>
-                    <p>student of group 21203 in NSU in March 2024 as task of the course "engineering and computer graphics" </p>
+                    <p>students of group 21203 in NSU in March 2024 as task of the course "engineering and computer graphics" </p>
                     <p>link to github of project <u>https://github.com/Wooshey1411/ICGFilters</u>
                </html>
                """;

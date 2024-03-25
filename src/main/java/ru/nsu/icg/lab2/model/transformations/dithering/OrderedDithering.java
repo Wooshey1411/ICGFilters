@@ -102,6 +102,18 @@ public class OrderedDithering extends AbstractDithering {
         }
     }
 
+    private static double[][] chooseMatrix(int k) {
+        if (k <= 8) {
+            return MATRIX16;
+        } else if (k <= 16) {
+            return MATRIX8;
+        } else if (k <= 64) {
+            return MATRIX4;
+        } else {
+            return MATRIX2;
+        }
+    }
+
     private static class SirotkinVariant {
         private static ImageInterface apply(ImageInterface oldImage, int redK, int blueK, int greenK, ImageFactory imageFactory) {
             int width = oldImage.getWidth();
@@ -109,9 +121,9 @@ public class OrderedDithering extends AbstractDithering {
             double colorRedDiv = 255.0 / (redK - 1);
             double colorGreenDiv = 255.0 / (greenK - 1);
             double colorBlueDiv = 255.0 / (blueK - 1);
-            double[][] matrixRed = chooseMatrix(redK, width, height);
-            double[][] matrixGreen = chooseMatrix(greenK, width, height);
-            double[][] matrixBlue = chooseMatrix(blueK, width, height);
+            double[][] matrixRed = chooseMatrix(redK);
+            double[][] matrixGreen = chooseMatrix(greenK);
+            double[][] matrixBlue = chooseMatrix(blueK);
             int matrixRedSize = matrixRed.length;
             int matrixGreenSize = matrixGreen.length;
             int matrixBlueSize = matrixBlue.length;
@@ -153,19 +165,6 @@ public class OrderedDithering extends AbstractDithering {
 
 
         }
-
-        private static double[][] chooseMatrix(int k, int width, int height) {
-            int imageMatrix = Math.min(2, (int) (Math.log10(Math.min(width, height)))) + 1;
-            int matrixSize = (int) Math.max(Math.log(k), imageMatrix);
-            if (matrixSize == 2) {
-                return MATRIX2;
-            } else if (matrixSize <= 16) {
-                return MATRIX4;
-            } else if (matrixSize <= 32) {
-                return MATRIX8;
-            }
-            return MATRIX16;
-        }
     }
 
     private static class KondrenkoVariant {
@@ -181,9 +180,9 @@ public class OrderedDithering extends AbstractDithering {
                 final double greenDelta = KondrenkoUtils.calculateDelta(greenK);
                 final double blueDelta = KondrenkoUtils.calculateDelta(blueK);
 
-                final double[][] redMatrix = MATRIX16;
-                final double[][] greenMatrix = MATRIX16;
-                final double[][] blueMatrix = MATRIX16;
+                final double[][] redMatrix = chooseMatrix(redK);
+                final double[][] greenMatrix = chooseMatrix(greenK);
+                final double[][] blueMatrix = chooseMatrix(blueK);
 
                 final int redMatrixSize = redMatrix.length;
                 final int greenMatrixSize = greenMatrix.length;
@@ -257,8 +256,6 @@ public class OrderedDithering extends AbstractDithering {
             double redShift = 255f / (redK - 1);
             double greenShift = 255f / (greenK - 1);
             double blueShift = 255f / (blueK - 1);
-            int matrixSize = Math.min(4, (int) (Math.log10(Math.min(oldImage.getWidth(), oldImage.getHeight())))) + 1;
-            double[][] defaultMatrix;
             BiFunction<Integer, Integer, Integer> findNearestNeighbor = (color, paletteSize) -> {
                 if (color < 0) {
                     return 0;
@@ -268,16 +265,9 @@ public class OrderedDithering extends AbstractDithering {
                 }
                 return (int) ((color * paletteSize / 255) * (255f / (paletteSize - 1)));
             };
-            switch (matrixSize) {
-                case 1 -> defaultMatrix = MATRIX2;
-                case 2 -> defaultMatrix = MATRIX4;
-                case 3 -> defaultMatrix = MATRIX8;
-                default -> defaultMatrix = MATRIX16;
-            }
-            System.out.println(matrixSize);
-            double[][] redMatrix = defaultMatrix;
-            double[][] blueMatrix = defaultMatrix;
-            double[][] greenMatrix = defaultMatrix;
+            double[][] redMatrix = chooseMatrix(redK);
+            double[][] blueMatrix = chooseMatrix(blueK);
+            double[][] greenMatrix = chooseMatrix(greenK);
             int redMatrixSize = redMatrix.length;
             int greenMatrixSize = greenMatrix.length;
             int blueMatrixSize = blueMatrix.length;

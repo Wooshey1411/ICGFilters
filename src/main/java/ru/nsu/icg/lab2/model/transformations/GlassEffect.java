@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class GlassEffect extends Transformation {
     private final Random random;
+    private final MedianFilter medianFilter;
 
     @Getter
     @Setter
@@ -19,6 +20,8 @@ public class GlassEffect extends Transformation {
         super(imageFactory);
         random = new Random(0);
         spread = 0;
+        medianFilter = new MedianFilter(imageFactory);
+        medianFilter.setWindowSize(5);
     }
 
     @Override
@@ -42,6 +45,6 @@ public class GlassEffect extends Transformation {
             }
         }
 
-        return getImageFactory().createImage(oldImage, grid);
+        return medianFilter.apply(getImageFactory().createImage(oldImage, grid));
     }
 }
